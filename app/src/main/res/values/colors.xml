@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Custom -->
+    <color name="primary_color">#FFCF61</color>
+    <color name="primary_color_light">#FFDA85</color>
+    <color name="primary_color_dark">#e69310</color>
+
+    <color name="colorAccent">#7385C8</color>
+
+    <color name="red">#FF0000</color>
+    <color name="gray_light">#E9E7E7</color>
+    <color name="gray">#707070</color>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="icon">@color/black</color>
+    <color name="icon_background">#FFCF61</color>
+    <color name="background">@color/white</color>
+</resources>

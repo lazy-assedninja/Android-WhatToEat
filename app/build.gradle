@@ -1,0 +1,91 @@
+import me.lazy_assedninja.plugins.*
+
+plugins {
+    id 'com.android.application'
+    id 'androidx.navigation.safeargs'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion ConfigVersions.compileSdkVersion
+    buildToolsVersion ConfigVersions.buildToolsVersion
+
+    defaultConfig {
+        applicationId "me.lazy_assedninja.what_to_eat"
+        minSdkVersion ConfigVersions.minSampleSdkVersion
+        targetSdkVersion ConfigVersions.targetSdkVersion
+        versionCode ConfigVersions.versionCode
+        versionName ConfigVersions.versionName
+
+        testInstrumentationRunner "me.lazy_assedninja.sample.utils.DemoTestRunner"
+    }
+
+    buildTypes {
+        release {
+            // Enables code shrinking, obfuscation, and optimization for only
+            // your project's release build type.
+            minifyEnabled false
+
+            // Enables resource shrinking, which is performed by the
+            // Android Gradle plugin.
+            shrinkResources false
+
+            // Ensures that all uncompressed files in the archive are aligned relative
+            // to the start of the file.
+            zipAlignEnabled false
+
+            // Includes the default ProGuard rules files that are packaged with
+            // the Android Gradle plugin. To learn more, go to the section about
+            // R8 configuration files.
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    implementation AndroidX.appCompat
+    implementation AndroidX.constraintLayout
+    implementation AndroidX.swipeRefreshLayout
+    implementation Google.material
+    implementation ThirdParty.ticketView
+
+    // Modules
+    implementation project(path: ':library')
+
+    // Navigation
+    implementation AndroidX.navigationFragment
+    implementation AndroidX.navigationUI
+
+    // ViewPager2
+    implementation AndroidX.viewPager2
+
+    // Glide
+    implementation ThirdParty.glide
+    annotationProcessor ThirdParty.glideCompiler
+
+    // Room
+    implementation AndroidX.room
+    annotationProcessor AndroidX.roomCompiler
+
+    // OkHttp
+    implementation ThirdParty.okHttpInterceptor
+
+    // Retrofit2
+    implementation ThirdParty.retrofit
+    implementation ThirdParty.retrofitGson
+
+    // Test
+    testImplementation Junit.junit
+    androidTestImplementation AndroidX.testJunit
+    androidTestImplementation AndroidX.testEspresso
+}

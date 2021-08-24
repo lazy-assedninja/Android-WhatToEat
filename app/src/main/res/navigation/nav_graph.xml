@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_home">
+
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="me.lazy_assedninja.app.ui.store.home.HomeFragment"
+        android:label="@string/navigation_fragment_home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_to_fragment_home"
+            app:destination="@id/fragment_home"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_recommend"
+            app:destination="@id/fragment_recommend"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_store_information"
+            app:destination="@id/fragment_store_information" />
+
+        <action
+            android:id="@+id/action_to_fragment_profile"
+            app:destination="@id/fragment_profile"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_login"
+            app:destination="@id/fragment_login"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_search"
+            app:destination="@id/fragment_search" />
+
+        <action
+            android:id="@+id/action_to_fragment_map"
+            app:destination="@id/fragment_map"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_promotion"
+            app:destination="@id/fragment_promotion"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_favorite"
+            app:destination="@id/fragment_favorite"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_history"
+            app:destination="@id/fragment_history"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_reservation"
+            app:destination="@id/fragment_reservation"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_recommend"
+        android:name="me.lazy_assedninja.app.ui.store.recommend.RecommendFragment"
+        android:label="@string/navigation_fragment_recommend"
+        tools:layout="@layout/fragment_recommend">
+
+        <action
+            android:id="@+id/action_to_fragment_home"
+            app:destination="@id/fragment_home"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_store_information"
+            app:destination="@id/fragment_store_information"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_profile"
+            app:destination="@id/fragment_profile"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_search"
+            app:destination="@id/fragment_search" />
+
+        <action
+            android:id="@+id/action_to_fragment_login"
+            app:destination="@id/fragment_login"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_promotion"
+            app:destination="@id/fragment_promotion"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_favorite"
+            app:destination="@id/fragment_favorite"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_history"
+            app:destination="@id/fragment_history"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_reservation"
+            app:destination="@id/fragment_reservation"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_store_information"
+        android:name="me.lazy_assedninja.app.ui.store.store_information.StoreInformationFragment"
+        android:label="@string/navigation_fragment_store_information"
+        tools:layout="@layout/fragment_store_information">
+
+        <argument
+            android:name="storeID"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_to_fragment_comment"
+            app:destination="@id/fragment_comment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_post"
+            app:destination="@id/fragment_post"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_reserve"
+            app:destination="@id/fragment_reserve"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_add_report"
+            app:destination="@id/fragment_add_report"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_comment"
+        android:name="me.lazy_assedninja.app.ui.comment.CommentFragment"
+        android:label="@string/navigation_fragment_comment"
+        tools:layout="@layout/fragment_comment">
+
+        <argument
+            android:name="storeID"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_post"
+        android:name="me.lazy_assedninja.app.ui.post.PostFragment"
+        android:label="@string/navigation_fragment_post"
+        tools:layout="@layout/fragment_post">
+
+        <argument
+            android:name="storeID"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_reserve"
+        android:name="me.lazy_assedninja.app.ui.reservation.reserve.ReserveFragment"
+        android:label="@string/navigation_fragment_reserve"
+        tools:layout="@layout/fragment_reserve">
+
+        <argument
+            android:name="storeID"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_add_report"
+        android:name="me.lazy_assedninja.app.ui.report.add_report.AddReportFragment"
+        android:label="@string/navigation_fragment_add_report"
+        tools:layout="@layout/fragment_add_report">
+
+        <argument
+            android:name="storeID"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="me.lazy_assedninja.app.ui.profile.ProfileFragment"
+        android:label="@string/navigation_fragment_profile"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_to_fragment_home"
+            app:destination="@id/fragment_home"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_recommend"
+            app:destination="@id/fragment_recommend"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_login"
+            app:destination="@id/fragment_login"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_reset_password"
+            app:destination="@id/fragment_reset_password"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_promotion"
+            app:destination="@id/fragment_promotion"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_favorite"
+            app:destination="@id/fragment_favorite"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_history"
+            app:destination="@id/fragment_history"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_reservation"
+            app:destination="@id/fragment_reservation"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="me.lazy_assedninja.app.ui.login.LoginFragment"
+        android:label="@string/navigation_fragment_login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_to_fragment_register"
+            app:destination="@id/fragment_register"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_fragment_forget_password"
+            app:destination="@id/fragment_forget_password"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_register"
+        android:name="me.lazy_assedninja.app.ui.register.RegisterFragment"
+        android:label="@string/navigation_fragment_register"
+        tools:layout="@layout/fragment_register" />
+
+    <fragment
+        android:id="@+id/fragment_forget_password"
+        android:name="me.lazy_assedninja.app.ui.forget_password.ForgetPasswordFragment"
+        android:label="@string/navigation_fragment_forget_password"
+        tools:layout="@layout/fragment_forget_password" />
+
+    <fragment
+        android:id="@+id/fragment_reset_password"
+        android:name="me.lazy_assedninja.app.ui.reset_password.ResetPasswordFragment"
+        android:label="@string/navigation_fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" />
+
+    <fragment
+        android:id="@+id/fragment_search"
+        android:name="me.lazy_assedninja.app.ui.search.SearchFragment"
+        android:label="@string/navigation_fragment_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/fragment_map"
+        android:name="me.lazy_assedninja.app.ui.map.MapFragment"
+        android:label="@string/navigation_fragment_map"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/fragment_promotion"
+        android:name="me.lazy_assedninja.app.ui.promotion.PromotionFragment"
+        android:label="@string/navigation_fragment_promotion"
+        tools:layout="@layout/fragment_promotion">
+
+        <action
+            android:id="@+id/action_to_fragment_promotion_information"
+            app:destination="@id/fragment_promotion_information"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_promotion_information"
+        android:name="me.lazy_assedninja.app.ui.promotion.promotion_information.PromotionInformationFragment"
+        android:label="@string/navigation_fragment_promotion_information"
+        tools:layout="@layout/fragment_promotion_information">
+
+        <argument
+            android:name="promotionID"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_favorite"
+        android:name="me.lazy_assedninja.app.ui.favorite.FavoriteFragment"
+        android:label="@string/navigation_fragment_favorite"
+        tools:layout="@layout/fragment_favorite">
+
+        <action
+            android:id="@+id/action_to_fragment_store_information"
+            app:destination="@id/fragment_store_information"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_history"
+        android:name="me.lazy_assedninja.app.ui.history.HistoryFragment"
+        android:label="@string/navigation_fragment_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/fragment_reservation"
+        android:name="me.lazy_assedninja.app.ui.reservation.ReservationFragment"
+        android:label="@string/navigation_fragment_reservation"
+        tools:layout="@layout/fragment_reservation">
+
+        <argument
+            android:name="type"
+            app:argType="string" />
+    </fragment>
+</navigation>

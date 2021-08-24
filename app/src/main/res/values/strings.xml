@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">WhatToEat</string>
+
+    <!-- Navigation -->
+    <string name="navigation_fragment_home">Home</string>
+    <string name="navigation_fragment_recommend">Recommend</string>
+    <string name="navigation_fragment_store_information">Store Information</string>
+    <string name="navigation_fragment_comment">Comment</string>
+    <string name="navigation_fragment_post">Post</string>
+    <string name="navigation_fragment_reserve">Reserve</string>
+    <string name="navigation_fragment_add_report">Add Report</string>
+    <string name="navigation_fragment_profile">Profile</string>
+    <string name="navigation_fragment_register">Register</string>
+    <string name="navigation_fragment_forget_password">Forget Password</string>
+    <string name="navigation_fragment_reset_password">Reset Password</string>
+    <string name="navigation_fragment_login">Login</string>
+    <string name="navigation_fragment_search">Search</string>
+    <string name="navigation_fragment_map">Map</string>
+    <string name="navigation_fragment_promotion">Promotion</string>
+    <string name="navigation_fragment_promotion_information">Promotion Information</string>
+    <string name="navigation_fragment_favorite">Favorite</string>
+    <string name="navigation_fragment_history">History</string>
+    <string name="navigation_fragment_reservation">Reservation</string>
+
+    <!-- Bottom Navigation -->
+    <string name="bottom_navigation_home">Home</string>
+    <string name="bottom_navigation_recommend">Recommend</string>
+    <string name="bottom_navigation_profile">Profile</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+    <string name="navigation_drawer_promotion">Promotion</string>
+    <string name="navigation_drawer_favorite">Favorite</string>
+    <string name="navigation_drawer_history">History</string>
+    <string name="navigation_drawer_reservation">Reservation</string>
+
+    <!-- Navigation Header Layout -->
+    <string name="navigation_header_name">Name</string>
+
+    <!-- Toolbar -->
+    <string name="toolbar_search">Search</string>
+    <string name="toolbar_map">Map</string>
+    <string name="toolbar_register">Register</string>
+    <string name="toolbar_clear_history">Clear History</string>
+
+    <!-- Hint -->
+    <string name="hint_search">Search</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+
+    <!-- Login -->
+    <string name="bg_login">Login Background</string>
+    <string name="bt_login">Login</string>
+    <string name="bt_forget_password">Forget Password</string>
+
+    <!-- User -->
+    <string name="user_please_login">Please Login</string>
+    <string name="user_name">Name</string>
+    <string name="user_identity">IDENTITY:</string>
+
+    <!-- Search -->
+
+    <!-- Store -->
+    <string name="default_value_star">0.0</string>
+    <string name="bt_favorite">Favorite</string>
+    <string name="bt_store_information">Information</string>
+    <string name="bt_comment">Comment</string>
+    <string name="bt_post">Post</string>
+    <string name="bt_reserve">Reserve</string>
+
+    <!-- ReservationDao -->
+    <string name="reservation_amount"> 人</string>
+
+    <!-- Settings -->
+    <string name="bt_reset_password">Reset password</string>
+    <string name="bt_logout">Logout</string>
+    <string name="bt_report">Report</string>
+
+    <!-- ContentDescription -->
+    <string name="cd_home">Home</string>
+    <string name="cd_check">Check</string>
+
+    <!-- Success -->
+    <string name="success_login">Login success.</string>
+
+    <!-- Error -->
+    <string name="error_email_can_not_be_null">Email can\'t be empty.</string>
+    <string name="error_password_can_not_be_null">Password can\'t be empty.</string>
+    <string name="error_data_empty">Data empty.</string>
+    <string name="error_please_login_first">Please login first.</string>
+</resources>
