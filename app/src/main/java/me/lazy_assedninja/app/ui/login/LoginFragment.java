@@ -51,7 +51,7 @@ public class LoginFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setResource(viewModel.user);
         binding.btForgetPassword.setOnClickListener(v ->
-                navController.navigate(R.id.action_to_fragment_forget_password));
+                navController.navigate(R.id.action_to_fragment_verification));
         binding.btLogin.setOnClickListener(v -> {
             dismissKeyboard(v);
             if (binding.tilEmail.getEditText() == null || binding.tilPassword.getEditText() == null)

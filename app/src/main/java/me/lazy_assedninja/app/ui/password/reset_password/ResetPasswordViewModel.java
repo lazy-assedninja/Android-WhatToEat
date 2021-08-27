@@ -1,4 +1,4 @@
-package me.lazy_assedninja.app.ui.reset_password;
+package me.lazy_assedninja.app.ui.password.reset_password;
 
 import androidx.lifecycle.ViewModel;
 

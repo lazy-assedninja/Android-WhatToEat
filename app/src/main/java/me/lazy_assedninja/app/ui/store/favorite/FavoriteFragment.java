@@ -1,4 +1,4 @@
-package me.lazy_assedninja.app.ui.history;
+package me.lazy_assedninja.app.ui.store.favorite;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 
 import me.lazy_assedninja.app.R;
-import me.lazy_assedninja.app.databinding.FragmentHistoryBinding;
+import me.lazy_assedninja.app.databinding.FragmentFavoriteBinding;
 import me.lazy_assedninja.app.ui.store.StoreAdapter;
 import me.lazy_assedninja.app.ui.store.home.HomeFragmentDirections;
 import me.lazy_assedninja.app.vo.Resource;
@@ -25,10 +25,10 @@ import me.lazy_assedninja.library.utils.ExecutorUtils;
 
 import static java.util.Collections.emptyList;
 
-public class HistoryFragment extends BaseFragment {
+public class FavoriteFragment extends BaseFragment {
 
-    private FragmentHistoryBinding binding;
-    private HistoryViewModel viewModel;
+    private FragmentFavoriteBinding binding;
+    private FavoriteViewModel viewModel;
 
     private NavController navController;
     private StoreAdapter adapter;
@@ -38,7 +38,7 @@ public class HistoryFragment extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_history,
+                R.layout.fragment_favorite,
                 container,
                 false
         );
@@ -48,7 +48,7 @@ public class HistoryFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
+        viewModel = new ViewModelProvider(this).get(FavoriteViewModel.class);
         navController = Navigation.findNavController(view);
 
         initView();
@@ -82,6 +82,7 @@ public class HistoryFragment extends BaseFragment {
     private void initData() {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         viewModel.store.observe(getViewLifecycleOwner(), list -> {
+            Log.d("FavoriteFragment", "xxx");
             if (list != null) {
                 adapter.submitList(list);
             } else {

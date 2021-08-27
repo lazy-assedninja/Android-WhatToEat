@@ -1,4 +1,4 @@
-package me.lazy_assedninja.app.ui.search;
+package me.lazy_assedninja.app.ui.store.search;
 
 import androidx.lifecycle.ViewModel;
 

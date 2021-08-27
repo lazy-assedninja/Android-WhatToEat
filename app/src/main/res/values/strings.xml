@@ -11,7 +11,7 @@
     <string name="navigation_fragment_add_report">Add Report</string>
     <string name="navigation_fragment_profile">Profile</string>
     <string name="navigation_fragment_register">Register</string>
-    <string name="navigation_fragment_forget_password">Forget Password</string>
+    <string name="navigation_fragment_verification">Verification</string>
     <string name="navigation_fragment_reset_password">Reset Password</string>
     <string name="navigation_fragment_login">Login</string>
     <string name="navigation_fragment_search">Search</string>

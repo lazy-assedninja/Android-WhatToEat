@@ -340,8 +340,8 @@
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_forget_password"
-            app:destination="@id/fragment_forget_password"
+            android:id="@+id/action_to_fragment_verification"
+            app:destination="@id/fragment_verification"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -355,20 +355,20 @@
         tools:layout="@layout/fragment_register" />
 
     <fragment
-        android:id="@+id/fragment_forget_password"
-        android:name="me.lazy_assedninja.app.ui.forget_password.ForgetPasswordFragment"
-        android:label="@string/navigation_fragment_forget_password"
-        tools:layout="@layout/fragment_forget_password" />
+        android:id="@+id/fragment_verification"
+        android:name="me.lazy_assedninja.app.ui.password.verification.VerificationFragment"
+        android:label="@string/navigation_fragment_verification"
+        tools:layout="@layout/fragment_verification" />
 
     <fragment
         android:id="@+id/fragment_reset_password"
-        android:name="me.lazy_assedninja.app.ui.reset_password.ResetPasswordFragment"
+        android:name="me.lazy_assedninja.app.ui.password.reset_password.ResetPasswordFragment"
         android:label="@string/navigation_fragment_reset_password"
         tools:layout="@layout/fragment_reset_password" />
 
     <fragment
         android:id="@+id/fragment_search"
-        android:name="me.lazy_assedninja.app.ui.search.SearchFragment"
+        android:name="me.lazy_assedninja.app.ui.store.search.SearchFragment"
         android:label="@string/navigation_fragment_search"
         tools:layout="@layout/fragment_search" />
 
@@ -406,7 +406,7 @@
 
     <fragment
         android:id="@+id/fragment_favorite"
-        android:name="me.lazy_assedninja.app.ui.favorite.FavoriteFragment"
+        android:name="me.lazy_assedninja.app.ui.store.favorite.FavoriteFragment"
         android:label="@string/navigation_fragment_favorite"
         tools:layout="@layout/fragment_favorite">
 
@@ -421,7 +421,7 @@
 
     <fragment
         android:id="@+id/fragment_history"
-        android:name="me.lazy_assedninja.app.ui.history.HistoryFragment"
+        android:name="me.lazy_assedninja.app.ui.store.history.HistoryFragment"
         android:label="@string/navigation_fragment_history"
         tools:layout="@layout/fragment_history" />
 

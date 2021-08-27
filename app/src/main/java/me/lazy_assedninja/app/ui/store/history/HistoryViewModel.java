@@ -1,4 +1,4 @@
-package me.lazy_assedninja.app.ui.favorite;
+package me.lazy_assedninja.app.ui.store.history;
 
 import android.app.Application;
 
@@ -13,7 +13,7 @@ import java.util.List;
 import me.lazy_assedninja.app.api.RetrofitManager;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
-import me.lazy_assedninja.app.repository.StoreRepository;
+import me.lazy_assedninja.app.repository.HistoryRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.utils.AbsentLiveData;
 import me.lazy_assedninja.app.vo.Favorite;
@@ -21,8 +21,9 @@ import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.utils.LogUtils;
 
-public class FavoriteViewModel extends AndroidViewModel {
+public class HistoryViewModel extends AndroidViewModel {
 
     private final ExecutorUtils executorUtils = new ExecutorUtils();
     private final UserRepository userRepository = new UserRepository(
@@ -35,10 +36,14 @@ public class FavoriteViewModel extends AndroidViewModel {
             WhatToEatDatabase.getInstance(getApplication()).favoriteDao(),
             RetrofitManager.getInstance().getWhatToEatService()
     );
+    private final HistoryRepository historyRepository = new HistoryRepository(
+            executorUtils,
+            WhatToEatDatabase.getInstance(getApplication()).historyDao()
+    );
 
     private final MutableLiveData<Favorite> favoriteRequest = new MutableLiveData<>();
 
-    public FavoriteViewModel(@NonNull Application application) {
+    public HistoryViewModel(@NonNull Application application) {
         super(application);
     }
 
@@ -46,7 +51,13 @@ public class FavoriteViewModel extends AndroidViewModel {
         return userRepository.isLoggedIn(getApplication());
     }
 
-    public LiveData<List<Store>> store = favoriteRepository.loadFavorites();
+    public LiveData<List<Store>> store = Transformations.switchMap(historyRepository.getHistoryIDs(), ids -> {
+        if (ids == null) {
+            return AbsentLiveData.create();
+        } else {
+            return historyRepository.loadHistories(ids);
+        }
+    });
 
     public LiveData<Resource<Result>> favorite = Transformations.switchMap(favoriteRequest, favorite -> {
         if (favorite == null) {

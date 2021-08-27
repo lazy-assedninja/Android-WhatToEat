@@ -1,4 +1,4 @@
-package me.lazy_assedninja.app.ui.reset_password;
+package me.lazy_assedninja.app.ui.password.verification;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,20 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.lazy_assedninja.app.R;
-import me.lazy_assedninja.app.databinding.FragmentResetPasswordBinding;
-import me.lazy_assedninja.app.databinding.FragmentStoreInformationBinding;
+import me.lazy_assedninja.app.databinding.FragmentVerificationBinding;
 
-public class ResetPasswordFragment extends Fragment {
+public class VerificationFragment extends Fragment {
 
-    private FragmentResetPasswordBinding binding;
-    private ResetPasswordViewModel mViewModel;
+    private FragmentVerificationBinding binding;
+    private VerificationViewModel viewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_reset_password,
+                R.layout.fragment_verification,
                 container,
                 false
         );
@@ -37,7 +36,8 @@ public class ResetPasswordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ResetPasswordViewModel.class);
+        viewModel = new ViewModelProvider(this).get(VerificationViewModel.class);
         // TODO: Use the ViewModel
     }
+
 }
