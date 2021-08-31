@@ -2,7 +2,6 @@ package me.lazy_assedninja.plugins
 
 object Google {
     val material = "com.google.android.material:material:${DependenciesVersions.googleMaterial}"
-    val dagger = "com.google.dagger:dagger:${DependenciesVersions.dagger}"
-    val daggerCompiler = "com.google.dagger:dagger-compiler:${DependenciesVersions.dagger}"
-    val gson = "com.google.code.gson:gson:${DependenciesVersions.gson}"
+    val hilt = "com.google.dagger:hilt-android:${DependenciesVersions.hilt}"
+    val hiltCompiler = "com.google.dagger:hilt-compiler:${DependenciesVersions.hilt}"
 }

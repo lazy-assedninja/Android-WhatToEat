@@ -4,6 +4,7 @@ plugins {
     id 'com.android.application'
     id 'androidx.navigation.safeargs'
     id 'kotlin-android'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -53,6 +54,7 @@ android {
 }
 
 dependencies {
+    // Components
     implementation AndroidX.appCompat
     implementation AndroidX.constraintLayout
     implementation AndroidX.swipeRefreshLayout
@@ -61,6 +63,10 @@ dependencies {
 
     // Modules
     implementation project(path: ':library')
+
+    // Hilt
+    implementation Google.hilt
+    annotationProcessor Google.hiltCompiler
 
     // Navigation
     implementation AndroidX.navigationFragment
@@ -71,9 +77,6 @@ dependencies {
 
     // Glide
     implementation ThirdParty.glide
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     annotationProcessor ThirdParty.glideCompiler
 
     // Room
