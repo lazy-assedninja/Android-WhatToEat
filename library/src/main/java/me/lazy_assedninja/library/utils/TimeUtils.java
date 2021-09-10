@@ -1,6 +1,6 @@
 package me.lazy_assedninja.library.utils;
 
-import java.text.DateFormat;
+import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 
@@ -11,7 +11,7 @@ public class TimeUtils {
     public TimeUtils() {
     }
 
-    public String dateTime(long time) {
-        return DateFormat.getDateTimeInstance().format(time);
+    public String now() {
+        return DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
     }
 }

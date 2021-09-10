@@ -82,9 +82,8 @@ public class FavoriteRepository {
                     resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
 
                     // Update Db data
-                    executorUtils.diskIO().execute(() ->
-                            favoriteDao.updateFavoriteStatus(favorite.getStoreID(), favorite.getStatus(),
-                                    timeUtils.dateTime(System.currentTimeMillis())));
+                    executorUtils.diskIO().execute(() -> favoriteDao.updateFavoriteStatus(favorite.getStoreID(),
+                            favorite.getStatus(), timeUtils.now()));
                 } else if (apiResponse instanceof ApiEmptyResponse) {
                     resource = Resource.error("No response.", null);
                 } else if (apiResponse instanceof ApiErrorResponse) {

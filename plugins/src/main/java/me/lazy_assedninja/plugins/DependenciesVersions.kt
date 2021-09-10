@@ -26,6 +26,7 @@ object DependenciesVersions {
     val okHttp = "4.9.0"
     val retrofit = "2.9.0"
     val ticketView = "1.1.2"
+    val joda = "2.10.9.1"
     val mockWebServer = "4.9.1"
 
     // Mockito

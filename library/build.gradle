@@ -45,6 +45,9 @@ dependencies {
     // Hilt
     implementation Google.hilt
 
+    // Joda
+    implementation ThirdParty.joda
+
     // Test
     testImplementation Junit.junit
     androidTestImplementation AndroidX.testJunit
