@@ -1,26 +1,28 @@
 <resources>
+
     <string name="app_name">WhatToEat</string>
 
     <!-- Navigation -->
-    <string name="navigation_fragment_home">Home</string>
-    <string name="navigation_fragment_recommend">Recommend</string>
-    <string name="navigation_fragment_store_information">Store Information</string>
-    <string name="navigation_fragment_comment">Comment</string>
-    <string name="navigation_fragment_post">Post</string>
-    <string name="navigation_fragment_reserve">Reserve</string>
-    <string name="navigation_fragment_add_report">Add Report</string>
-    <string name="navigation_fragment_profile">Profile</string>
-    <string name="navigation_fragment_register">Register</string>
-    <string name="navigation_fragment_verification">Verification</string>
-    <string name="navigation_fragment_reset_password">Reset Password</string>
-    <string name="navigation_fragment_login">Login</string>
-    <string name="navigation_fragment_search">Search</string>
-    <string name="navigation_fragment_map">Map</string>
-    <string name="navigation_fragment_promotion">Promotion</string>
-    <string name="navigation_fragment_promotion_information">Promotion Information</string>
-    <string name="navigation_fragment_favorite">Favorite</string>
-    <string name="navigation_fragment_history">History</string>
-    <string name="navigation_fragment_reservation">Reservation</string>
+    <string name="navigation_home_fragment">Home</string>
+    <string name="navigation_recommend_fragment">Recommend</string>
+    <string name="navigation_store_information_fragment">Store Information</string>
+    <string name="navigation_comment_fragment">Comment</string>
+    <string name="navigation_post_fragment">Post</string>
+    <string name="navigation_reserve_fragment">Reserve</string>
+    <string name="navigation_add_report_fragment">Add Report</string>
+    <string name="navigation_profile_fragment">Profile</string>
+    <string name="navigation_register_fragment">Register</string>
+    <string name="navigation_forget_password_fragment">Forget Password</string>
+    <string name="navigation_reset_password_fragment">Reset Password</string>
+    <string name="navigation_report_fragment">Report</string>
+    <string name="navigation_login_fragment">Login</string>
+    <string name="navigation_search_fragment">Search</string>
+    <string name="navigation_map_fragment">Map</string>
+    <string name="navigation_promotion_fragment">Promotion</string>
+    <string name="navigation_promotion_information_fragment">Promotion Information</string>
+    <string name="navigation_favorite_fragment">Favorite</string>
+    <string name="navigation_history_fragment">History</string>
+    <string name="navigation_reservation_fragment">Reservation</string>
 
     <!-- Bottom Navigation -->
     <string name="bottom_navigation_home">Home</string>

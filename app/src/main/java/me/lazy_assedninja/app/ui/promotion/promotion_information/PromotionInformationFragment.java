@@ -8,15 +8,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
-import me.lazy_assedninja.app.databinding.FragmentPromotionInformationBinding;
+import me.lazy_assedninja.app.databinding.PromotionInformationFragmentBinding;
+import me.lazy_assedninja.library.ui.BaseFragment;
 
-public class PromotionInformationFragment extends Fragment {
+@AndroidEntryPoint
+public class PromotionInformationFragment extends BaseFragment {
 
-    private FragmentPromotionInformationBinding binding;
+    private PromotionInformationFragmentBinding binding;
     private PromotionInformationViewModel viewModel;
 
     @Override
@@ -24,7 +26,7 @@ public class PromotionInformationFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_promotion_information,
+                R.layout.promotion_information_fragment,
                 container,
                 false
         );
@@ -36,12 +38,16 @@ public class PromotionInformationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(PromotionInformationViewModel.class);
 
+        initView();
         initData();
+    }
+
+    private void initView() {
+        binding.setLifecycleOwner(getViewLifecycleOwner());
     }
 
     private void initData() {
         int id = PromotionInformationFragmentArgs.fromBundle(getArguments()).getPromotionID();
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setPromotion(viewModel.getPromotion(id));
+        binding.setPromotion(viewModel.get(id));
     }
 }

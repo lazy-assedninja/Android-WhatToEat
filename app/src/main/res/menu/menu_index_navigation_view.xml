@@ -6,19 +6,22 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/fragment_promotion"
+            android:id="@+id/promotion_fragment"
             android:icon="@drawable/ic_promotion"
             android:title="@string/navigation_drawer_promotion" />
+
         <item
-            android:id="@+id/fragment_favorite"
+            android:id="@+id/favorite_fragment"
             android:icon="@drawable/ic_favorite"
             android:title="@string/navigation_drawer_favorite" />
+
         <item
-            android:id="@+id/fragment_history"
+            android:id="@+id/history_fragment"
             android:icon="@drawable/ic_history"
             android:title="@string/navigation_drawer_history" />
+
         <item
-            android:id="@+id/fragment_reservation"
+            android:id="@+id/reservation_fragment"
             android:icon="@drawable/ic_reservation"
             android:title="@string/navigation_drawer_reservation" />
     </group>

@@ -11,6 +11,9 @@ import java.util.List;
 import me.lazy_assedninja.app.vo.History;
 import me.lazy_assedninja.app.vo.Store;
 
+/**
+ * Interface for database access on History related operations.
+ */
 @Dao
 public interface HistoryDao {
 
@@ -18,7 +21,7 @@ public interface HistoryDao {
     void insert(History history);
 
     @Query("SELECT storeID FROM history")
-    LiveData<List<Integer>> getHistoryIDs();
+    List<Integer> getHistoryIDs();
 
     @Query("SELECT * FROM store WHERE id IN (:ids)")
     LiveData<List<Store>> getHistoryStores(List<Integer> ids);

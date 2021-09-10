@@ -2,12 +2,14 @@ package me.lazy_assedninja.app.ui.store.store_information;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -21,16 +23,21 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
+import dagger.hilt.EntryPoints;
+import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
-import me.lazy_assedninja.app.databinding.FragmentStoreInformationBinding;
+import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
+import me.lazy_assedninja.app.databinding.StoreInformationFragmentBinding;
 import me.lazy_assedninja.app.vo.Resource;
-import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.utils.LogUtils;
 
+@AndroidEntryPoint
 public class StoreInformationFragment extends BaseFragment {
 
-    private FragmentStoreInformationBinding binding;
+    private StoreInformationFragmentBinding binding;
     private StoreInformationViewModel viewModel;
 
     private NavController navController;
@@ -40,17 +47,20 @@ public class StoreInformationFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        DataBindingComponent dataBindingComponent = (getActivity() != null) ?
+                EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_store_information,
+                R.layout.store_information_fragment,
                 container,
-                false
+                false,
+                dataBindingComponent
         );
 
         setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_image_transform));
         binding.setImageRequestListener(new RequestListener<Drawable>() {
             @Override
-            public boolean onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 startPostponedEnterTransition();
                 return false;
             }
@@ -76,38 +86,39 @@ public class StoreInformationFragment extends BaseFragment {
     }
 
     private void initView() {
+        binding.floatingActionButton.setOnClickListener(v -> {
+            if (viewModel.isLoggedIn()) {
+                showToast(R.string.error_please_login_first);
+                return;
+            }
+            viewModel.setFavoriteRequest();
+        });
         binding.ivComment.setOnClickListener(v ->
-                navController.navigate(StoreInformationFragmentDirections.actionToFragmentComment(id)));
+                navController.navigate(StoreInformationFragmentDirections.actionToCommentFragment(id)));
         binding.ivPost.setOnClickListener(v ->
-                navController.navigate(StoreInformationFragmentDirections.actionToFragmentPost(id)));
+                navController.navigate(StoreInformationFragmentDirections.actionToPostFragment(id)));
         binding.btReserve.setOnClickListener(v ->
-                navController.navigate(StoreInformationFragmentDirections.actionToFragmentReserve(id)));
+                navController.navigate(StoreInformationFragmentDirections.actionToReserveFragment(id)));
         binding.btAddReport.setOnClickListener(v ->
-                navController.navigate(StoreInformationFragmentDirections.actionToFragmentAddReport(id)));
+                navController.navigate(StoreInformationFragmentDirections.actionToAddReportFragment(id)));
+
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.setResult(viewModel.result);
     }
 
     private void initData() {
         id = StoreInformationFragmentArgs.fromBundle(getArguments()).getStoreID();
-        binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setStore(viewModel.getStore(id));
-        binding.setFragment(this);
 
+        // Add to history
         viewModel.addHistory(id);
-        viewModel.favorite.observe(getViewLifecycleOwner(), resultResource -> {
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
-                showToast(resultResource.getData().getResult());
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
-                showToast(resultResource.getMessage());
+
+        viewModel.result.observe(getViewLifecycleOwner(), result -> {
+            if (result.getStatus().equals(Resource.SUCCESS)) {
+                showToast(result.getData().getResult());
+            } else if (result.getStatus().equals(Resource.ERROR)) {
+                showToast(result.getMessage());
             }
         });
-    }
-
-    public void favoriteOnClick(Store store) {
-        if (viewModel.getLoggedInUserID() == 0) {
-            showToast(R.string.error_please_login_first);
-            return;
-        }
-        store.changeFavoriteStatus();
-        viewModel.setFavoriteRequest(store.getId(), store.isFavorite());
     }
 }

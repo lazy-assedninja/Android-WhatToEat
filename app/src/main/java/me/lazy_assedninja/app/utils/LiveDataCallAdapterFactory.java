@@ -12,6 +12,9 @@ import retrofit2.CallAdapter;
 import retrofit2.CallAdapter.Factory;
 import retrofit2.Retrofit;
 
+/**
+ * A call adapter factory that converts the call adapter into a LiveData call adapter.
+ */
 public class LiveDataCallAdapterFactory extends Factory {
 
     @Override

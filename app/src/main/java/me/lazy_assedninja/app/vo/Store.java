@@ -1,9 +1,15 @@
 package me.lazy_assedninja.app.vo;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(indices = {@Index("tagID"), @Index("isFavorite")},
+        foreignKeys = @ForeignKey(entity = Tag.class,
+                parentColumns = "id",
+                childColumns = "tagID",
+                onDelete = ForeignKey.CASCADE))
 public class Store {
 
     @PrimaryKey
@@ -20,9 +26,9 @@ public class Store {
     private String createTime;
     private String updateTime;
 
-    private int tagID;
-    private String tagName;
     private boolean isFavorite;
+
+    private int tagID;
 
     public int getId() {
         return id;
@@ -120,22 +126,6 @@ public class Store {
         this.updateTime = updateTime;
     }
 
-    public int getTagID() {
-        return tagID;
-    }
-
-    public void setTagID(int tagID) {
-        this.tagID = tagID;
-    }
-
-    public String getTagName() {
-        return tagName;
-    }
-
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
-    }
-
     public boolean isFavorite() {
         return isFavorite;
     }
@@ -144,7 +134,15 @@ public class Store {
         isFavorite = favorite;
     }
 
-    public void changeFavoriteStatus(){
+    public void changeFavoriteStatus() {
         isFavorite = !isFavorite;
+    }
+
+    public int getTagID() {
+        return tagID;
+    }
+
+    public void setTagID(int tagID) {
+        this.tagID = tagID;
     }
 }

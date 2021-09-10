@@ -11,14 +11,17 @@ import java.util.List;
 
 import me.lazy_assedninja.app.vo.Reservation;
 
+/**
+ * Interface for database access on Reservation related operations.
+ */
 @Dao
 public interface ReservationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<Reservation> list);
+    void insert(Reservation reservation);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Reservation reservation);
+    void insertAll(List<Reservation> list);
 
     @Query("SELECT * FROM reservation")
     LiveData<List<Reservation>> getReservations();

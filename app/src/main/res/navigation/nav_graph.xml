@@ -3,89 +3,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragment_home">
+    app:startDestination="@id/home_fragment">
 
     <fragment
-        android:id="@+id/fragment_home"
+        android:id="@+id/home_fragment"
         android:name="me.lazy_assedninja.app.ui.store.home.HomeFragment"
-        android:label="@string/navigation_fragment_home"
-        tools:layout="@layout/fragment_home">
+        android:label="@string/navigation_home_fragment"
+        tools:layout="@layout/home_fragment">
 
         <action
-            android:id="@+id/action_to_fragment_home"
-            app:destination="@id/fragment_home"
+            android:id="@+id/action_to_home_fragment"
+            app:destination="@id/home_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_recommend"
-            app:destination="@id/fragment_recommend"
+            android:id="@+id/action_to_recommend_fragment"
+            app:destination="@id/recommend_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_store_information"
-            app:destination="@id/fragment_store_information" />
+            android:id="@+id/action_to_store_information_fragment"
+            app:destination="@id/store_information_fragment" />
 
         <action
-            android:id="@+id/action_to_fragment_profile"
-            app:destination="@id/fragment_profile"
+            android:id="@+id/action_to_profile_fragment"
+            app:destination="@id/profile_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_login"
-            app:destination="@id/fragment_login"
+            android:id="@+id/action_to_login_fragment"
+            app:destination="@id/login_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_search"
-            app:destination="@id/fragment_search" />
+            android:id="@+id/action_to_search_fragment"
+            app:destination="@id/search_fragment" />
 
         <action
-            android:id="@+id/action_to_fragment_map"
-            app:destination="@id/fragment_map"
+            android:id="@+id/action_to_map_fragment"
+            app:destination="@id/map_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_promotion"
-            app:destination="@id/fragment_promotion"
+            android:id="@+id/action_to_promotion_fragment"
+            app:destination="@id/promotion_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_favorite"
-            app:destination="@id/fragment_favorite"
+            android:id="@+id/action_to_favorite_fragment"
+            app:destination="@id/favorite_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_history"
-            app:destination="@id/fragment_history"
+            android:id="@+id/action_to_history_fragment"
+            app:destination="@id/history_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_reservation"
-            app:destination="@id/fragment_reservation"
+            android:id="@+id/action_to_reservation_fragment"
+            app:destination="@id/reservation_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -93,74 +93,70 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_recommend"
+        android:id="@+id/recommend_fragment"
         android:name="me.lazy_assedninja.app.ui.store.recommend.RecommendFragment"
-        android:label="@string/navigation_fragment_recommend"
-        tools:layout="@layout/fragment_recommend">
+        android:label="@string/navigation_recommend_fragment"
+        tools:layout="@layout/recommend_fragment">
 
         <action
-            android:id="@+id/action_to_fragment_home"
-            app:destination="@id/fragment_home"
+            android:id="@+id/action_to_home_fragment"
+            app:destination="@id/home_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_store_information"
-            app:destination="@id/fragment_store_information"
+            android:id="@+id/action_to_store_information_fragment"
+            app:destination="@id/store_information_fragment" />
+
+        <action
+            android:id="@+id/action_to_profile_fragment"
+            app:destination="@id/profile_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_profile"
-            app:destination="@id/fragment_profile"
+            android:id="@+id/action_to_search_fragment"
+            app:destination="@id/search_fragment" />
+
+        <action
+            android:id="@+id/action_to_login_fragment"
+            app:destination="@id/login_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_search"
-            app:destination="@id/fragment_search" />
-
-        <action
-            android:id="@+id/action_to_fragment_login"
-            app:destination="@id/fragment_login"
+            android:id="@+id/action_to_promotion_fragment"
+            app:destination="@id/promotion_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_promotion"
-            app:destination="@id/fragment_promotion"
+            android:id="@+id/action_to_favorite_fragment"
+            app:destination="@id/favorite_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_favorite"
-            app:destination="@id/fragment_favorite"
+            android:id="@+id/action_to_history_fragment"
+            app:destination="@id/history_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_history"
-            app:destination="@id/fragment_history"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-
-        <action
-            android:id="@+id/action_to_fragment_reservation"
-            app:destination="@id/fragment_reservation"
+            android:id="@+id/action_to_reservation_fragment"
+            app:destination="@id/reservation_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -168,42 +164,42 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_store_information"
+        android:id="@+id/store_information_fragment"
         android:name="me.lazy_assedninja.app.ui.store.store_information.StoreInformationFragment"
-        android:label="@string/navigation_fragment_store_information"
-        tools:layout="@layout/fragment_store_information">
+        android:label="@string/navigation_store_information_fragment"
+        tools:layout="@layout/store_information_fragment">
 
         <argument
             android:name="storeID"
             app:argType="integer" />
 
         <action
-            android:id="@+id/action_to_fragment_comment"
-            app:destination="@id/fragment_comment"
+            android:id="@+id/action_to_comment_fragment"
+            app:destination="@id/comment_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_post"
-            app:destination="@id/fragment_post"
+            android:id="@+id/action_to_post_fragment"
+            app:destination="@id/post_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_reserve"
-            app:destination="@id/fragment_reserve"
+            android:id="@+id/action_to_reserve_fragment"
+            app:destination="@id/reserve_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_add_report"
-            app:destination="@id/fragment_add_report"
+            android:id="@+id/action_to_add_report_fragment"
+            app:destination="@id/add_report_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -211,21 +207,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_comment"
-        android:name="me.lazy_assedninja.app.ui.comment.CommentFragment"
-        android:label="@string/navigation_fragment_comment"
-        tools:layout="@layout/fragment_comment">
-
-        <argument
-            android:name="storeID"
-            app:argType="integer" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/fragment_post"
-        android:name="me.lazy_assedninja.app.ui.post.PostFragment"
-        android:label="@string/navigation_fragment_post"
-        tools:layout="@layout/fragment_post">
+        android:id="@+id/comment_fragment"
+        android:name="me.lazy_assedninja.app.ui.store.comment.CommentFragment"
+        android:label="@string/navigation_comment_fragment"
+        tools:layout="@layout/comment_fragment">
 
         <argument
             android:name="storeID"
@@ -233,10 +218,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_reserve"
-        android:name="me.lazy_assedninja.app.ui.reservation.reserve.ReserveFragment"
-        android:label="@string/navigation_fragment_reserve"
-        tools:layout="@layout/fragment_reserve">
+        android:id="@+id/post_fragment"
+        android:name="me.lazy_assedninja.app.ui.store.post.PostFragment"
+        android:label="@string/navigation_post_fragment"
+        tools:layout="@layout/post_fragment">
 
         <argument
             android:name="storeID"
@@ -244,10 +229,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_add_report"
-        android:name="me.lazy_assedninja.app.ui.report.add_report.AddReportFragment"
-        android:label="@string/navigation_fragment_add_report"
-        tools:layout="@layout/fragment_add_report">
+        android:id="@+id/reserve_fragment"
+        android:name="me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment"
+        android:label="@string/navigation_reserve_fragment"
+        tools:layout="@layout/reserve_fragment">
 
         <argument
             android:name="storeID"
@@ -255,70 +240,89 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_profile"
-        android:name="me.lazy_assedninja.app.ui.profile.ProfileFragment"
-        android:label="@string/navigation_fragment_profile"
-        tools:layout="@layout/fragment_profile">
+        android:id="@+id/add_report_fragment"
+        android:name="me.lazy_assedninja.app.ui.user.report.add_report.AddReportFragment"
+        android:label="@string/navigation_add_report_fragment"
+        tools:layout="@layout/add_report_fragment">
+
+        <argument
+            android:name="storeID"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profile_fragment"
+        android:name="me.lazy_assedninja.app.ui.user.profile.ProfileFragment"
+        android:label="@string/navigation_profile_fragment"
+        tools:layout="@layout/profile_fragment">
 
         <action
-            android:id="@+id/action_to_fragment_home"
-            app:destination="@id/fragment_home"
+            android:id="@+id/action_to_home_fragment"
+            app:destination="@id/home_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_recommend"
-            app:destination="@id/fragment_recommend"
+            android:id="@+id/action_to_recommend_fragment"
+            app:destination="@id/recommend_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_login"
-            app:destination="@id/fragment_login"
+            android:id="@+id/action_to_login_fragment"
+            app:destination="@id/login_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_reset_password"
-            app:destination="@id/fragment_reset_password"
+            android:id="@+id/action_to_reset_password_fragment"
+            app:destination="@id/reset_password_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_promotion"
-            app:destination="@id/fragment_promotion"
+            android:id="@+id/action_to_report_fragment"
+            app:destination="@id/report_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_favorite"
-            app:destination="@id/fragment_favorite"
+            android:id="@+id/action_to_promotion_fragment"
+            app:destination="@id/promotion_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_history"
-            app:destination="@id/fragment_history"
+            android:id="@+id/action_to_favorite_fragment"
+            app:destination="@id/favorite_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_reservation"
-            app:destination="@id/fragment_reservation"
+            android:id="@+id/action_to_history_fragment"
+            app:destination="@id/history_fragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_to_reservation_fragment"
+            app:destination="@id/reservation_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -326,22 +330,22 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_login"
-        android:name="me.lazy_assedninja.app.ui.login.LoginFragment"
-        android:label="@string/navigation_fragment_login"
-        tools:layout="@layout/fragment_login">
+        android:id="@+id/login_fragment"
+        android:name="me.lazy_assedninja.app.ui.user.login.LoginFragment"
+        android:label="@string/navigation_login_fragment"
+        tools:layout="@layout/login_fragment">
 
         <action
-            android:id="@+id/action_to_fragment_register"
-            app:destination="@id/fragment_register"
+            android:id="@+id/action_to_register_fragment"
+            app:destination="@id/register_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
 
         <action
-            android:id="@+id/action_to_fragment_verification"
-            app:destination="@id/fragment_verification"
+            android:id="@+id/action_to_forget_password_fragment"
+            app:destination="@id/forget_password_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -349,44 +353,50 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_register"
-        android:name="me.lazy_assedninja.app.ui.register.RegisterFragment"
-        android:label="@string/navigation_fragment_register"
-        tools:layout="@layout/fragment_register" />
+        android:id="@+id/register_fragment"
+        android:name="me.lazy_assedninja.app.ui.user.register.RegisterFragment"
+        android:label="@string/navigation_register_fragment"
+        tools:layout="@layout/register_fragment" />
 
     <fragment
-        android:id="@+id/fragment_verification"
-        android:name="me.lazy_assedninja.app.ui.password.verification.VerificationFragment"
-        android:label="@string/navigation_fragment_verification"
-        tools:layout="@layout/fragment_verification" />
+        android:id="@+id/forget_password_fragment"
+        android:name="me.lazy_assedninja.app.ui.user.forget_password.ForgetPasswordFragment"
+        android:label="@string/navigation_forget_password_fragment"
+        tools:layout="@layout/forget_password_fragment" />
 
     <fragment
-        android:id="@+id/fragment_reset_password"
-        android:name="me.lazy_assedninja.app.ui.password.reset_password.ResetPasswordFragment"
-        android:label="@string/navigation_fragment_reset_password"
-        tools:layout="@layout/fragment_reset_password" />
+        android:id="@+id/reset_password_fragment"
+        android:name="me.lazy_assedninja.app.ui.user.reset_password.ResetPasswordFragment"
+        android:label="@string/navigation_reset_password_fragment"
+        tools:layout="@layout/reset_password_fragment" />
 
     <fragment
-        android:id="@+id/fragment_search"
+        android:id="@+id/report_fragment"
+        android:name="me.lazy_assedninja.app.ui.user.report.ReportFragment"
+        android:label="@string/navigation_report_fragment"
+        tools:layout="@layout/report_fragment" />
+
+    <fragment
+        android:id="@+id/search_fragment"
         android:name="me.lazy_assedninja.app.ui.store.search.SearchFragment"
-        android:label="@string/navigation_fragment_search"
-        tools:layout="@layout/fragment_search" />
+        android:label="@string/navigation_search_fragment"
+        tools:layout="@layout/search_fragment" />
 
     <fragment
-        android:id="@+id/fragment_map"
-        android:name="me.lazy_assedninja.app.ui.map.MapFragment"
-        android:label="@string/navigation_fragment_map"
-        tools:layout="@layout/fragment_map" />
+        android:id="@+id/map_fragment"
+        android:name="me.lazy_assedninja.app.ui.store.map.MapFragment"
+        android:label="@string/navigation_map_fragment"
+        tools:layout="@layout/map_fragment" />
 
     <fragment
-        android:id="@+id/fragment_promotion"
+        android:id="@+id/promotion_fragment"
         android:name="me.lazy_assedninja.app.ui.promotion.PromotionFragment"
-        android:label="@string/navigation_fragment_promotion"
-        tools:layout="@layout/fragment_promotion">
+        android:label="@string/navigation_promotion_fragment"
+        tools:layout="@layout/promotion_fragment">
 
         <action
-            android:id="@+id/action_to_fragment_promotion_information"
-            app:destination="@id/fragment_promotion_information"
+            android:id="@+id/action_to_promotion_information_fragment"
+            app:destination="@id/promotion_information_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -394,10 +404,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_promotion_information"
+        android:id="@+id/promotion_information_fragment"
         android:name="me.lazy_assedninja.app.ui.promotion.promotion_information.PromotionInformationFragment"
-        android:label="@string/navigation_fragment_promotion_information"
-        tools:layout="@layout/fragment_promotion_information">
+        android:label="@string/navigation_promotion_information_fragment"
+        tools:layout="@layout/promotion_information_fragment">
 
         <argument
             android:name="promotionID"
@@ -405,14 +415,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_favorite"
+        android:id="@+id/favorite_fragment"
         android:name="me.lazy_assedninja.app.ui.store.favorite.FavoriteFragment"
-        android:label="@string/navigation_fragment_favorite"
-        tools:layout="@layout/fragment_favorite">
+        android:label="@string/navigation_favorite_fragment"
+        tools:layout="@layout/favorite_fragment">
 
         <action
-            android:id="@+id/action_to_fragment_store_information"
-            app:destination="@id/fragment_store_information"
+            android:id="@+id/action_to_store_information_fragment"
+            app:destination="@id/store_information_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -420,16 +430,25 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_history"
+        android:id="@+id/history_fragment"
         android:name="me.lazy_assedninja.app.ui.store.history.HistoryFragment"
-        android:label="@string/navigation_fragment_history"
-        tools:layout="@layout/fragment_history" />
+        android:label="@string/navigation_history_fragment"
+        tools:layout="@layout/history_fragment">
+
+        <action
+            android:id="@+id/action_to_store_information_fragment"
+            app:destination="@id/store_information_fragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
 
     <fragment
-        android:id="@+id/fragment_reservation"
-        android:name="me.lazy_assedninja.app.ui.reservation.ReservationFragment"
-        android:label="@string/navigation_fragment_reservation"
-        tools:layout="@layout/fragment_reservation">
+        android:id="@+id/reservation_fragment"
+        android:name="me.lazy_assedninja.app.ui.store.reservation.ReservationFragment"
+        android:label="@string/navigation_reservation_fragment"
+        tools:layout="@layout/reservation_fragment">
 
         <argument
             android:name="type"

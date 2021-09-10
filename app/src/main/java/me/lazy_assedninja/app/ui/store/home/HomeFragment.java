@@ -7,28 +7,37 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 
+import javax.inject.Inject;
+
+import dagger.hilt.EntryPoints;
+import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
-import me.lazy_assedninja.app.databinding.FragmentHomeBinding;
-import me.lazy_assedninja.app.dto.StoreRequest;
+import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
+import me.lazy_assedninja.app.databinding.HomeFragmentBinding;
+import me.lazy_assedninja.app.databinding.StoreItemBinding;
 import me.lazy_assedninja.app.ui.store.StoreAdapter;
+import me.lazy_assedninja.app.ui.store.StoreCallback;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.LogUtils;
 
 import static java.util.Collections.emptyList;
 
+@AndroidEntryPoint
 public class HomeFragment extends BaseFragment {
 
-    private FragmentHomeBinding binding;
+    private HomeFragmentBinding binding;
     private HomeViewModel viewModel;
+
+    @Inject
+    public ExecutorUtils executorUtils;
 
     private NavController navController;
     private StoreAdapter adapter;
@@ -38,7 +47,7 @@ public class HomeFragment extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_home,
+                R.layout.home_fragment,
                 container,
                 false
         );
@@ -57,44 +66,52 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initView() {
+        DataBindingComponent dataBindingComponent = (getActivity() != null) ?
+                EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
         adapter = new StoreAdapter(
-                new ExecutorUtils(),
-                viewModel.getLoggedInUserID(),
-                (binding, favorite) -> { // FavoriteClickCallback
-                    if (viewModel.getLoggedInUserID() == 0) {
-                        showToast(R.string.error_please_login_first);
-                        return;
+                executorUtils,
+                dataBindingComponent,
+                new StoreCallback() {
+                    @Override
+                    public void onFavoriteClick(int storeID, boolean isFavorite) {
+                        if (viewModel.isLoggedIn()) {
+                            showToast(R.string.error_please_login_first);
+                            return;
+                        }
+
+                        viewModel.setFavoriteRequest(storeID, isFavorite);
                     }
-                    if (getActivity() == null) return;
-                    binding.btFavorite.setIcon(ContextCompat.getDrawable(getActivity(),
-                            favorite.getStatus() ? R.drawable.ic_heart_checked : R.drawable.ic_heart_unchecked));
-                    viewModel.setFavoriteRequest(favorite);
-                },
-                (binding, storeID) -> { // InformationClickCallback
-                    FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
-                            .addSharedElement(binding.ivPicture, String.valueOf(storeID))
-                            .build();
-                    navController.navigate(HomeFragmentDirections.actionToFragmentStoreInformation(storeID), extras);
-                }
-        );
+
+                    @Override
+                    public void onInformationClick(StoreItemBinding binding) {
+                        int storeID = binding.getStore().getId();
+                        FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                                .addSharedElement(binding.ivPicture, String.valueOf(storeID))
+                                .build();
+                        navController.navigate(HomeFragmentDirections
+                                .actionToStoreInformationFragment(storeID), extras);
+                    }
+                });
         binding.rv.setAdapter(adapter);
+
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.setStores(viewModel.stores);
+        binding.setResult(viewModel.result);
     }
 
     private void initSwipeRefreshLayout() {
-        binding.swipeRefreshLayout.setOnRefreshListener(() ->
-                viewModel.setStoreRequest(new StoreRequest(viewModel.getLoggedInUserID(), 1)));
         binding.swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_red_light,
                 android.R.color.holo_blue_light,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light);
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> viewModel.refresh());
     }
 
     private void initData() {
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setResource(viewModel.store);
-        viewModel.setStoreRequest(new StoreRequest(viewModel.getLoggedInUserID(), 1));
-        viewModel.store.observe(getViewLifecycleOwner(), list -> {
+        viewModel.requestStore();
+
+        viewModel.stores.observe(getViewLifecycleOwner(), list -> {
             binding.swipeRefreshLayout.setRefreshing(false);
             if (list.getData() != null) {
                 adapter.submitList(list.getData());
@@ -102,11 +119,11 @@ public class HomeFragment extends BaseFragment {
                 adapter.submitList(emptyList());
             }
         });
-        viewModel.favorite.observe(getViewLifecycleOwner(), resultResource -> {
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
-                showToast(resultResource.getData().getResult());
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
-                showToast(resultResource.getMessage());
+        viewModel.result.observe(getViewLifecycleOwner(), result -> {
+            if (result.getStatus().equals(Resource.SUCCESS)) {
+                showToast(result.getData().getResult());
+            } else if (result.getStatus().equals(Resource.ERROR)) {
+                showToast(result.getMessage());
             }
         });
     }

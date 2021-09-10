@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import me.lazy_assedninja.app.dto.CommentRequest;
-import me.lazy_assedninja.app.dto.FavoriteRequest;
-import me.lazy_assedninja.app.dto.GoogleAccountRequest;
-import me.lazy_assedninja.app.dto.PostRequest;
-import me.lazy_assedninja.app.dto.ReservationRequest;
-import me.lazy_assedninja.app.dto.StoreRequest;
-import me.lazy_assedninja.app.dto.UserRequest;
+import me.lazy_assedninja.app.dto.CommentDTO;
+import me.lazy_assedninja.app.dto.FavoriteDTO;
+import me.lazy_assedninja.app.dto.GoogleAccountDTO;
+import me.lazy_assedninja.app.dto.PostDTO;
+import me.lazy_assedninja.app.dto.ReservationDTO;
+import me.lazy_assedninja.app.dto.StoreDTO;
+import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.GoogleAccount;
@@ -30,6 +30,10 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
+/**
+ * REST API access points.
+ */
+@SuppressWarnings("unused")
 public interface WhatToEatService {
 
     /**
@@ -42,46 +46,46 @@ public interface WhatToEatService {
     LiveData<ApiResponse<Result>> bindGoogleAccount(@Body GoogleAccount googleAccount);
 
     @POST("User/Login")
-    LiveData<ApiResponse<User>> login(@Body UserRequest userRequest);
+    LiveData<ApiResponse<User>> login(@Body UserDTO userDTO);
 
     @POST("User/GoogleLogin")
-    LiveData<ApiResponse<User>> googleLogin(@Body GoogleAccountRequest googleAccountRequest);
+    LiveData<ApiResponse<User>> googleLogin(@Body GoogleAccountDTO googleAccountDTO);
 
     @POST("User/UpdatePassword")
-    LiveData<ApiResponse<Result>> updatePassword(@Body UserRequest userRequest);
+    LiveData<ApiResponse<Result>> updatePassword(@Body UserDTO userDTO);
 
-//    @POST("User/SendVerificationEmail")
-//    Call<ApiResponse<Result>> sendVerificationEmail(@Body UserRequest userRequest);
-//
-//    @POST("User/ResetPassword")
-//    Call<ApiResponse<Result>> resetPassword(@Body UserRequest userRequest);
-//
-//    @POST("User/UpdatePermissionDeadline")
-//    Call<ApiResponse<Result>> updatePermissionDeadline(@Body UserRequest userRequest);
+    @POST("User/SendVerificationEmail")
+    Call<ApiResponse<Result>> sendVerificationEmail(@Body UserDTO userDTO);
+
+    @POST("User/ResetPassword")
+    Call<ApiResponse<Result>> resetPassword(@Body UserDTO userDTO);
+
+    @POST("User/UpdatePermissionDeadline")
+    Call<ApiResponse<Result>> updatePermissionDeadline(@Body UserDTO userDTO);
 
     @POST("User/GetHeadPortrait")
-    LiveData<ApiResponse<User>> getHeadPortrait(@Body UserRequest userRequest);
+    LiveData<ApiResponse<User>> getHeadPortrait(@Body UserDTO userDTO);
 
     /**
      * Store
      */
     @POST("Store/GetStoreList")
-    LiveData<ApiResponse<List<Store>>> getStoreList(@Body StoreRequest storeRequest);
+    LiveData<ApiResponse<List<Store>>> getStoreList(@Body StoreDTO storeDTO);
 
     @POST("Store/Search")
-    LiveData<ApiResponse<List<Store>>> search(@Body StoreRequest storeRequest);
+    LiveData<ApiResponse<List<Store>>> search(@Body StoreDTO storeDTO);
 
     @POST("Store/CreateComment")
     LiveData<ApiResponse<Result>> createComment(@Body Comment comment);
 
     @POST("Store/GetCommentList")
-    LiveData<ApiResponse<List<Comment>>> getCommentList(@Body CommentRequest commentRequest);
+    LiveData<ApiResponse<List<Comment>>> getCommentList(@Body CommentDTO commentDTO);
 
     @POST("Store/CreatePost")
     LiveData<ApiResponse<Result>> createPost(@Body Post post);
 
     @POST("Store/GetPostList")
-    LiveData<ApiResponse<List<Post>>> getPostList(@Body PostRequest postRequest);
+    LiveData<ApiResponse<List<Post>>> getPostList(@Body PostDTO postDTO);
 
     /**
      * Favorite
@@ -90,7 +94,7 @@ public interface WhatToEatService {
     Call<Result> addToFavorite(@Body Favorite favorite);
 
     @POST("Favorite/GetFavoriteList")
-    LiveData<ApiResponse<List<Favorite>>> getFavoriteList(@Body FavoriteRequest favoriteRequest);
+    LiveData<ApiResponse<List<Store>>> getFavoriteList(@Body FavoriteDTO favoriteDTO);
 
     @POST("Favorite/CancelFavorite")
     Call<Result> cancelFavorite(@Body Favorite favorite);
@@ -105,13 +109,13 @@ public interface WhatToEatService {
      * ReservationDao
      */
     @POST("ReservationDao/CreateReservation")
-    LiveData<ApiResponse<Result>> createReservation(@Body Reservation reservation);
+    Call<Result> createReservation(@Body Reservation reservation);
 
     @POST("ReservationDao/GetReservationList")
-    LiveData<ApiResponse<List<Reservation>>> getReservationList(@Body ReservationRequest reservationRequest);
+    LiveData<ApiResponse<List<Reservation>>> getReservationList(@Body ReservationDTO reservationDTO);
 
     @POST("ReservationDao/CancelReservation")
-    LiveData<ApiResponse<Result>> cancelReservation(@Body ReservationRequest reservationRequest);
+    Call<Result> cancelReservation(@Body ReservationDTO reservationDTO);
 
     /**
      * CustomService

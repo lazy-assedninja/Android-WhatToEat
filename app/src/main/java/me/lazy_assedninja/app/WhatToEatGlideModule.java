@@ -10,7 +10,7 @@ import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.module.AppGlideModule;
 
 /**
- * Glide configuration file
+ * Glide configurations.
  */
 @GlideModule
 public class WhatToEatGlideModule extends AppGlideModule {
@@ -19,5 +19,10 @@ public class WhatToEatGlideModule extends AppGlideModule {
     public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
         int diskCacheSizeBytes = 1024 * 1024 * 100;
         builder.setDiskCache(new InternalCacheDiskCacheFactory(context, diskCacheSizeBytes));
+    }
+
+    @Override
+    public boolean isManifestParsingEnabled() {
+        return false;
     }
 }

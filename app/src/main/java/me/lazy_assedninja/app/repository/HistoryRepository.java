@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import me.lazy_assedninja.app.db.HistoryDao;
 import me.lazy_assedninja.app.vo.History;
 import me.lazy_assedninja.app.vo.Store;
@@ -14,6 +16,7 @@ public class HistoryRepository {
     private final ExecutorUtils executorUtils;
     private final HistoryDao historyDao;
 
+    @Inject
     public HistoryRepository(ExecutorUtils executorUtils, HistoryDao historyDao) {
         this.executorUtils = executorUtils;
         this.historyDao = historyDao;
@@ -23,7 +26,7 @@ public class HistoryRepository {
         executorUtils.diskIO().execute(() -> historyDao.insert(new History(storeID)));
     }
 
-    public LiveData<List<Integer>> getHistoryIDs() {
+    public List<Integer> getHistoryIDs() {
         return historyDao.getHistoryIDs();
     }
 

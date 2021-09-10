@@ -36,18 +36,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    buildFeatures {
-        dataBinding true
-    }
 }
 
 dependencies {
     implementation AndroidX.appCompat
     implementation Google.material
 
-    // Glide
-    implementation ThirdParty.glide
+    // Hilt
+    implementation Google.hilt
 
     // Test
     testImplementation Junit.junit

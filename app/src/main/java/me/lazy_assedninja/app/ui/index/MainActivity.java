@@ -2,15 +2,13 @@ package me.lazy_assedninja.app.ui.index;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -18,18 +16,25 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import java.lang.reflect.Field;
+import javax.inject.Inject;
 
+import dagger.hilt.EntryPoints;
+import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
-import me.lazy_assedninja.app.databinding.ActivityMainBinding;
-import me.lazy_assedninja.app.databinding.NavigationHeaderBinding;
+import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
+import me.lazy_assedninja.app.databinding.DrawerHeaderBinding;
+import me.lazy_assedninja.app.databinding.MainActivityBinding;
 import me.lazy_assedninja.library.ui.BaseActivity;
 import me.lazy_assedninja.library.utils.DisplayUtils;
 
+@AndroidEntryPoint
 public class MainActivity extends BaseActivity {
 
-    private ActivityMainBinding binding;
+    private MainActivityBinding binding;
     private MainViewModel viewModel;
+
+    @Inject
+    public DisplayUtils displayUtils;
 
     private NavController navController;
     private SearchView searchView;
@@ -37,58 +42,61 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         initView();
         initSearchView();
         initNavigationUI();
         initDrawer();
-        initData();
+        initDrawerHeader();
     }
 
     private void initView() {
         binding.toolbar.inflateMenu(R.menu.menu_index_toolbar);
         binding.toolbar.setOnMenuItemClickListener(item -> {
             int itemID = item.getItemId();
-            if (itemID == R.id.action_to_fragment_register) {
-                navController.navigate(R.id.action_to_fragment_register);
+            if (itemID == R.id.action_to_register_fragment) {
+                navController.navigate(R.id.action_to_register_fragment);
                 return true;
             } else if (itemID == R.id.action_clear_history) {
                 viewModel.clearHistory();
-
                 return true;
             }
             return false;
         });
         binding.floatingActionButton.setOnClickListener(v -> {
             if (navController.getCurrentDestination() != null) {
-                if (navController.getCurrentDestination().getId() == R.id.fragment_home) return;
-                navController.navigate(R.id.action_to_fragment_home);
+                if (navController.getCurrentDestination().getId() == R.id.home_fragment) return;
+                navController.navigate(R.id.action_to_home_fragment);
             }
         });
         binding.bottomNavigationView.setBackground(null);
-        binding.bottomNavigationView.getMenu().getItem(1).setEnabled(false);
     }
 
     private void initSearchView() {
-        // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem = binding.toolbar.getMenu().findItem(R.id.action_search);
+        MenuItem menuItem = binding.toolbar.getMenu().findItem(R.id.action_to_search_fragment);
         searchView = (SearchView) menuItem.getActionView();
-        searchView.setMaxWidth(DisplayUtils.getScreenWidthPix(this));
-        searchView.setOnSearchClickListener(v -> {
-            // Pass keyword extra to search fragment.
-            navController.navigate(R.id.action_to_fragment_search);
+        searchView.setIconifiedByDefault(true);
+        searchView.setMaxWidth(displayUtils.getScreenWidthPix());
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnSearchClickListener(v -> navController.navigate(R.id.action_to_search_fragment));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
         });
         searchView.setOnCloseListener(() -> {
             navController.navigateUp();
             return false;
         });
-
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(true); // Do not iconify the widget; expand it by default
     }
 
     private void initNavigationUI() {
@@ -101,34 +109,37 @@ public class MainActivity extends BaseActivity {
 
                 // Toolbar & BottomAppBar
                 binding.appBarLayout.setExpanded(true);
-                if (destinationID != R.id.fragment_home &&
-                        destinationID != R.id.fragment_recommend &&
-                        destinationID != R.id.fragment_profile) {
-                    binding.appBarLayout.setBackground(ContextCompat.getDrawable(this, R.color.white));
+                if (destinationID != R.id.home_fragment && destinationID != R.id.recommend_fragment &&
+                        destinationID != R.id.profile_fragment) {
+                    binding.appBarLayout.setBackground(
+                            ContextCompat.getDrawable(this, R.color.white));
                     binding.bottomAppBar.setVisibility(View.GONE);
                     binding.floatingActionButton.setVisibility(View.GONE);
                 } else {
-                    binding.appBarLayout.setBackground(ContextCompat.getDrawable(this, R.color.primary_color));
+                    binding.appBarLayout.setBackground(
+                            ContextCompat.getDrawable(this, R.color.primary_color));
                     binding.bottomAppBar.setVisibility(View.VISIBLE);
                     binding.floatingActionButton.setVisibility(View.VISIBLE);
                 }
 
                 // SearchView
-                if (destinationID != R.id.fragment_search) {
+                if (destinationID != R.id.search_fragment) {
                     searchView.onActionViewCollapsed();
                     dismissKeyboard(binding.getRoot());
                 }
-                binding.toolbar.getMenu().findItem(R.id.action_search).setVisible(
-                        destinationID == R.id.fragment_home || destinationID == R.id.fragment_recommend || destinationID == R.id.fragment_search);
+                binding.toolbar.getMenu().findItem(R.id.action_to_search_fragment)
+                        .setVisible(destinationID == R.id.home_fragment ||
+                                destinationID == R.id.recommend_fragment ||
+                                destinationID == R.id.search_fragment);
 
                 // Register menu item
-                binding.toolbar.getMenu().findItem(R.id.action_to_fragment_register).setVisible(destinationID == R.id.fragment_login);
+                binding.toolbar.getMenu().findItem(R.id.action_to_register_fragment).setVisible(destinationID == R.id.login_fragment);
 
                 // Clear History menu item
-                binding.toolbar.getMenu().findItem(R.id.action_clear_history).setVisible(destinationID == R.id.fragment_history);
+                binding.toolbar.getMenu().findItem(R.id.action_clear_history).setVisible(destinationID == R.id.history_fragment);
             });
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration
-                    .Builder(R.id.fragment_home, R.id.fragment_recommend, R.id.fragment_profile)
+                    .Builder(R.id.home_fragment, R.id.recommend_fragment, R.id.profile_fragment)
                     .setOpenableLayout(binding.drawer)
                     .build();
             NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration);
@@ -140,16 +151,16 @@ public class MainActivity extends BaseActivity {
         binding.navigationView.getMenu().setGroupCheckable(0, false, false);
         binding.navigationView.setNavigationItemSelectedListener(menuItem -> {
             int itemID = menuItem.getItemId();
-            if (viewModel.getLoggedInUserID() == 0) {
-                navController.navigate(R.id.action_to_fragment_login);
-            } else if (itemID == R.id.fragment_promotion) {
-                navController.navigate(R.id.action_to_fragment_promotion);
-            } else if (itemID == R.id.fragment_favorite) {
-                navController.navigate(R.id.action_to_fragment_favorite);
-            } else if (itemID == R.id.fragment_history) {
-                navController.navigate(R.id.action_to_fragment_history);
-            } else if (itemID == R.id.fragment_reservation) {
-                navController.navigate(R.id.action_to_fragment_reservation);
+            if (viewModel.isLoggedIn()) {
+                navController.navigate(R.id.action_to_login_fragment);
+            } else if (itemID == R.id.promotion_fragment) {
+                navController.navigate(R.id.action_to_promotion_fragment);
+            } else if (itemID == R.id.favorite_fragment) {
+                navController.navigate(R.id.action_to_favorite_fragment);
+            } else if (itemID == R.id.history_fragment) {
+                navController.navigate(R.id.action_to_history_fragment);
+            } else if (itemID == R.id.reservation_fragment) {
+                navController.navigate(R.id.action_to_reservation_fragment);
             }
             binding.drawer.close();
             return false;
@@ -159,26 +170,29 @@ public class MainActivity extends BaseActivity {
         });
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             int itemID = menuItem.getItemId();
-            if (itemID == R.id.fragment_profile) {
-                if (viewModel.getLoggedInUserID() == 0) {
-                    navController.navigate(R.id.action_to_fragment_login);
+            if (itemID == R.id.profile_fragment) {
+                if (viewModel.isLoggedIn()) {
+                    navController.navigate(R.id.action_to_login_fragment);
                     return true;
                 } else {
-                    navController.navigate(R.id.action_to_fragment_profile);
+                    navController.navigate(R.id.action_to_profile_fragment);
                     return false;
                 }
-            } else if (itemID == R.id.fragment_recommend) {
-                navController.navigate(R.id.action_to_fragment_recommend);
+            } else if (itemID == R.id.recommend_fragment) {
+                navController.navigate(R.id.action_to_recommend_fragment);
             }
             return true;
         });
     }
 
-    private void initData() {
-        NavigationHeaderBinding headerBinding =
-                NavigationHeaderBinding.bind(binding.navigationView.getHeaderView(0));
-        headerBinding.setLifecycleOwner(this);
-        headerBinding.setUser(viewModel.getUser());
+    private void initDrawerHeader() {
+        DataBindingComponent dataBindingComponent =
+                EntryPoints.get(getApplicationContext(), ImageDataBindingComponent.class);
+        DrawerHeaderBinding drawerHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(),
+                R.layout.drawer_header, binding.navigationView, false, dataBindingComponent);
+        drawerHeaderBinding.setLifecycleOwner(this);
+        drawerHeaderBinding.setUser(viewModel.getUser());
+        binding.navigationView.addHeaderView(drawerHeaderBinding.getRoot());
     }
 
     @Override

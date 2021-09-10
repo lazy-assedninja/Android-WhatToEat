@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 import androidx.annotation.RequiresPermission;
 
+@SuppressWarnings({"RedundantSuppression", "deprecation", "unused"})
 public class NetworkUtils {
 
     @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)

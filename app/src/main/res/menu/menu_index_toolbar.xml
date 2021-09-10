@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_to_search_fragment"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/toolbar_search"
-        app:showAsAction="ifRoom"
-        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_to_fragment_register"
+        android:id="@+id/action_to_register_fragment"
         android:title="@string/toolbar_register"
         android:visible="true"
         app:showAsAction="ifRoom" />

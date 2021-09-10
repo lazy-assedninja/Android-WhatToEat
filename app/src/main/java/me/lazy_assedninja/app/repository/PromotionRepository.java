@@ -5,13 +5,13 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.PromotionDao;
-import me.lazy_assedninja.app.dto.StoreRequest;
 import me.lazy_assedninja.app.vo.Promotion;
 import me.lazy_assedninja.app.vo.Resource;
-import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
 
 public class PromotionRepository {
@@ -20,6 +20,7 @@ public class PromotionRepository {
     private final PromotionDao promotionDao;
     private final WhatToEatService whatToEatService;
 
+    @Inject
     public PromotionRepository(ExecutorUtils executorUtils, PromotionDao promotionDao, WhatToEatService whatToEatService) {
         this.executorUtils = executorUtils;
         this.promotionDao = promotionDao;
@@ -52,6 +53,6 @@ public class PromotionRepository {
     }
 
     public LiveData<Promotion> getPromotionFromDb(int id) {
-        return promotionDao.getPromotion(id);
+        return promotionDao.get(id);
     }
 }

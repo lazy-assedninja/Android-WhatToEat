@@ -2,8 +2,8 @@ import me.lazy_assedninja.plugins.*
 
 plugins {
     id 'com.android.application'
-    id 'androidx.navigation.safeargs'
     id 'kotlin-android'
+    id 'androidx.navigation.safeargs'
     id 'dagger.hilt.android.plugin'
 }
 
@@ -18,7 +18,7 @@ android {
         versionCode ConfigVersions.versionCode
         versionName ConfigVersions.versionName
 
-        testInstrumentationRunner "me.lazy_assedninja.sample.utils.DemoTestRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {

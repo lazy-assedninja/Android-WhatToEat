@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="androidx.lifecycle.LiveData" />
+
+        <import type="me.lazy_assedninja.app.vo.Resource" />
+
+        <import type="java.util.List" />
+
+        <import type="me.lazy_assedninja.app.vo.Result" />
+
+        <import type="me.lazy_assedninja.app.vo.Store" />
+
+        <variable
+            name="stores"
+            type="LiveData&lt;Resource&lt;List&lt;Store>>>" />
+
+        <variable
+            name="result"
+            type="LiveData&lt;Resource&lt;Result>>" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.store.favorite.FavoriteFragment">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/store_item" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary_color"
+            app:visibleOrGone="@{stores.status == Resource.LOADING || result.status == Resource.LOADING}" />
+    </FrameLayout>
+</layout>

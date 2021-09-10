@@ -9,8 +9,10 @@ import androidx.room.Query;
 import java.util.List;
 
 import me.lazy_assedninja.app.vo.Promotion;
-import me.lazy_assedninja.app.vo.Store;
 
+/**
+ * Interface for database access on Promotion related operations.
+ */
 @Dao
 public interface PromotionDao {
 
@@ -18,7 +20,7 @@ public interface PromotionDao {
     void insertAll(List<Promotion> list);
 
     @Query("SELECT * FROM promotion WHERE id == :id")
-    LiveData<Promotion> getPromotion(int id);
+    LiveData<Promotion> get(int id);
 
     @Query("SELECT * FROM promotion")
     LiveData<List<Promotion>> getPromotions();

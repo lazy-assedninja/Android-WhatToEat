@@ -1,12 +1,12 @@
 package me.lazy_assedninja.app.vo;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @SuppressWarnings("unused")
 @Entity
-public class User{
+public class User {
 
     @PrimaryKey
     private int id;
@@ -19,13 +19,10 @@ public class User{
     private String createTime;
     private String updateTime;
 
-    private boolean isBeBound;
-
-    @Ignore
+    @Embedded
     private GoogleAccount googleAccount;
 
-    public User(){
-
+    public User() {
     }
 
     public int getId() {
@@ -98,14 +95,6 @@ public class User{
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public boolean isBeBound() {
-        return isBeBound;
-    }
-
-    public void setBeBound(boolean beBound) {
-        isBeBound = beBound;
     }
 
     public GoogleAccount getGoogleAccount() {

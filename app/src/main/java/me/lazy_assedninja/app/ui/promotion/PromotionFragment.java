@@ -12,20 +12,24 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
-import me.lazy_assedninja.app.databinding.FragmentPromotionBinding;
-import me.lazy_assedninja.app.dto.PromotionRequest;
-import me.lazy_assedninja.app.dto.StoreRequest;
+import me.lazy_assedninja.app.databinding.PromotionFragmentBinding;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.LogUtils;
 
 import static java.util.Collections.emptyList;
 
+@AndroidEntryPoint
 public class PromotionFragment extends BaseFragment {
 
-    private FragmentPromotionBinding binding;
+    private PromotionFragmentBinding binding;
     private PromotionViewModel viewModel;
+
+    @Inject
+    public ExecutorUtils executorUtils;
 
     private NavController navController;
     private PromotionAdapter adapter;
@@ -35,7 +39,7 @@ public class PromotionFragment extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_promotion,
+                R.layout.promotion_fragment,
                 container,
                 false
         );
@@ -49,34 +53,23 @@ public class PromotionFragment extends BaseFragment {
         navController = Navigation.findNavController(view);
 
         initView();
-        initSwipeRefreshLayout();
         initData();
     }
 
     private void initView() {
-        adapter = new PromotionAdapter(
-                new ExecutorUtils(),
-                (id) -> navController.navigate(PromotionFragmentDirections.actionToFragmentPromotionInformation(id))
+        adapter = new PromotionAdapter(executorUtils, (id) ->
+                navController.navigate(PromotionFragmentDirections.actionToPromotionInformationFragment(id))
         );
         binding.rv.setAdapter(adapter);
-    }
 
-    private void initSwipeRefreshLayout() {
-        binding.swipeRefreshLayout.setOnRefreshListener(() ->
-                viewModel.setPromotionRequest(new PromotionRequest()));
-        binding.swipeRefreshLayout.setColorSchemeResources(
-                android.R.color.holo_red_light,
-                android.R.color.holo_blue_light,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.setPromotions(viewModel.promotions);
     }
 
     private void initData() {
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setResource(viewModel.promotion);
-        viewModel.setPromotionRequest(new PromotionRequest());
-        viewModel.promotion.observe(getViewLifecycleOwner(), list -> {
-            binding.swipeRefreshLayout.setRefreshing(false);
+        viewModel.requestPromotion();
+
+        viewModel.promotions.observe(getViewLifecycleOwner(), list -> {
             if (list.getData() != null) {
                 adapter.submitList(list.getData());
             } else {

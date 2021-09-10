@@ -10,33 +10,29 @@ import androidx.lifecycle.Transformations;
 
 import java.util.List;
 
-import me.lazy_assedninja.app.api.RetrofitManager;
-import me.lazy_assedninja.app.db.WhatToEatDatabase;
-import me.lazy_assedninja.app.dto.PromotionRequest;
-import me.lazy_assedninja.app.dto.StoreRequest;
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+import me.lazy_assedninja.app.dto.PromotionDTO;
 import me.lazy_assedninja.app.repository.PromotionRepository;
 import me.lazy_assedninja.app.utils.AbsentLiveData;
 import me.lazy_assedninja.app.vo.Promotion;
 import me.lazy_assedninja.app.vo.Resource;
-import me.lazy_assedninja.app.vo.Store;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
 
+@HiltViewModel
 public class PromotionViewModel extends AndroidViewModel {
 
-    private final ExecutorUtils executorUtils = new ExecutorUtils();
-    private final PromotionRepository promotionRepository  = new PromotionRepository(
-            executorUtils,
-            WhatToEatDatabase.getInstance(getApplication()).promotionDao(),
-            RetrofitManager.getInstance().getWhatToEatService()
-    );
+    private PromotionRepository promotionRepository;
 
-    private final MutableLiveData<PromotionRequest> promotionRequest = new MutableLiveData<>();
+    private final MutableLiveData<PromotionDTO> promotionRequest = new MutableLiveData<>();
 
-    public PromotionViewModel(@NonNull Application application) {
+    @Inject
+    public PromotionViewModel(@NonNull Application application, PromotionRepository promotionRepository) {
         super(application);
+        this.promotionRepository = promotionRepository;
     }
 
-    public final LiveData<Resource<List<Promotion>>> promotion = Transformations.switchMap(promotionRequest, request -> {
+    public final LiveData<Resource<List<Promotion>>> promotions = Transformations.switchMap(promotionRequest, request -> {
         if (request == null) {
             return AbsentLiveData.create();
         } else {
@@ -44,9 +40,9 @@ public class PromotionViewModel extends AndroidViewModel {
         }
     });
 
-    public void setPromotionRequest(PromotionRequest request){
-        if (promotionRequest.getValue() != request){
-            promotionRequest.setValue(request);
+    public void requestPromotion() {
+        if (promotionRequest.getValue() == null) {
+            promotionRequest.setValue(new PromotionDTO());
         }
     }
 }

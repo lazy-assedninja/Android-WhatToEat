@@ -1,11 +1,17 @@
 package me.lazy_assedninja.app.vo;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Tag {
 
+    @PrimaryKey
     private int id;
-    private String name;
-    private String createTime;
-    private String updateTime;
+
+    public Tag(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
@@ -13,29 +19,5 @@ public class Tag {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
     }
 }

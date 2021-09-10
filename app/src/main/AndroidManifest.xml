@@ -37,7 +37,7 @@
 
         <provider
             android:name=".content_provider.SuggestionProvider"
-            android:authorities="me.lazy_assedninja.app.content_provider.SuggestionProvider"
+            android:authorities="me.lazy_assedninja.what_to_eat.content_provider.SuggestionProvider"
             android:exported="false" />
     </application>
 </manifest>

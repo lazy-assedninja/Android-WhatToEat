@@ -1,33 +1,25 @@
 package me.lazy_assedninja.app.ui.promotion.promotion_information;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
-import org.jetbrains.annotations.NotNull;
+import javax.inject.Inject;
 
-import me.lazy_assedninja.app.api.RetrofitManager;
-import me.lazy_assedninja.app.db.WhatToEatDatabase;
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.repository.PromotionRepository;
 import me.lazy_assedninja.app.vo.Promotion;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
 
-public class PromotionInformationViewModel extends AndroidViewModel {
+@HiltViewModel
+public class PromotionInformationViewModel extends ViewModel {
 
-    private final ExecutorUtils executorUtils = new ExecutorUtils();
-    private final PromotionRepository promotionRepository = new PromotionRepository(
-            executorUtils,
-            WhatToEatDatabase.getInstance(getApplication()).promotionDao(),
-            RetrofitManager.getInstance().getWhatToEatService()
-    );
+    private final PromotionRepository promotionRepository;
 
-    public PromotionInformationViewModel(@NonNull @NotNull Application application) {
-        super(application);
+    @Inject
+    public PromotionInformationViewModel(PromotionRepository promotionRepository) {
+        this.promotionRepository = promotionRepository;
     }
 
-    public LiveData<Promotion> getPromotion(int id) {
+    public LiveData<Promotion> get(int id) {
         return promotionRepository.getPromotionFromDb(id);
     }
 }

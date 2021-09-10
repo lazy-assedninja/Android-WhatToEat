@@ -1,20 +1,16 @@
 package me.lazy_assedninja.app.ui.store.recommend;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-
-import org.jetbrains.annotations.NotNull;
+import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import me.lazy_assedninja.app.api.RetrofitManager;
-import me.lazy_assedninja.app.db.WhatToEatDatabase;
-import me.lazy_assedninja.app.dto.StoreRequest;
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+import me.lazy_assedninja.app.dto.StoreDTO;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
@@ -23,39 +19,34 @@ import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
 
-public class RecommendViewModel extends AndroidViewModel {
+@HiltViewModel
+public class RecommendViewModel extends ViewModel {
 
-    private final ExecutorUtils executorUtils = new ExecutorUtils();
-    private final UserRepository userRepository = new UserRepository(
-            executorUtils,
-            WhatToEatDatabase.getInstance(getApplication()).userDao(),
-            RetrofitManager.getInstance().getWhatToEatService()
-    );
-    private final StoreRepository storeRepository = new StoreRepository(
-            executorUtils,
-            WhatToEatDatabase.getInstance(getApplication()).storeDao(),
-            RetrofitManager.getInstance().getWhatToEatService()
-    );
-    private final FavoriteRepository favoriteRepository = new FavoriteRepository(
-            executorUtils,
-            WhatToEatDatabase.getInstance(getApplication()).favoriteDao(),
-            RetrofitManager.getInstance().getWhatToEatService()
-    );
+    private final UserRepository userRepository;
+    private StoreRepository storeRepository;
+    private FavoriteRepository favoriteRepository;
 
-    private final MutableLiveData<StoreRequest> storeRequest = new MutableLiveData<>();
+    private final MutableLiveData<StoreDTO> storeRequest = new MutableLiveData<>();
     private final MutableLiveData<Favorite> favoriteRequest = new MutableLiveData<>();
 
-    public RecommendViewModel(@NonNull @NotNull Application application) {
-        super(application);
+    @Inject
+    public RecommendViewModel(UserRepository userRepository, StoreRepository storeRepository,
+                              FavoriteRepository favoriteRepository) {
+        this.userRepository = userRepository;
+        this.storeRepository = storeRepository;
+        this.favoriteRepository = favoriteRepository;
     }
 
-    public int getLoggedInUserID() {
-        return userRepository.isLoggedIn(getApplication());
+    public boolean isLoggedIn() {
+        return getUserID() == 0;
     }
 
-    public LiveData<Resource<List<Store>>> store = Transformations.switchMap(storeRequest, request -> {
+    public int getUserID() {
+        return userRepository.getUserID();
+    }
+
+    public LiveData<Resource<List<Store>>> stores = Transformations.switchMap(storeRequest, request -> {
         if (request == null) {
             return AbsentLiveData.create();
         } else {
@@ -63,24 +54,29 @@ public class RecommendViewModel extends AndroidViewModel {
         }
     });
 
-    public void setStoreRequest(StoreRequest request) {
-        if (storeRequest.getValue() != request) {
-            storeRequest.setValue(request);
+    public void requestStore() {
+        storeRequest.setValue(new StoreDTO(getUserID(), 2));
+    }
+
+    public void refresh() {
+        if (storeRequest.getValue() != null) {
+            storeRequest.setValue(storeRequest.getValue());
         }
     }
 
-    public LiveData<Resource<Result>> favorite = Transformations.switchMap(favoriteRequest, favorite -> {
+    public LiveData<Resource<Result>> result = Transformations.switchMap(favoriteRequest, favorite -> {
         if (favorite == null) {
             return AbsentLiveData.create();
         } else {
-            favoriteRepository.updateFavoriteStatus(favorite.getStoreID(), favorite.getStatus());
             return favoriteRepository.changeFavoriteStatus(favorite);
         }
     });
 
-    public void setFavoriteRequest(Favorite request) {
-        if (favoriteRequest.getValue() != request) {
-            favoriteRequest.setValue(request);
+    public void setFavoriteRequest(int storeID, boolean isFavorite) {
+        Favorite favorite = favoriteRequest.getValue();
+        if (favorite == null || favorite.getStoreID() != storeID ||
+                (favorite.getStoreID() == storeID && favorite.getStatus() == isFavorite)) {
+            favoriteRequest.setValue(new Favorite(getUserID(), storeID, !isFavorite));
         }
     }
 }

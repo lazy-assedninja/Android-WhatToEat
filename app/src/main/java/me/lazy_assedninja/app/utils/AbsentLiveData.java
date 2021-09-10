@@ -2,6 +2,9 @@ package me.lazy_assedninja.app.utils;
 
 import androidx.lifecycle.LiveData;
 
+/**
+ * A LiveData class that has `null` value.
+ */
 public class AbsentLiveData<T> extends LiveData<T> {
 
     private AbsentLiveData() {

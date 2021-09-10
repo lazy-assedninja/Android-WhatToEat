@@ -4,27 +4,24 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 
 import me.lazy_assedninja.app.R;
-import me.lazy_assedninja.app.databinding.ItemStoreBinding;
-import me.lazy_assedninja.app.vo.Favorite;
+import me.lazy_assedninja.app.databinding.StoreItemBinding;
+import me.lazy_assedninja.app.ui.base.BaseListAdapter;
 import me.lazy_assedninja.app.vo.Store;
-import me.lazy_assedninja.library.ui.BaseListAdapter;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
 
-public class StoreAdapter extends BaseListAdapter<Store, ItemStoreBinding> {
+public class StoreAdapter extends BaseListAdapter<Store, StoreItemBinding> {
 
-    private final int userID;
+    private final DataBindingComponent dataBindingComponent;
 
-    private final FavoriteClickCallback favoriteClickCallback;
-    private final InformationClickCallback informationClickCallback;
+    private final StoreCallback storeCallback;
 
-    public StoreAdapter(ExecutorUtils executorUtils,
-                        int userID,
-                        FavoriteClickCallback favoriteClickCallback,
-                        InformationClickCallback informationClickCallback) {
+    public StoreAdapter(ExecutorUtils executorUtils, DataBindingComponent dataBindingComponent,
+                        StoreCallback storeCallback) {
         super(executorUtils, new DiffUtil.ItemCallback<Store>() {
             @Override
             public boolean areItemsTheSame(@NonNull Store oldItem, @NonNull Store newItem) {
@@ -33,31 +30,30 @@ public class StoreAdapter extends BaseListAdapter<Store, ItemStoreBinding> {
 
             @Override
             public boolean areContentsTheSame(@NonNull Store oldItem, @NonNull Store newItem) {
-                return oldItem.getName().equals(newItem.getName());
+                return oldItem.getName().equals(newItem.getName()) &&
+                        oldItem.getUpdateTime().equals(newItem.getUpdateTime());
             }
         });
-        this.userID = userID;
-        this.favoriteClickCallback = favoriteClickCallback;
-        this.informationClickCallback = informationClickCallback;
+        this.dataBindingComponent = dataBindingComponent;
+        this.storeCallback = storeCallback;
     }
 
     @Override
-    protected ItemStoreBinding createBinding(ViewGroup parent) {
+    protected StoreItemBinding createBinding(ViewGroup parent) {
         return DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.item_store,
+                R.layout.store_item,
                 parent,
-                false
+                false,
+                dataBindingComponent
         );
     }
 
     @Override
-    protected void bind(ItemStoreBinding binding, Store item) {
+    protected void bind(StoreItemBinding binding, Store item) {
         binding.setStore(item);
-        binding.btFavorite.setOnClickListener(v -> {
-            item.changeFavoriteStatus();
-            favoriteClickCallback.onClick(binding, new Favorite(userID, item.getId(), item.isFavorite()));
-        });
-        binding.btStoreInformation.setOnClickListener(v -> informationClickCallback.onClick(binding, item.getId()));
+        binding.btFavorite.setOnClickListener(v ->
+                storeCallback.onFavoriteClick(item.getId(), item.isFavorite()));
+        binding.btStoreInformation.setOnClickListener(v -> storeCallback.onInformationClick(binding));
     }
 }

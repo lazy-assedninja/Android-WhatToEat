@@ -10,6 +10,9 @@ import java.util.List;
 
 import me.lazy_assedninja.app.vo.Store;
 
+/**
+ * Interface for database access on Store related operations.
+ */
 @Dao
 public interface StoreDao {
 
@@ -17,7 +20,7 @@ public interface StoreDao {
     void insertAll(List<Store> list);
 
     @Query("SELECT * FROM store WHERE id == :id")
-    LiveData<Store> getStore(int id);
+    LiveData<Store> get(int id);
 
     @Query("SELECT * FROM store WHERE tagID == :tagID")
     LiveData<List<Store>> getStores(int tagID);

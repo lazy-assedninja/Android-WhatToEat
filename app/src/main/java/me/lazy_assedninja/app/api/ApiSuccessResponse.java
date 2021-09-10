@@ -1,7 +1,10 @@
 package me.lazy_assedninja.app.api;
 
+/**
+ * Separate class for success responses.
+ */
 public class ApiSuccessResponse<T> extends ApiResponse<T> {
-    private T body;
+    private final T body;
 
     public ApiSuccessResponse(T body) {
         this.body = body;
@@ -9,9 +12,5 @@ public class ApiSuccessResponse<T> extends ApiResponse<T> {
 
     public T getBody() {
         return body;
-    }
-
-    public void setBody(T body) {
-        this.body = body;
     }
 }

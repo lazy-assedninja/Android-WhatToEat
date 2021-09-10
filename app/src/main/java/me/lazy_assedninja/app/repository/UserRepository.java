@@ -5,30 +5,36 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
+import javax.inject.Inject;
+
 import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.UserDao;
-import me.lazy_assedninja.app.dto.UserRequest;
+import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.User;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
 
 public class UserRepository {
 
-    private static final String PREFERENCES_LOGGED_IN = "logged_in";
-    private static final String LOGGED_IN_USER_ID = "logged_in_user_id";
+    private static final String PREFERENCES_USER_ID = "preferences_user_id";
+    private static final String USER_ID = "user_id";
 
+    private final Context context;
     private final ExecutorUtils executorUtils;
     private final UserDao userDao;
     private final WhatToEatService whatToEatService;
 
-    public UserRepository(ExecutorUtils executorUtils, UserDao userDao, WhatToEatService whatToEatService) {
+    @Inject
+    public UserRepository(Context context, ExecutorUtils executorUtils,
+                          UserDao userDao, WhatToEatService whatToEatService) {
+        this.context = context;
         this.executorUtils = executorUtils;
         this.userDao = userDao;
         this.whatToEatService = whatToEatService;
     }
 
-    public LiveData<Resource<User>> login(UserRequest userRequest) {
+    public LiveData<Resource<User>> loadUser(UserDTO userDTO) {
         return new NetworkBoundResource<User, User>(executorUtils) {
 
             @Override
@@ -43,7 +49,7 @@ public class UserRepository {
 
             @Override
             protected LiveData<ApiResponse<User>> createCall() {
-                return whatToEatService.login(userRequest);
+                return whatToEatService.login(userDTO);
             }
 
             @Override
@@ -53,23 +59,23 @@ public class UserRepository {
         }.asLiveData();
     }
 
-    public void setLoggedIn(Context context, int value) {
-        context.getSharedPreferences(PREFERENCES_LOGGED_IN, Context.MODE_PRIVATE)
+    public void setUserID(int value) {
+        context.getSharedPreferences(PREFERENCES_USER_ID, Context.MODE_PRIVATE)
                 .edit()
-                .putInt(LOGGED_IN_USER_ID, value)
+                .putInt(USER_ID, value)
                 .apply();
     }
 
-    public int isLoggedIn(Context context) {
-        return context.getSharedPreferences(PREFERENCES_LOGGED_IN, Context.MODE_PRIVATE)
-                .getInt(LOGGED_IN_USER_ID, 0);
+    public int getUserID() {
+        return context.getSharedPreferences(PREFERENCES_USER_ID, Context.MODE_PRIVATE)
+                .getInt(USER_ID, 0);
     }
 
-    public LiveData<User> getUserFormDb() {
+    public LiveData<User> getUserFromDb() {
         return userDao.get();
     }
 
     public void deleteUser() {
-        userDao.delete();
+        executorUtils.diskIO().execute(userDao::delete);
     }
 }
