@@ -110,10 +110,10 @@ public class FavoriteFragment extends BaseFragment {
     private void initData() {
         viewModel.requestStore();
 
-        viewModel.stores.observe(getViewLifecycleOwner(), list -> {
+        viewModel.stores.observe(getViewLifecycleOwner(), listResource -> {
             binding.swipeRefreshLayout.setRefreshing(false);
-            if (list.getData() != null) {
-                adapter.submitList(list.getData());
+            if (listResource.getData() != null) {
+                adapter.submitList(listResource.getData());
             } else {
                 adapter.submitList(emptyList());
             }

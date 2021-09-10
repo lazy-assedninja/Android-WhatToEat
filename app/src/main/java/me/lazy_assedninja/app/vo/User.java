@@ -2,6 +2,7 @@ package me.lazy_assedninja.app.vo;
 
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @SuppressWarnings("unused")
@@ -23,6 +24,15 @@ public class User {
     private GoogleAccount googleAccount;
 
     public User() {
+    }
+
+    @Ignore
+    public User(String email, String password, String name, String headPortrait, String role){
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.headPortrait = headPortrait;
+        this.role = role;
     }
 
     public int getId() {

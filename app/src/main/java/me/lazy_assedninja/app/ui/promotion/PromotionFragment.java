@@ -69,9 +69,9 @@ public class PromotionFragment extends BaseFragment {
     private void initData() {
         viewModel.requestPromotion();
 
-        viewModel.promotions.observe(getViewLifecycleOwner(), list -> {
-            if (list.getData() != null) {
-                adapter.submitList(list.getData());
+        viewModel.promotions.observe(getViewLifecycleOwner(), listResource -> {
+            if (listResource.getData() != null) {
+                adapter.submitList(listResource.getData());
             } else {
                 adapter.submitList(emptyList());
             }

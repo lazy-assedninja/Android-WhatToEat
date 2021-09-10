@@ -26,8 +26,13 @@ public class LoginViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    public void loggedIn(int LoggedInUserID) {
-        userRepository.setUserID(LoggedInUserID);
+    public void loggedIn(int userID, String email) {
+        userRepository.setUserID(userID);
+        userRepository.setUserEmail(email);
+    }
+
+    public String getUserEmail() {
+        return userRepository.getUserEmail();
     }
 
     public LiveData<Resource<User>> user = Transformations.switchMap(login, userDTO -> {
@@ -38,7 +43,7 @@ public class LoginViewModel extends ViewModel {
         }
     });
 
-    public void setLogin(String email, String password) {
+    public void login(String email, String password) {
         if (login.getValue() == null || !login.getValue().getEmail().equals(email) ||
                 !login.getValue().getPassword().equals(password)) {
             login.setValue(new UserDTO(email, password));

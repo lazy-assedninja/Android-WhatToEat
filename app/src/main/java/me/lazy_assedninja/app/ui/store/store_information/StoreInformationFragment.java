@@ -113,11 +113,11 @@ public class StoreInformationFragment extends BaseFragment {
         // Add to history
         viewModel.addHistory(id);
 
-        viewModel.result.observe(getViewLifecycleOwner(), result -> {
-            if (result.getStatus().equals(Resource.SUCCESS)) {
-                showToast(result.getData().getResult());
-            } else if (result.getStatus().equals(Resource.ERROR)) {
-                showToast(result.getMessage());
+        viewModel.result.observe(getViewLifecycleOwner(), resultResource -> {
+            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+                showToast(resultResource.getData().getResult());
+            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+                showToast(resultResource.getMessage());
             }
         });
     }

@@ -39,8 +39,8 @@ public interface WhatToEatService {
     /**
      * User
      */
-    @POST("User/SignUp")
-    LiveData<ApiResponse<Result>> signUp(@Body User user);
+    @POST("User/Register")
+    Call<Result> register(@Body User user);
 
     @POST("User/BindGoogleAccount")
     LiveData<ApiResponse<Result>> bindGoogleAccount(@Body GoogleAccount googleAccount);

@@ -76,19 +76,19 @@ public class ReservationFragment extends BaseFragment {
     private void initData() {
         viewModel.requestReservation();
 
-        viewModel.reservations.observe(getViewLifecycleOwner(), list -> {
+        viewModel.reservations.observe(getViewLifecycleOwner(), listResource -> {
             binding.swipeRefreshLayout.setRefreshing(false);
-            if (list.getData() != null) {
-                adapter.submitList(list.getData());
+            if (listResource.getData() != null) {
+                adapter.submitList(listResource.getData());
             } else {
                 adapter.submitList(emptyList());
             }
         });
-        viewModel.result.observe(getViewLifecycleOwner(), result -> {
-            if (result.getStatus().equals(Resource.SUCCESS)) {
-                showToast(result.getData().getResult());
-            } else if (result.getStatus().equals(Resource.ERROR)) {
-                showToast(result.getMessage());
+        viewModel.result.observe(getViewLifecycleOwner(), resultResource -> {
+            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+                showToast(resultResource.getData().getResult());
+            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+                showToast(resultResource.getMessage());
             }
         });
     }

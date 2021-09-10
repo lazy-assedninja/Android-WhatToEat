@@ -48,13 +48,18 @@
 
     <!-- Hint -->
     <string name="hint_search">Search</string>
+    <string name="hint_name">Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
 
     <!-- Login -->
     <string name="bg_login">Login Background</string>
     <string name="bt_login">Login</string>
     <string name="bt_forget_password">Forget Password</string>
+
+    <!-- Register -->
+    <string name="bt_register">Register</string>
 
     <!-- User -->
     <string name="user_please_login">Please Login</string>
@@ -71,7 +76,7 @@
     <string name="bt_post">Post</string>
     <string name="bt_reserve">Reserve</string>
 
-    <!-- ReservationDao -->
+    <!-- Reservation -->
     <string name="reservation_amount"> 人</string>
 
     <!-- Settings -->
@@ -87,8 +92,11 @@
     <string name="success_login">Login success.</string>
 
     <!-- Error -->
+    <string name="error_name_can_not_be_null">Name can\'t be empty.</string>
     <string name="error_email_can_not_be_null">Email can\'t be empty.</string>
     <string name="error_password_can_not_be_null">Password can\'t be empty.</string>
+    <string name="error_confirm_password_can_not_be_null">Confirm password can\'t be empty.</string>
+    <string name="error_passwords_are_not_the_same">Password are not the same.</string>
     <string name="error_data_empty">Data empty.</string>
     <string name="error_please_login_first">Please login first.</string>
 </resources>

@@ -53,8 +53,6 @@
                 android:hint="@string/hint_email"
                 app:boxStrokeColor="@color/primary_color"
                 app:hintTextColor="@color/primary_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_login_background">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -77,8 +75,6 @@
                 app:boxStrokeColor="@color/primary_color"
                 app:endIconMode="password_toggle"
                 app:hintTextColor="@color/primary_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_email">
 
                 <com.google.android.material.textfield.TextInputEditText

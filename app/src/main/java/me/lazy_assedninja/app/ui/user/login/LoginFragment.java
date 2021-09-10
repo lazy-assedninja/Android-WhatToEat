@@ -15,7 +15,6 @@ import androidx.navigation.Navigation;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.LoginFragmentBinding;
-import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
@@ -57,18 +56,18 @@ public class LoginFragment extends BaseFragment {
             if (binding.tilEmail.getEditText() == null || binding.tilPassword.getEditText() == null)
                 return;
 
+            // Clear errors
+            binding.tilEmail.setError(null);
+            binding.tilPassword.setError(null);
+
             String email = binding.tilEmail.getEditText().getText().toString();
             String password = binding.tilPassword.getEditText().getText().toString();
             if (email.isEmpty()) {
                 binding.tilEmail.setError(getString(R.string.error_email_can_not_be_null));
-                binding.tilPassword.setError(null);
             } else if (password.isEmpty()) {
-                binding.tilEmail.setError(null);
                 binding.tilPassword.setError(getString(R.string.error_password_can_not_be_null));
             } else {
-                binding.tilEmail.setError(null);
-                binding.tilPassword.setError(null);
-                viewModel.setLogin(email, password);
+                viewModel.login(email, password);
             }
         });
 
@@ -77,10 +76,13 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void initData() {
+        if (!viewModel.getUserEmail().isEmpty() && binding.tilEmail.getEditText() != null)
+            binding.tilEmail.getEditText().setText(viewModel.getUserEmail());
+
         viewModel.user.observe(getViewLifecycleOwner(), userResource -> {
             if (userResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(R.string.success_login);
-                viewModel.loggedIn(userResource.getData().getId());
+                viewModel.loggedIn(userResource.getData().getId(), userResource.getData().getEmail());
                 navController.navigateUp();
             } else if (userResource.getStatus().equals(Resource.ERROR)) {
                 showToast(userResource.getMessage());
