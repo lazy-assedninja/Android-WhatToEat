@@ -25,10 +25,8 @@ import retrofit2.Response;
 
 public class UserRepository {
 
-    private static final String PREFERENCES_USER_ID = "preferences_user_id";
+    private static final String PREFERENCES_USER = "preferences_user";
     private static final String USER_ID = "user_id";
-
-    private static final String PREFERENCES_USER_EMAIL = "preferences_user_email";
     private static final String USER_EMAIL = "user_email";
 
     private final Context context;
@@ -71,26 +69,26 @@ public class UserRepository {
     }
 
     public void setUserID(int value) {
-        context.getSharedPreferences(PREFERENCES_USER_ID, Context.MODE_PRIVATE)
+        context.getSharedPreferences(PREFERENCES_USER, Context.MODE_PRIVATE)
                 .edit()
                 .putInt(USER_ID, value)
                 .apply();
     }
 
     public int getUserID() {
-        return context.getSharedPreferences(PREFERENCES_USER_ID, Context.MODE_PRIVATE)
+        return context.getSharedPreferences(PREFERENCES_USER, Context.MODE_PRIVATE)
                 .getInt(USER_ID, 0);
     }
 
     public void setUserEmail(String value) {
-        context.getSharedPreferences(PREFERENCES_USER_EMAIL, Context.MODE_PRIVATE)
+        context.getSharedPreferences(PREFERENCES_USER, Context.MODE_PRIVATE)
                 .edit()
                 .putString(USER_EMAIL, value)
                 .apply();
     }
 
     public String getUserEmail() {
-        return context.getSharedPreferences(PREFERENCES_USER_EMAIL, Context.MODE_PRIVATE)
+        return context.getSharedPreferences(PREFERENCES_USER, Context.MODE_PRIVATE)
                 .getString(USER_EMAIL, "");
     }
 
