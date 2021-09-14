@@ -10,19 +10,27 @@ import javax.inject.Inject;
 import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.PromotionDao;
+import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.vo.Promotion;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.utils.NetworkUtils;
 
 public class PromotionRepository {
 
     private final ExecutorUtils executorUtils;
+    private final NetworkUtils networkUtils;
+    private final WhatToEatDatabase db;
     private final PromotionDao promotionDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public PromotionRepository(ExecutorUtils executorUtils, PromotionDao promotionDao, WhatToEatService whatToEatService) {
+    public PromotionRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
+                               WhatToEatDatabase db, PromotionDao promotionDao,
+                               WhatToEatService whatToEatService) {
         this.executorUtils = executorUtils;
+        this.networkUtils = networkUtils;
+        this.db = db;
         this.promotionDao = promotionDao;
         this.whatToEatService = whatToEatService;
     }
@@ -37,7 +45,7 @@ public class PromotionRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Promotion> data) {
-                return data == null || data.isEmpty();
+                return data == null || data.isEmpty() || networkUtils.isConnected();
             }
 
             @Override
@@ -47,7 +55,10 @@ public class PromotionRepository {
 
             @Override
             protected void saveCallResult(List<Promotion> item) {
-                promotionDao.insertAll(item);
+                db.runInTransaction(() -> {
+                    promotionDao.delete();
+                    promotionDao.insertAll(item);
+                });
             }
         }.asLiveData();
     }

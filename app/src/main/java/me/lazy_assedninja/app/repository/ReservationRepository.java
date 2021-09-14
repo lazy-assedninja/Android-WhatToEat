@@ -15,22 +15,30 @@ import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.ApiSuccessResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.ReservationDao;
+import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.dto.ReservationDTO;
 import me.lazy_assedninja.app.vo.Reservation;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.utils.NetworkUtils;
 import retrofit2.Response;
 
 public class ReservationRepository {
 
     private final ExecutorUtils executorUtils;
+    private final NetworkUtils networkUtils;
+    private final WhatToEatDatabase db;
     private final ReservationDao reservationDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public ReservationRepository(ExecutorUtils executorUtils, ReservationDao reservationDao, WhatToEatService whatToEatService) {
+    public ReservationRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
+                                 WhatToEatDatabase db, ReservationDao reservationDao,
+                                 WhatToEatService whatToEatService) {
         this.executorUtils = executorUtils;
+        this.networkUtils = networkUtils;
+        this.db = db;
         this.reservationDao = reservationDao;
         this.whatToEatService = whatToEatService;
     }
@@ -45,7 +53,7 @@ public class ReservationRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Reservation> data) {
-                return data == null || data.isEmpty();
+                return data == null || data.isEmpty() || networkUtils.isConnected();
             }
 
             @Override
@@ -55,7 +63,10 @@ public class ReservationRepository {
 
             @Override
             protected void saveCallResult(List<Reservation> item) {
-                reservationDao.insertAll(item);
+                db.runInTransaction(() -> {
+                    reservationDao.delete();
+                    reservationDao.insertAll(item);
+                });
             }
         }.asLiveData();
     }

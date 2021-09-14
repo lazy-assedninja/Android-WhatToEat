@@ -28,4 +28,7 @@ public interface ReservationDao {
 
     @Delete
     void delete(Reservation reservation);
+
+    @Query("DELETE FROM reservation")
+    void delete();
 }

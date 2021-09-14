@@ -22,21 +22,25 @@ import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.utils.NetworkUtils;
 import me.lazy_assedninja.library.utils.TimeUtils;
 import retrofit2.Response;
 
 public class FavoriteRepository {
 
     private final ExecutorUtils executorUtils;
+    private final NetworkUtils networkUtils;
     private final TimeUtils timeUtils;
     private final StoreDao storeDao;
     private final FavoriteDao favoriteDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public FavoriteRepository(ExecutorUtils executorUtils, TimeUtils timeUtils, StoreDao storeDao,
-                              FavoriteDao favoriteDao, WhatToEatService whatToEatService) {
+    public FavoriteRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
+                              TimeUtils timeUtils, StoreDao storeDao, FavoriteDao favoriteDao,
+                              WhatToEatService whatToEatService) {
         this.executorUtils = executorUtils;
+        this.networkUtils = networkUtils;
         this.timeUtils = timeUtils;
         this.storeDao = storeDao;
         this.favoriteDao = favoriteDao;
@@ -53,7 +57,7 @@ public class FavoriteRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty();
+                return data == null || data.isEmpty() || networkUtils.isConnected();
             }
 
             @Override

@@ -17,19 +17,22 @@ import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.app.vo.Tag;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.utils.NetworkUtils;
 
 public class StoreRepository {
 
     private final ExecutorUtils executorUtils;
+    private final NetworkUtils networkUtils;
     private final WhatToEatDatabase db;
     private final TagDao tagDao;
     private final StoreDao storeDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public StoreRepository(ExecutorUtils executorUtils, WhatToEatDatabase db, TagDao tagDao,
-                           StoreDao storeDao, WhatToEatService whatToEatService) {
+    public StoreRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils, WhatToEatDatabase db,
+                           TagDao tagDao, StoreDao storeDao, WhatToEatService whatToEatService) {
         this.executorUtils = executorUtils;
+        this.networkUtils = networkUtils;
         this.db = db;
         this.tagDao = tagDao;
         this.storeDao = storeDao;
@@ -46,7 +49,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty();
+                return data == null || data.isEmpty() || networkUtils.isConnected();
             }
 
             @Override

@@ -24,4 +24,7 @@ public interface PromotionDao {
 
     @Query("SELECT * FROM promotion")
     LiveData<List<Promotion>> getPromotions();
+
+    @Query("DELETE FROM promotion")
+    void delete();
 }

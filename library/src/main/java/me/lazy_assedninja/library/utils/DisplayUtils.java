@@ -17,7 +17,6 @@ public class DisplayUtils {
 
     private final Context context;
 
-    @Inject
     public DisplayUtils(Context context) {
         this.context = context;
     }

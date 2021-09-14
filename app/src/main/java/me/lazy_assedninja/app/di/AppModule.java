@@ -27,6 +27,7 @@ import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.utils.LiveDataCallAdapterFactory;
 import me.lazy_assedninja.library.utils.DisplayUtils;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.utils.NetworkUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -122,5 +123,11 @@ public class AppModule {
     @Singleton
     public DisplayUtils provideDisplayUtils(@ApplicationContext Context context) {
         return new DisplayUtils(context);
+    }
+
+    @Provides
+    @Singleton
+    public NetworkUtils provideNetworkUtils(@ApplicationContext Context context) {
+        return new NetworkUtils(context);
     }
 }

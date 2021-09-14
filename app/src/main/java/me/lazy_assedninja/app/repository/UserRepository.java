@@ -34,7 +34,6 @@ public class UserRepository {
     private final UserDao userDao;
     private final WhatToEatService whatToEatService;
 
-    @Inject
     public UserRepository(Context context, ExecutorUtils executorUtils,
                           UserDao userDao, WhatToEatService whatToEatService) {
         this.context = context;
