@@ -29,8 +29,9 @@ public class StoreRepository {
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public StoreRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils, WhatToEatDatabase db,
-                           TagDao tagDao, StoreDao storeDao, WhatToEatService whatToEatService) {
+    public StoreRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
+                           WhatToEatDatabase db, TagDao tagDao, StoreDao storeDao,
+                           WhatToEatService whatToEatService) {
         this.executorUtils = executorUtils;
         this.networkUtils = networkUtils;
         this.db = db;
@@ -71,7 +72,40 @@ public class StoreRepository {
         }.asLiveData();
     }
 
+    public LiveData<Resource<List<Store>>> search(StoreDTO storeDTO) {
+        return new NetworkBoundResource<List<Store>, List<Store>>(executorUtils) {
+
+            @Override
+            protected LiveData<List<Store>> loadFromDb() {
+                return storeDao.search("%" + storeDTO.getKeyword() + "%");
+            }
+
+            @Override
+            protected Boolean shouldFetch(@Nullable List<Store> data) {
+                return data == null || data.isEmpty() || networkUtils.isConnected();
+            }
+
+            @Override
+            protected LiveData<ApiResponse<List<Store>>> createCall() {
+                return whatToEatService.search(storeDTO);
+            }
+
+            @Override
+            protected void saveCallResult(List<Store> item) {
+                storeDao.insertAll(item);
+            }
+        }.asLiveData();
+    }
+
     public LiveData<Store> getStoreFromDb(int id) {
         return storeDao.get(id);
+    }
+
+    public void initTags() {
+        executorUtils.diskIO().execute(() -> {
+            if (tagDao.getTagSize() != 2) {
+                tagDao.insert(new Tag(2));
+            }
+        });
     }
 }

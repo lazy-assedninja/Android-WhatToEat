@@ -23,10 +23,8 @@ import me.lazy_assedninja.app.db.TagDao;
 import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.repository.SecretRepository;
-import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.utils.LiveDataCallAdapterFactory;
 import me.lazy_assedninja.library.utils.DisplayUtils;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
 import me.lazy_assedninja.library.utils.NetworkUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -109,14 +107,6 @@ public class AppModule {
     @Singleton
     public ReservationDao provideReservationDao(WhatToEatDatabase database) {
         return database.reservationDao();
-    }
-
-    @Provides
-    @Singleton
-    public UserRepository provideUserRepository(@ApplicationContext Context context,
-                                                ExecutorUtils executorUtils, UserDao userDao,
-                                                WhatToEatService whatToEatService) {
-        return new UserRepository(context, executorUtils, userDao, whatToEatService);
     }
 
     @Provides

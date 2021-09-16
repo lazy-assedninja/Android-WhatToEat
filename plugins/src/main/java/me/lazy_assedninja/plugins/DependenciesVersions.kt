@@ -2,8 +2,8 @@ package me.lazy_assedninja.plugins
 
 object DependenciesVersions {
     // AndroidX
-    val appCompat = "1.2.0"
-    val constraintLayout = "2.0.4"
+    val appCompat = "1.3.1"
+    val constraintLayout = "2.1.0"
     val navigation = "2.3.5"
     val room = "2.3.0"
     val viewPager2 = "1.0.0"
@@ -14,7 +14,7 @@ object DependenciesVersions {
     val testEspresso = "3.3.0"
 
     // Google
-    val googleMaterial = "1.2.1"
+    val googleMaterial = "1.4.0"
     val hilt = "2.38.1"
 
     // Kotlin

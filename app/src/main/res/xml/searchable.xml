@@ -4,5 +4,5 @@
     android:imeOptions="actionSearch"
     android:inputType="text"
     android:label="@string/app_name"
-    android:searchSuggestAuthority="me.lazy_assedninja.app.content_provider.SuggestionProvider"
+    android:searchSuggestAuthority="me.lazy_assedninja.what_to_eat.content_provider.SuggestionProvider"
     android:searchSuggestSelection=" ?" />

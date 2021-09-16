@@ -11,6 +11,10 @@ public class StoreDTO {
         this.tagID = tagID;
     }
 
+    public StoreDTO(String keyword) {
+        this.keyword = keyword;
+    }
+
     public int getUserID() {
         return userID;
     }

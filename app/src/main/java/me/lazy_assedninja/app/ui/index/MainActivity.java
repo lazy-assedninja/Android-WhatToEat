@@ -2,6 +2,7 @@ package me.lazy_assedninja.app.ui.index;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity {
         initNavigationUI();
         initDrawer();
         initDrawerHeader();
+        initTagData();
     }
 
     private void initView() {
@@ -66,8 +68,8 @@ public class MainActivity extends BaseActivity {
             return false;
         });
         binding.floatingActionButton.setOnClickListener(v -> {
-            if (navController.getCurrentDestination() != null) {
-                if (navController.getCurrentDestination().getId() == R.id.home_fragment) return;
+            if (navController.getCurrentDestination() == null) return;
+            if (navController.getCurrentDestination().getId() != R.id.home_fragment) {
                 navController.navigate(R.id.action_to_home_fragment);
             }
         });
@@ -81,21 +83,30 @@ public class MainActivity extends BaseActivity {
         searchView.setIconifiedByDefault(true);
         searchView.setMaxWidth(displayUtils.getScreenWidthPix());
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setOnSearchClickListener(v -> navController.navigate(R.id.action_to_search_fragment));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+        searchView.setOnSearchClickListener(v -> {
+            if (navController.getCurrentDestination() == null) return;
+            if (navController.getCurrentDestination().getId() != R.id.search_fragment) {
+                navController.navigate(R.id.action_to_search_fragment);
             }
         });
         searchView.setOnCloseListener(() -> {
             navController.navigateUp();
             return false;
+        });
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                Cursor cursor = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
+                String keyword = cursor.getString(
+                        cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
+                searchView.setQuery(keyword, true);
+                return true;
+            }
         });
     }
 
@@ -165,10 +176,10 @@ public class MainActivity extends BaseActivity {
             binding.drawer.close();
             return false;
         });
-        binding.bottomNavigationView.setOnNavigationItemReselectedListener(menuItem -> {
+        binding.bottomNavigationView.setOnItemReselectedListener(menuItem -> {
             // Prevent fragment recreating when user double click.
         });
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+        binding.bottomNavigationView.setOnItemSelectedListener(menuItem -> {
             int itemID = menuItem.getItemId();
             if (itemID == R.id.profile_fragment) {
                 if (viewModel.isLoggedIn()) {
@@ -195,12 +206,7 @@ public class MainActivity extends BaseActivity {
         binding.navigationView.addHeaderView(drawerHeaderBinding.getRoot());
     }
 
-    @Override
-    public void onBackPressed() {
-        if (!searchView.isIconified()) {
-            searchView.setIconified(true);
-        } else {
-            super.onBackPressed();
-        }
+    private void initTagData() {
+        viewModel.initTags();
     }
 }

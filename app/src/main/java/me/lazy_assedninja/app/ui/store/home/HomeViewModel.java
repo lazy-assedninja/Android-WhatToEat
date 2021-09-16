@@ -31,8 +31,8 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<Favorite> favoriteRequest = new MutableLiveData<>();
 
     @Inject
-    public HomeViewModel(UserRepository userRepository,
-                         StoreRepository storeRepository, FavoriteRepository favoriteRepository) {
+    public HomeViewModel(UserRepository userRepository, StoreRepository storeRepository,
+                         FavoriteRepository favoriteRepository) {
         this.userRepository = userRepository;
         this.storeRepository = storeRepository;
         this.favoriteRepository = favoriteRepository;
