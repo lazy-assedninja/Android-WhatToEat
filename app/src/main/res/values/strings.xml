@@ -52,6 +52,10 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
+    <string name="hint_phone">Phone</string>
+    <string name="hint_amount">Amount</string>
+    <string name="hint_date">Date</string>
+    <string name="hint_time">Time</string>
 
     <!-- Login -->
     <string name="bg_login">Login Background</string>
@@ -66,14 +70,16 @@
     <string name="user_name">Name</string>
     <string name="user_identity">IDENTITY:</string>
 
-    <!-- Search -->
-
     <!-- Store -->
     <string name="default_value_star">0.0</string>
     <string name="bt_favorite">Favorite</string>
     <string name="bt_store_information">Information</string>
     <string name="bt_comment">Comment</string>
     <string name="bt_post">Post</string>
+
+    <!-- Reserve -->
+    <string name="tv_reserve">Reserve</string>
+    <string name="bt_choose">Choose</string>
     <string name="bt_reserve">Reserve</string>
 
     <!-- Reservation -->
@@ -96,6 +102,10 @@
     <string name="error_email_can_not_be_null">Email can\'t be empty.</string>
     <string name="error_password_can_not_be_null">Password can\'t be empty.</string>
     <string name="error_confirm_password_can_not_be_null">Confirm password can\'t be empty.</string>
+    <string name="error_phone_can_not_be_null">Phone can\'t be empty.</string>
+    <string name="error_amount_can_not_be_null">Amount can\'t be empty.</string>
+    <string name="error_date_can_not_be_null">Date can\'t be empty.</string>
+    <string name="error_time_can_not_be_null">Time can\'t be empty.</string>
     <string name="error_passwords_are_not_the_same">Password are not the same.</string>
     <string name="error_data_empty">Data empty.</string>
     <string name="error_please_login_first">Please login first.</string>

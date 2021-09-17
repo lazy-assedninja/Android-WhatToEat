@@ -10,7 +10,8 @@ object AndroidX {
     val room = "androidx.room:room-runtime:${DependenciesVersions.room}"
     val roomCompiler = "androidx.room:room-compiler:${DependenciesVersions.room}"
     val viewPager2 = "androidx.viewpager2:viewpager2:${DependenciesVersions.viewPager2}"
-    val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:${DependenciesVersions.swipeRefreshLayout}"
+    val swipeRefreshLayout =
+        "androidx.swiperefreshlayout:swiperefreshlayout:${DependenciesVersions.swipeRefreshLayout}"
 
     val archCoreTesting = "androidx.arch.core:core-testing:${DependenciesVersions.archCore}"
     val testJunit = "androidx.test.ext:junit:${DependenciesVersions.testJunit}"

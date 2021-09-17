@@ -2,7 +2,6 @@ package me.lazy_assedninja.app.ui.store.store_information;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +22,14 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
 import dagger.hilt.EntryPoints;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.StoreInformationFragmentBinding;
+import me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.library.ui.BaseFragment;
-import me.lazy_assedninja.library.utils.LogUtils;
 
 @AndroidEntryPoint
 public class StoreInformationFragment extends BaseFragment {
@@ -97,10 +94,15 @@ public class StoreInformationFragment extends BaseFragment {
                 navController.navigate(StoreInformationFragmentDirections.actionToCommentFragment(id)));
         binding.ivPost.setOnClickListener(v ->
                 navController.navigate(StoreInformationFragmentDirections.actionToPostFragment(id)));
-        binding.btReserve.setOnClickListener(v ->
-                navController.navigate(StoreInformationFragmentDirections.actionToReserveFragment(id)));
-        binding.btAddReport.setOnClickListener(v ->
-                navController.navigate(StoreInformationFragmentDirections.actionToAddReportFragment(id)));
+        binding.btReserve.setOnClickListener(v -> {
+            ReserveFragment reserveFragment = new ReserveFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("store_id", id);
+            reserveFragment.setArguments(bundle);
+            reserveFragment.show(getParentFragmentManager(), "reserve");
+        });
+        binding.btAddReport.setOnClickListener(v -> {
+        });
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setResult(viewModel.result);

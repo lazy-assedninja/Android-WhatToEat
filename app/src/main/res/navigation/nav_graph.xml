@@ -188,22 +188,6 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
-
-        <action
-            android:id="@+id/action_to_reserve_fragment"
-            app:destination="@id/reserve_fragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-
-        <action
-            android:id="@+id/action_to_add_report_fragment"
-            app:destination="@id/add_report_fragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -222,28 +206,6 @@
         android:name="me.lazy_assedninja.app.ui.store.post.PostFragment"
         android:label="@string/navigation_post_fragment"
         tools:layout="@layout/post_fragment">
-
-        <argument
-            android:name="storeID"
-            app:argType="integer" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/reserve_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment"
-        android:label="@string/navigation_reserve_fragment"
-        tools:layout="@layout/reserve_fragment">
-
-        <argument
-            android:name="storeID"
-            app:argType="integer" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/add_report_fragment"
-        android:name="me.lazy_assedninja.app.ui.user.report.add_report.AddReportFragment"
-        android:label="@string/navigation_add_report_fragment"
-        tools:layout="@layout/add_report_fragment">
 
         <argument
             android:name="storeID"

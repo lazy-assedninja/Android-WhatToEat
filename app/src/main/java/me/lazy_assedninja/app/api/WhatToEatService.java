@@ -108,13 +108,13 @@ public interface WhatToEatService {
     /**
      * ReservationDao
      */
-    @POST("ReservationDao/CreateReservation")
+    @POST("Reservation/CreateReservation")
     Call<Result> createReservation(@Body Reservation reservation);
 
-    @POST("ReservationDao/GetReservationList")
+    @POST("Reservation/GetReservationList")
     LiveData<ApiResponse<List<Reservation>>> getReservationList(@Body ReservationDTO reservationDTO);
 
-    @POST("ReservationDao/CancelReservation")
+    @POST("Reservation/CancelReservation")
     Call<Result> cancelReservation(@Body ReservationDTO reservationDTO);
 
     /**

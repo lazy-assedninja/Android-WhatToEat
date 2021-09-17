@@ -1,6 +1,7 @@
 package me.lazy_assedninja.app.vo;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -19,6 +20,16 @@ public class Reservation {
     private String storeName;
     private int userID;
     private String userName;
+
+    @Ignore
+    public Reservation(String name, String phone, String amount, String time, int storeID, int userID) {
+        this.name = name;
+        this.phone = phone;
+        this.amount = amount;
+        this.time = time;
+        this.storeID = storeID;
+        this.userID = userID;
+    }
 
     public int getId() {
         return id;

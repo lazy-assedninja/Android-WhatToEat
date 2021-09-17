@@ -49,20 +49,22 @@ android {
     }
 
     buildFeatures {
+        //noinspection DataBindingWithoutKapt
         dataBinding true
     }
 }
 
 dependencies {
+
+    // Modules
+    implementation project(path: ':library')
+
     // Components
     implementation AndroidX.appCompat
     implementation AndroidX.constraintLayout
     implementation AndroidX.swipeRefreshLayout
     implementation Google.material
     implementation ThirdParty.ticketView
-
-    // Modules
-    implementation project(path: ':library')
 
     // Hilt
     implementation Google.hilt
