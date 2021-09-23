@@ -20,6 +20,9 @@ public interface UserDao {
     @Query("SELECT * FROM user LIMIT 1")
     LiveData<User> get();
 
+    @Query("UPDATE user SET updateTime = :updateTime, password = :password")
+    void updatePassword(String password, String updateTime);
+
     @Query("DELETE FROM user")
     void delete();
 }

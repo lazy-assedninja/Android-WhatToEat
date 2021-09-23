@@ -9,10 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ResetPasswordFragmentBinding;
+import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
@@ -20,6 +23,8 @@ public class ResetPasswordFragment extends BaseFragment {
 
     private ResetPasswordFragmentBinding binding;
     private ResetPasswordViewModel viewModel;
+
+    private NavController navController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -37,5 +42,45 @@ public class ResetPasswordFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(ResetPasswordViewModel.class);
+        navController = Navigation.findNavController(view);
+
+        initView();
+        initData();
+    }
+
+    private void initView() {
+        binding.btResetPassword.setOnClickListener(v -> {
+            dismissKeyboard(v);
+            if (binding.tilOldPassword.getEditText() == null ||
+                    binding.tilNewPassword.getEditText() == null) return;
+
+            // Clear errors
+            binding.tilOldPassword.setError(null);
+            binding.tilNewPassword.setError(null);
+
+            String oldPassword = binding.tilOldPassword.getEditText().getText().toString();
+            String newPassword = binding.tilNewPassword.getEditText().getText().toString();
+            if (oldPassword.isEmpty()) {
+                binding.tilOldPassword.setError(getString(R.string.error_password_can_not_be_null));
+            } else if (newPassword.isEmpty()) {
+                binding.tilNewPassword.setError(getString(R.string.error_confirm_password_can_not_be_null));
+            } else {
+                viewModel.resetPassword(oldPassword, newPassword);
+            }
+        });
+
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.setResult(viewModel.result);
+    }
+
+    private void initData() {
+        viewModel.result.observe(getViewLifecycleOwner(), resultResource -> {
+            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+                showToast(resultResource.getData().getResult());
+                navController.navigateUp();
+            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+                showToast(resultResource.getMessage());
+            }
+        });
     }
 }

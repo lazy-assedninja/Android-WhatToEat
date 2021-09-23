@@ -14,6 +14,12 @@ public class UserDTO {
         this.password = password;
     }
 
+    public UserDTO(String email, String oldPassword, String newPassword){
+        this.email = email;
+        this.oldPassword = oldPassword;
+        this.newPassword = newPassword;
+    }
+
     public String getEmail() {
         return email;
     }

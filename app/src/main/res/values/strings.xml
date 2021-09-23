@@ -52,6 +52,8 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
+    <string name="hint_old_password">Old Password</string>
+    <string name="hint_new_password">New Password</string>
     <string name="hint_phone">Phone</string>
     <string name="hint_amount">Amount</string>
     <string name="hint_date">Date</string>
