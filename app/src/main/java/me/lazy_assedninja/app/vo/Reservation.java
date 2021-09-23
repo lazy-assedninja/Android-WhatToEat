@@ -21,6 +21,9 @@ public class Reservation {
     private int userID;
     private String userName;
 
+    public Reservation() {
+    }
+
     @Ignore
     public Reservation(String name, String phone, String amount, String time, int storeID, int userID) {
         this.name = name;
