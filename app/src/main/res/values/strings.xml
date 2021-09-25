@@ -51,6 +51,7 @@
     <string name="hint_name">Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
+    <string name="hint_verification_code">Verification Code</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="hint_old_password">Old Password</string>
     <string name="hint_new_password">New Password</string>
@@ -63,6 +64,10 @@
     <string name="bg_login">Login Background</string>
     <string name="bt_login">Login</string>
     <string name="bt_forget_password">Forget Password</string>
+
+    <!-- Verification -->
+    <string name="bt_send">Send</string>
+    <string name="bt_confirm">Confirm</string>
 
     <!-- Register -->
     <string name="bt_register">Register</string>
@@ -104,6 +109,9 @@
     <string name="error_email_can_not_be_null">Email can\'t be empty.</string>
     <string name="error_password_can_not_be_null">Password can\'t be empty.</string>
     <string name="error_confirm_password_can_not_be_null">Confirm password can\'t be empty.</string>
+    <string name="error_old_password_can_not_be_null">Old password can\'t be empty.</string>
+    <string name="error_new_password_can_not_be_null">New password can\'t be empty.</string>
+    <string name="error_verification_code_can_not_be_null">Verification code can\'t be empty.</string>
     <string name="error_phone_can_not_be_null">Phone can\'t be empty.</string>
     <string name="error_amount_can_not_be_null">Amount can\'t be empty.</string>
     <string name="error_date_can_not_be_null">Date can\'t be empty.</string>

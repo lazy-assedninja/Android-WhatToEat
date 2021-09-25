@@ -54,11 +54,11 @@ public interface WhatToEatService {
     @POST("User/ResetPassword")
     Call<Result> resetPassword(@Body UserDTO userDTO);
 
-    @POST("User/SendVerificationEmail")
-    Call<ApiResponse<Result>> sendVerificationEmail(@Body UserDTO userDTO);
+    @POST("User/SendVerificationCode")
+    Call<Result> sendVerificationCode(@Body UserDTO userDTO);
 
     @POST("User/ForgetPassword")
-    Call<ApiResponse<Result>> forgetPassword(@Body UserDTO userDTO);
+    Call<Result> forgetPassword(@Body UserDTO userDTO);
 
     @POST("User/UpdatePermissionDeadline")
     Call<ApiResponse<Result>> updatePermissionDeadline(@Body UserDTO userDTO);

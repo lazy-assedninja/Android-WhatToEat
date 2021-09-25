@@ -63,7 +63,7 @@ public class ResetPasswordFragment extends BaseFragment {
             if (oldPassword.isEmpty()) {
                 binding.tilOldPassword.setError(getString(R.string.error_password_can_not_be_null));
             } else if (newPassword.isEmpty()) {
-                binding.tilNewPassword.setError(getString(R.string.error_confirm_password_can_not_be_null));
+                binding.tilNewPassword.setError(getString(R.string.error_new_password_can_not_be_null));
             } else {
                 viewModel.resetPassword(oldPassword, newPassword);
             }

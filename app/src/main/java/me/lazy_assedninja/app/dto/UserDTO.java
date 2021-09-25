@@ -9,14 +9,22 @@ public class UserDTO {
     private String headPortrait;
     private String verificationCode;
 
+    public UserDTO(String email) {
+        this.email = email;
+    }
+
     public UserDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public UserDTO(String email, String oldPassword, String newPassword){
+    public UserDTO(String email, String oldPasswordOrVerificationCode, String newPassword, boolean isReset) {
         this.email = email;
-        this.oldPassword = oldPassword;
+        if (isReset){
+            this.oldPassword = oldPasswordOrVerificationCode;
+        }else{
+            this.verificationCode = oldPasswordOrVerificationCode;
+        }
         this.newPassword = newPassword;
     }
 

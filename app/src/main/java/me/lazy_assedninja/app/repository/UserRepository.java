@@ -157,4 +157,59 @@ public class UserRepository {
         });
         return result;
     }
+
+    public LiveData<Resource<Result>> sendVerificationCode(UserDTO userDTO) {
+        MutableLiveData<Resource<Result>> result = new MutableLiveData<>();
+        executorUtils.networkIO().execute(() -> {
+            Resource<Result> resource = Resource.loading(null);
+            result.postValue(resource);
+            try {
+                Response<Result> response = whatToEatService.sendVerificationCode(userDTO).execute();
+                ApiResponse<Result> apiResponse = ApiResponse.create(response);
+                if (apiResponse instanceof ApiSuccessResponse) {
+                    resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
+                } else if (apiResponse instanceof ApiEmptyResponse) {
+                    resource = Resource.error("No response.", null);
+                } else if (apiResponse instanceof ApiErrorResponse) {
+                    resource = Resource.error(
+                            ((ApiErrorResponse<Result>) apiResponse).getErrorMessage(), null);
+                } else {
+                    resource = Resource.error("Unknown error.", null);
+                }
+            } catch (IOException e) {
+                resource = Resource.error(e.getMessage(), null);
+            }
+            result.postValue(resource);
+        });
+        return result;
+    }
+
+    public LiveData<Resource<Result>> forgetPassword(UserDTO userDTO) {
+        MutableLiveData<Resource<Result>> result = new MutableLiveData<>();
+        executorUtils.networkIO().execute(() -> {
+            Resource<Result> resource = Resource.loading(null);
+            result.postValue(resource);
+            try {
+                Response<Result> response = whatToEatService.forgetPassword(userDTO).execute();
+                ApiResponse<Result> apiResponse = ApiResponse.create(response);
+                if (apiResponse instanceof ApiSuccessResponse) {
+                    resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
+
+                    // Update data
+                    userDao.updatePassword(userDTO.getNewPassword(), timeUtils.now());
+                } else if (apiResponse instanceof ApiEmptyResponse) {
+                    resource = Resource.error("No response.", null);
+                } else if (apiResponse instanceof ApiErrorResponse) {
+                    resource = Resource.error(
+                            ((ApiErrorResponse<Result>) apiResponse).getErrorMessage(), null);
+                } else {
+                    resource = Resource.error("Unknown error.", null);
+                }
+            } catch (IOException e) {
+                resource = Resource.error(e.getMessage(), null);
+            }
+            result.postValue(resource);
+        });
+        return result;
+    }
 }

@@ -35,6 +35,7 @@ public class ResetPasswordViewModel extends ViewModel {
     });
 
     public void resetPassword(String oldPassword, String newPassword) {
-        resetPassword.setValue(new UserDTO(userRepository.getUserEmail(), oldPassword, newPassword));
+        resetPassword.setValue(new UserDTO(userRepository.getUserEmail(), oldPassword, newPassword,
+                true));
     }
 }
