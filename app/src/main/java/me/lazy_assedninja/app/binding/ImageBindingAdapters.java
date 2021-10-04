@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.signature.ObjectKey;
 
 import javax.inject.Inject;
 
@@ -43,6 +44,18 @@ public class ImageBindingAdapters {
                 .error(error)
                 .fallback(fallback)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
+    }
+
+    @BindingAdapter(value = {"portraitUrl", "portraitError", "portraitFallback", "portraitSignature"},
+            requireAll = false)
+    public void bindPortrait(AppCompatImageView imageView, String picturePath, Drawable error,
+                             Drawable fallback, String signature) {
+        Glide.with(imageView.getContext())
+                .load(secretRepository.URL + picturePath)
+                .error(error)
+                .fallback(fallback)
+                .signature(new ObjectKey(signature))
                 .into(imageView);
     }
 }

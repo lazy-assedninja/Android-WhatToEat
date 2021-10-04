@@ -14,7 +14,6 @@ import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.GoogleAccount;
-import me.lazy_assedninja.app.vo.Picture;
 import me.lazy_assedninja.app.vo.Post;
 import me.lazy_assedninja.app.vo.Promotion;
 import me.lazy_assedninja.app.vo.Report;
@@ -62,6 +61,9 @@ public interface WhatToEatService {
 
     @POST("User/UpdatePermissionDeadline")
     Call<ApiResponse<Result>> updatePermissionDeadline(@Body UserDTO userDTO);
+
+    @POST("User/UpdateHeadPortrait")
+    Call<Result> updateHeadPortrait(@Body UserDTO userDTO);
 
     @POST("User/GetHeadPortrait")
     LiveData<ApiResponse<User>> getHeadPortrait(@Body UserDTO userDTO);
@@ -131,5 +133,5 @@ public interface WhatToEatService {
      **/
     @Multipart
     @POST("File/Upload")
-    LiveData<Picture> upload(@Part MultipartBody.Part file);
+    Call<Result> upload(@Part MultipartBody.Part file);
 }

@@ -35,6 +35,6 @@ public class RegisterViewModel extends ViewModel {
     });
 
     public void register(String name, String email, String password) {
-        register.setValue(new User(email, password, name, "File/Store/default.jpg", "user"));
+        register.setValue(new User(email, password, name, email + ".jpg", "user"));
     }
 }

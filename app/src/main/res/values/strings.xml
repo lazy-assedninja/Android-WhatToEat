@@ -76,6 +76,7 @@
     <string name="user_please_login">Please Login</string>
     <string name="user_name">Name</string>
     <string name="user_identity">IDENTITY:</string>
+    <string name="user_portrait_path">File/User/</string>
 
     <!-- Store -->
     <string name="default_value_star">0.0</string>
@@ -96,6 +97,10 @@
     <string name="bt_reset_password">Reset password</string>
     <string name="bt_logout">Logout</string>
     <string name="bt_report">Report</string>
+
+    <!-- Picture -->
+    <string name="bt_take_photos">Take Photos</string>
+    <string name="bt_from_gallery">From Gallery</string>
 
     <!-- ContentDescription -->
     <string name="cd_home">Home</string>

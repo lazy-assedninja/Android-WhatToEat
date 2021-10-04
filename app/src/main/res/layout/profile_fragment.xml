@@ -7,11 +7,23 @@
 
         <import type="androidx.lifecycle.LiveData" />
 
+        <import type="me.lazy_assedninja.app.vo.Resource" />
+
         <import type="me.lazy_assedninja.app.vo.User" />
+
+        <import type="me.lazy_assedninja.app.vo.Result" />
 
         <variable
             name="user"
             type="LiveData&lt;User>" />
+
+        <variable
+            name="result"
+            type="LiveData&lt;Resource&lt;Result>>" />
+
+        <variable
+            name="signature"
+            type="java.lang.String" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -46,9 +58,10 @@
                     android:layout_marginTop="16dp"
                     android:background="@color/white"
                     android:src="@drawable/icon"
-                    app:error="@{@drawable/icon}"
-                    app:fallback="@{@drawable/icon}"
-                    app:imageUrl="@{user.headPortrait}"
+                    app:portraitError="@{@drawable/icon}"
+                    app:portraitFallback="@{@drawable/icon}"
+                    app:portraitUrl="@{@string/user_portrait_path + user.headPortrait}"
+                    app:portraitSignature="@{signature}"
                     app:layout_constraintBottom_toTopOf="@id/cv_identity"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -199,6 +212,17 @@
                 app:cornerRadius="0dp"
                 app:layout_constraintTop_toBottomOf="@id/bt_logout"
                 app:rippleColor="@color/primary_color" />
+
+            <ProgressBar
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/primary_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibleOrGone="@{result.status == Resource.LOADING}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
