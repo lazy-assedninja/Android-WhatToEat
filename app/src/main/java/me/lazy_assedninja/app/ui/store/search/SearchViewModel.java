@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.dto.StoreDTO;
+import me.lazy_assedninja.app.repository.Event;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
@@ -56,7 +57,7 @@ public class SearchViewModel extends ViewModel {
 
     public void setStoreRequest(String keyword) {
         if (storeRequest.getValue() == null || !storeRequest.getValue().getKeyword().equals(keyword)) {
-            storeRequest.setValue(new StoreDTO(keyword));
+            storeRequest.setValue(new StoreDTO(getUserID(), keyword));
         }
     }
 
@@ -66,7 +67,7 @@ public class SearchViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Resource<Result>> result = Transformations.switchMap(favoriteRequest, favorite -> {
+    public LiveData<Event<Resource<Result>>> result = Transformations.switchMap(favoriteRequest, favorite -> {
         if (favorite == null) {
             return AbsentLiveData.create();
         } else {

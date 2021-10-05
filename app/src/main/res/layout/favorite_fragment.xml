@@ -7,6 +7,8 @@
 
         <import type="androidx.lifecycle.LiveData" />
 
+        <import type="me.lazy_assedninja.app.repository.Event" />
+
         <import type="me.lazy_assedninja.app.vo.Resource" />
 
         <import type="java.util.List" />
@@ -21,7 +23,7 @@
 
         <variable
             name="result"
-            type="LiveData&lt;Resource&lt;Result>>" />
+            type="LiveData&lt;Event&lt;Resource&lt;Result>>>" />
     </data>
 
     <FrameLayout
@@ -47,6 +49,6 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:indeterminateTint="@color/primary_color"
-            app:visibleOrGone="@{stores.status == Resource.LOADING || result.status == Resource.LOADING}" />
+            app:visibleOrGone="@{stores.status == Resource.LOADING || result.peekContent().status == Resource.LOADING}" />
     </FrameLayout>
 </layout>

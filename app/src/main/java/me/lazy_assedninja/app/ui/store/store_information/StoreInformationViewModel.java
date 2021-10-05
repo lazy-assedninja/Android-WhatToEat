@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import me.lazy_assedninja.app.repository.Event;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.HistoryRepository;
 import me.lazy_assedninja.app.repository.StoreRepository;
@@ -53,7 +54,7 @@ public class StoreInformationViewModel extends ViewModel {
         return store;
     }
 
-    public LiveData<Resource<Result>> result = Transformations.switchMap(favoriteRequest, favorite -> {
+    public LiveData<Event<Resource<Result>>> result = Transformations.switchMap(favoriteRequest, favorite -> {
         if (favorite == null) {
             return AbsentLiveData.create();
         } else {

@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.dto.FavoriteDTO;
+import me.lazy_assedninja.app.repository.Event;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.utils.AbsentLiveData;
@@ -62,7 +63,7 @@ public class FavoriteViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Resource<Result>> result = Transformations.switchMap(favoriteRequest, favorite -> {
+    public LiveData<Event<Resource<Result>>> result = Transformations.switchMap(favoriteRequest, favorite -> {
         if (favorite == null) {
             return AbsentLiveData.create();
         } else {

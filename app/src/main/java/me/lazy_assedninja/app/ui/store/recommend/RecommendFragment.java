@@ -1,6 +1,7 @@
 package me.lazy_assedninja.app.ui.store.recommend;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,10 @@ import me.lazy_assedninja.app.databinding.StoreItemBinding;
 import me.lazy_assedninja.app.ui.store.StoreAdapter;
 import me.lazy_assedninja.app.ui.store.StoreCallback;
 import me.lazy_assedninja.app.vo.Resource;
+import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.utils.LogUtils;
 
 import static java.util.Collections.emptyList;
 
@@ -38,6 +41,8 @@ public class RecommendFragment extends BaseFragment {
 
     @Inject
     public ExecutorUtils executorUtils;
+    @Inject
+    public LogUtils logUtils;
 
     private NavController navController;
     private StoreAdapter adapter;
@@ -118,7 +123,10 @@ public class RecommendFragment extends BaseFragment {
                 adapter.submitList(emptyList());
             }
         });
-        viewModel.result.observe(getViewLifecycleOwner(), resultResource -> {
+        viewModel.result.observe(getViewLifecycleOwner(), event -> {
+            Resource<Result> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null) return;
+
             if (resultResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
             } else if (resultResource.getStatus().equals(Resource.ERROR)) {

@@ -41,6 +41,7 @@ import me.lazy_assedninja.app.databinding.ProfileFragmentBinding;
 import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsCallback;
 import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsFragment;
 import me.lazy_assedninja.app.vo.Resource;
+import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.utils.LogUtils;
 import me.lazy_assedninja.library.utils.TimeUtils;
@@ -139,7 +140,10 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void initData() {
-        viewModel.result.observe(getViewLifecycleOwner(), resultResource -> {
+        viewModel.result.observe(getViewLifecycleOwner(), event -> {
+            Resource<Result> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null) return;
+
             if (resultResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
                 binding.setSignature(timeUtils.now());

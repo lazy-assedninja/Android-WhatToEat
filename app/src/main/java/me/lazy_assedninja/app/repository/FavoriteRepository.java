@@ -72,11 +72,11 @@ public class FavoriteRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<Result>> changeFavoriteStatus(Favorite favorite) {
-        MutableLiveData<Resource<Result>> result = new MutableLiveData<>();
+    public LiveData<Event<Resource<Result>>> changeFavoriteStatus(Favorite favorite) {
+        MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
         executorUtils.networkIO().execute(() -> {
             Resource<Result> resource = Resource.loading(null);
-            result.postValue(resource);
+            result.postValue(new Event<>(resource));
             try {
                 Response<Result> response = (favorite.getStatus()) ?
                         whatToEatService.addToFavorite(favorite).execute() :
@@ -99,7 +99,7 @@ public class FavoriteRepository {
             } catch (IOException e) {
                 resource = Resource.error(e.getMessage(), null);
             }
-            result.postValue(resource);
+            result.postValue(new Event<>(resource));
         });
         return result;
     }

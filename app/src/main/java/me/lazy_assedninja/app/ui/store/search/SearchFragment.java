@@ -31,6 +31,7 @@ import me.lazy_assedninja.app.ui.store.StoreAdapter;
 import me.lazy_assedninja.app.ui.store.StoreCallback;
 import me.lazy_assedninja.app.ui.store.home.HomeFragmentDirections;
 import me.lazy_assedninja.app.vo.Resource;
+import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
 
@@ -69,6 +70,7 @@ public class SearchFragment extends BaseFragment {
 
         initView();
         initSearchView();
+        initSwipeRefreshLayout();
         initData();
     }
 
@@ -132,6 +134,15 @@ public class SearchFragment extends BaseFragment {
         });
     }
 
+    private void initSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_red_light,
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light);
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> viewModel.refresh());
+    }
+
     private void initData() {
         viewModel.stores.observe(getViewLifecycleOwner(), listResource -> {
             binding.swipeRefreshLayout.setRefreshing(false);
@@ -141,7 +152,10 @@ public class SearchFragment extends BaseFragment {
                 adapter.submitList(emptyList());
             }
         });
-        viewModel.result.observe(getViewLifecycleOwner(), resultResource -> {
+        viewModel.result.observe(getViewLifecycleOwner(), event -> {
+            Resource<Result> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null) return;
+
             if (resultResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
             } else if (resultResource.getStatus().equals(Resource.ERROR)) {

@@ -29,6 +29,7 @@ import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.StoreInformationFragmentBinding;
 import me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment;
 import me.lazy_assedninja.app.vo.Resource;
+import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
@@ -115,7 +116,10 @@ public class StoreInformationFragment extends BaseFragment {
         // Add to history
         viewModel.addHistory(id);
 
-        viewModel.result.observe(getViewLifecycleOwner(), resultResource -> {
+        viewModel.result.observe(getViewLifecycleOwner(), event -> {
+            Resource<Result> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null) return;
+
             if (resultResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
             } else if (resultResource.getStatus().equals(Resource.ERROR)) {

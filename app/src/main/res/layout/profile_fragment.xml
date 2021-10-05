@@ -7,6 +7,8 @@
 
         <import type="androidx.lifecycle.LiveData" />
 
+        <import type="me.lazy_assedninja.app.repository.Event" />
+
         <import type="me.lazy_assedninja.app.vo.Resource" />
 
         <import type="me.lazy_assedninja.app.vo.User" />
@@ -19,7 +21,7 @@
 
         <variable
             name="result"
-            type="LiveData&lt;Resource&lt;Result>>" />
+            type="LiveData&lt;Event&lt;Resource&lt;Result>>>" />
 
         <variable
             name="signature"
@@ -65,7 +67,6 @@
                     app:layout_constraintBottom_toTopOf="@id/cv_identity"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:placeholder="@{@drawable/icon}"
                     app:shapeAppearance="@style/Widget.ShapeableImageView.RoundedCorner" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -76,7 +77,6 @@
                     android:text="@string/user_name"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toTopOf="@id/tv_name"
                     app:layout_constraintStart_toEndOf="@id/iv_head_portrait"
                     app:layout_constraintTop_toTopOf="@id/iv_head_portrait"
                     app:layout_constraintVertical_chainStyle="spread"
@@ -92,7 +92,7 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/iv_head_portrait"
                     app:layout_constraintStart_toEndOf="@id/iv_head_portrait"
-                    app:layout_constraintTop_toBottomOf="@id/tv_name_title"
+                    app:layout_constraintTop_toTopOf="@id/iv_head_portrait"
                     tools:text="Name" />
 
                 <androidx.cardview.widget.CardView
@@ -222,7 +222,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:visibleOrGone="@{result.status == Resource.LOADING}" />
+                app:visibleOrGone="@{result.peekContent().status == Resource.LOADING}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
