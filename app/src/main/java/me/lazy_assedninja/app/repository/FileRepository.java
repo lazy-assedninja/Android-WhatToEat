@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.IOException;
+import java.sql.Time;
 
 import javax.inject.Inject;
 
@@ -12,20 +13,26 @@ import me.lazy_assedninja.app.api.ApiErrorResponse;
 import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.ApiSuccessResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
+import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.utils.TimeUtils;
 import okhttp3.MultipartBody;
 import retrofit2.Response;
 
 public class FileRepository {
 
     private final ExecutorUtils executorUtils;
+    private final TimeUtils timeUtils;
+    private final UserDao userDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public FileRepository(ExecutorUtils executorUtils, WhatToEatService whatToEatService) {
+    public FileRepository(ExecutorUtils executorUtils, TimeUtils timeUtils, UserDao userDao, WhatToEatService whatToEatService) {
         this.executorUtils = executorUtils;
+        this.timeUtils = timeUtils;
+        this.userDao = userDao;
         this.whatToEatService = whatToEatService;
     }
 
@@ -39,6 +46,9 @@ public class FileRepository {
                 ApiResponse<Result> apiResponse = ApiResponse.create(response);
                 if (apiResponse instanceof ApiSuccessResponse) {
                     resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
+
+                    // Update update time
+                    userDao.updateFile(timeUtils.now());
                 } else if (apiResponse instanceof ApiEmptyResponse) {
                     resource = Resource.error("No response.", null);
                 } else if (apiResponse instanceof ApiErrorResponse) {

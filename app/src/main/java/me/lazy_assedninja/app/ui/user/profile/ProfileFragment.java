@@ -136,7 +136,6 @@ public class ProfileFragment extends BaseFragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setUser(viewModel.getUser());
         binding.setResult(viewModel.result);
-        binding.setSignature(timeUtils.now());
     }
 
     private void initData() {
@@ -146,7 +145,6 @@ public class ProfileFragment extends BaseFragment {
 
             if (resultResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
-                binding.setSignature(timeUtils.now());
             } else if (resultResource.getStatus().equals(Resource.ERROR)) {
                 showToast(resultResource.getMessage());
             }

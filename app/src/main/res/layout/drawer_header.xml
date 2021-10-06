@@ -25,15 +25,15 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@color/white"
-            app:error="@{@drawable/icon}"
-            app:fallback="@{@drawable/icon}"
-            app:imageUrl="@{user.headPortrait}"
+            app:portraitError="@{@drawable/icon}"
+            app:portraitFallback="@{@drawable/icon}"
+            app:portraitSignature="@{user.updateTime}"
+            app:portraitUrl="@{@string/user_portrait_path + user.headPortrait}"
             app:layout_constraintBottom_toTopOf="@id/tv_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            app:placeholder="@{@drawable/icon}"
             app:shapeAppearance="@style/Widget.ShapeableImageView.RoundedCorner" />
 
         <androidx.appcompat.widget.AppCompatTextView

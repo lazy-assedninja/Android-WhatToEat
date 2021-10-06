@@ -51,11 +51,13 @@ public class ImageBindingAdapters {
             requireAll = false)
     public void bindPortrait(AppCompatImageView imageView, String picturePath, Drawable error,
                              Drawable fallback, String signature) {
+        if (signature == null) signature = "";
         Glide.with(imageView.getContext())
                 .load(secretRepository.URL + picturePath)
                 .error(error)
                 .fallback(fallback)
                 .signature(new ObjectKey(signature))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
     }
 }

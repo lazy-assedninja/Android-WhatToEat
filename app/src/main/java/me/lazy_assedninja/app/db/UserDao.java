@@ -23,6 +23,9 @@ public interface UserDao {
     @Query("UPDATE user SET password = :password, updateTime = :updateTime")
     void updatePassword(String password, String updateTime);
 
+    @Query("UPDATE user SET updateTime = :updateTime")
+    void updateFile(String updateTime);
+
     @Query("DELETE FROM user")
     void delete();
 }

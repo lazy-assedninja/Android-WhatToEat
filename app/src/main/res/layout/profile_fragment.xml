@@ -63,7 +63,7 @@
                     app:portraitError="@{@drawable/icon}"
                     app:portraitFallback="@{@drawable/icon}"
                     app:portraitUrl="@{@string/user_portrait_path + user.headPortrait}"
-                    app:portraitSignature="@{signature}"
+                    app:portraitSignature="@{user.updateTime}"
                     app:layout_constraintBottom_toTopOf="@id/cv_identity"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
