@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import me.lazy_assedninja.app.repository.Event;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.utils.AbsentLiveData;
 import me.lazy_assedninja.app.vo.Resource;
@@ -26,7 +27,7 @@ public class RegisterViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    public LiveData<Resource<Result>> result = Transformations.switchMap(register, user -> {
+    public LiveData<Event<Resource<Result>>> result = Transformations.switchMap(register, user -> {
         if (user == null) {
             return AbsentLiveData.create();
         } else {

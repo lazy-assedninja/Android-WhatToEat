@@ -100,11 +100,11 @@ public class UserRepository {
         executorUtils.diskIO().execute(userDao::delete);
     }
 
-    public LiveData<Resource<Result>> register(User user) {
-        MutableLiveData<Resource<Result>> result = new MutableLiveData<>();
+    public LiveData<Event<Resource<Result>>> register(User user) {
+        MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
         executorUtils.networkIO().execute(() -> {
             Resource<Result> resource = Resource.loading(null);
-            result.postValue(resource);
+            result.postValue(new Event<>(resource));
             try {
                 Response<Result> response = whatToEatService.register(user).execute();
                 ApiResponse<Result> apiResponse = ApiResponse.create(response);
@@ -124,7 +124,7 @@ public class UserRepository {
             } catch (IOException e) {
                 resource = Resource.error(e.getMessage(), null);
             }
-            result.postValue(resource);
+            result.postValue(new Event<>(resource));
         });
         return result;
     }
