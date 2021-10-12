@@ -6,6 +6,10 @@ public class StoreDTO {
     private int tagID;
     private String keyword;
 
+    public StoreDTO(int userID) {
+        this.userID = userID;
+    }
+
     public StoreDTO(int userID, int tagID) {
         this.userID = userID;
         this.tagID = tagID;

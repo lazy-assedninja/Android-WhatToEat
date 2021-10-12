@@ -5,27 +5,37 @@
 
     <data>
 
+        <import type="androidx.lifecycle.LiveData" />
+
+        <import type="me.lazy_assedninja.app.vo.Resource" />
+
+        <import type="java.util.List" />
+
+        <import type="me.lazy_assedninja.app.vo.Store" />
+
+        <import type="me.lazy_assedninja.app.vo.Result" />
+
+        <variable
+            name="stores"
+            type="LiveData&lt;Resource&lt;List&lt;Store>>>" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.store.map.MapFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MapFragment"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/support_map_fragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-<!--        <androidx.fragment.app.FragmentContainerView-->
-<!--            android:id="@+id/support_map_fragment"-->
-<!--            android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" />-->
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary_color"
+            app:visibleOrGone="@{stores.status == Resource.LOADING}" />
+    </FrameLayout>
 </layout>

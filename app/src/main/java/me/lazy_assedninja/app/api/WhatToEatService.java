@@ -74,6 +74,9 @@ public interface WhatToEatService {
     @POST("Store/GetStoreList")
     LiveData<ApiResponse<List<Store>>> getStoreList(@Body StoreDTO storeDTO);
 
+    @POST("Store/GetAllStores")
+    LiveData<ApiResponse<List<Store>>> getAllStores(@Body StoreDTO storeDTO);
+
     @POST("Store/Search")
     LiveData<ApiResponse<List<Store>>> search(@Body StoreDTO storeDTO);
 
@@ -108,7 +111,7 @@ public interface WhatToEatService {
     LiveData<ApiResponse<List<Promotion>>> getPromotionList();
 
     /**
-     * ReservationDao
+     * Reservation
      */
     @POST("Reservation/CreateReservation")
     Call<Result> createReservation(@Body Reservation reservation);

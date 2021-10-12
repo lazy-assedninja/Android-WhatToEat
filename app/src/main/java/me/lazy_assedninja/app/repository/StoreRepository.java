@@ -83,6 +83,31 @@ public class StoreRepository {
         }.asLiveData();
     }
 
+    public LiveData<Resource<List<Store>>> loadAllStores(StoreDTO storeDTO) {
+        return new NetworkBoundResource<List<Store>, List<Store>>(executorUtils) {
+
+            @Override
+            protected LiveData<List<Store>> loadFromDb() {
+                return storeDao.getStores();
+            }
+
+            @Override
+            protected Boolean shouldFetch(@Nullable List<Store> data) {
+                return data == null || data.isEmpty() || networkUtils.isConnected();
+            }
+
+            @Override
+            protected LiveData<ApiResponse<List<Store>>> createCall() {
+                return whatToEatService.getAllStores(storeDTO);
+            }
+
+            @Override
+            protected void saveCallResult(List<Store> item) {
+                storeDao.insertAll(item);
+            }
+        }.asLiveData();
+    }
+
     public LiveData<Resource<List<Store>>> search(StoreDTO storeDTO) {
         return new NetworkBoundResource<List<Store>, List<Store>>(executorUtils) {
 
@@ -110,6 +135,10 @@ public class StoreRepository {
 
     public LiveData<Store> getStoreFromDb(int id) {
         return storeDao.get(id);
+    }
+
+    public LiveData<Store> getStoreFromDb(String name) {
+        return storeDao.get(name);
     }
 
     public void initTags() {

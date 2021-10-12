@@ -6,10 +6,6 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
 
-import androidx.annotation.RequiresPermission;
-
-import javax.inject.Inject;
-
 @SuppressWarnings({"RedundantSuppression", "deprecation", "unused"})
 public class NetworkUtils {
 
@@ -19,7 +15,7 @@ public class NetworkUtils {
         this.context = context;
     }
 
-    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
+    @SuppressWarnings("MissingPermission")
     public boolean isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -6,6 +6,11 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:id="@+id/map_fragment"
+            android:icon="@drawable/ic_map"
+            android:title="@string/navigation_drawer_map" />
+
+        <item
             android:id="@+id/promotion_fragment"
             android:icon="@drawable/ic_promotion"
             android:title="@string/navigation_drawer_promotion" />

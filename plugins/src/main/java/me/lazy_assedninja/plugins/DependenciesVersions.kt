@@ -15,6 +15,9 @@ object DependenciesVersions {
 
     // Google
     val googleMaterial = "1.4.0"
+    val googleAuth = "19.2.0"
+    val googleLocation = "18.0.0"
+    val googleMap = "17.0.1"
     val hilt = "2.38.1"
 
     // Kotlin

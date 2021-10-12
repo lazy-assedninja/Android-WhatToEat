@@ -12,11 +12,11 @@ import com.bumptech.glide.signature.ObjectKey;
 
 import javax.inject.Inject;
 
-import me.lazy_assedninja.app.repository.SecretRepository;
+import me.lazy_assedninja.app.BuildConfig;
 import me.lazy_assedninja.library.utils.LogUtils;
 
 /**
- * Binding adapters that work with LogUtils and SecretRepository.
+ * Binding adapters that work with LogUtils.
  */
 @SuppressWarnings("unused")
 public class ImageBindingAdapters {
@@ -24,12 +24,10 @@ public class ImageBindingAdapters {
     private static final String LOG_TAG = "BindingAdapters";
 
     public final LogUtils logUtils;
-    public final SecretRepository secretRepository;
 
     @Inject
-    public ImageBindingAdapters(LogUtils logUtils, SecretRepository secretRepository) {
+    public ImageBindingAdapters(LogUtils logUtils) {
         this.logUtils = logUtils;
-        this.secretRepository = secretRepository;
     }
 
     @BindingAdapter(value = {"imageUrl", "requestListener", "placeholder", "error", "fallback"},
@@ -38,7 +36,7 @@ public class ImageBindingAdapters {
                           RequestListener<Drawable> listener, Drawable placeholder,
                           Drawable error, Drawable fallback) {
         Glide.with(imageView.getContext())
-                .load(secretRepository.URL + picturePath)
+                .load(BuildConfig.URL + picturePath)
                 .listener(listener)
                 .placeholder(placeholder)
                 .error(error)
@@ -53,7 +51,7 @@ public class ImageBindingAdapters {
                              Drawable fallback, String signature) {
         if (signature == null) signature = "";
         Glide.with(imageView.getContext())
-                .load(secretRepository.URL + picturePath)
+                .load(BuildConfig.URL + picturePath)
                 .error(error)
                 .fallback(fallback)
                 .signature(new ObjectKey(signature))

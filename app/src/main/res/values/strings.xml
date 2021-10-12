@@ -32,6 +32,7 @@
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+    <string name="navigation_drawer_map">Map</string>
     <string name="navigation_drawer_promotion">Promotion</string>
     <string name="navigation_drawer_favorite">Favorite</string>
     <string name="navigation_drawer_history">History</string>
@@ -84,6 +85,11 @@
     <string name="bt_store_information">Information</string>
     <string name="bt_comment">Comment</string>
     <string name="bt_post">Post</string>
+    
+    <!-- Map -->
+    <string name="bt_navigation">Navigation</string>
+    <string name="bt_call">Call</string>
+    <string name="message_call">Calling to: </string>
 
     <!-- Reserve -->
     <string name="tv_reserve">Reserve</string>

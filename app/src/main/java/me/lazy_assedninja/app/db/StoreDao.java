@@ -22,8 +22,14 @@ public interface StoreDao {
     @Query("SELECT * FROM store WHERE id == :id")
     LiveData<Store> get(int id);
 
+    @Query("SELECT * FROM store WHERE name == :name")
+    LiveData<Store> get(String name);
+
     @Query("SELECT * FROM store WHERE tagID == :tagID")
     LiveData<List<Store>> getStores(int tagID);
+
+    @Query("SELECT * FROM store")
+    LiveData<List<Store>> getStores();
 
     @Query("SELECT * FROM store WHERE name LIKE :keyword")
     LiveData<List<Store>> search(String keyword);

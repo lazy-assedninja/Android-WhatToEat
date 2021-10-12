@@ -12,7 +12,7 @@
 build/
 release/
 
-# Local configuration file (sdk path, etc)
+# Local configuration file (sdk path, etc, serect keys)
 /local.properties
 
 # Log Files
@@ -42,6 +42,3 @@ release/
 
 # Android Profiling
 *.hprof
-
-# Project configs
-SecretRepository.java

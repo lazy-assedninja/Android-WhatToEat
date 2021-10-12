@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-android'
     id 'androidx.navigation.safeargs'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -91,6 +92,10 @@ dependencies {
     // Retrofit2
     implementation ThirdParty.retrofit
     implementation ThirdParty.retrofitGson
+
+    // Google Service
+    implementation Google.map
+    implementation Google.googleLocation
 
     // Test
     testImplementation Junit.junit

@@ -100,7 +100,7 @@ public class ProfileFragment extends BaseFragment {
         initView();
         initData();
         initFile();
-        initOnActivityForResult();
+        initActivityResult();
     }
 
     private void initView() {
@@ -171,7 +171,7 @@ public class ProfileFragment extends BaseFragment {
         }
     }
 
-    private void initOnActivityForResult() {
+    private void initActivityResult() {
         requestPermissions = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
                     if (permissions.containsValue(true)) {

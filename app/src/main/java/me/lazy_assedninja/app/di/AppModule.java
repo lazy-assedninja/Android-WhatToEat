@@ -13,6 +13,7 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
+import me.lazy_assedninja.app.BuildConfig;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.FavoriteDao;
 import me.lazy_assedninja.app.db.HistoryDao;
@@ -22,7 +23,6 @@ import me.lazy_assedninja.app.db.StoreDao;
 import me.lazy_assedninja.app.db.TagDao;
 import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
-import me.lazy_assedninja.app.repository.SecretRepository;
 import me.lazy_assedninja.app.utils.LiveDataCallAdapterFactory;
 import me.lazy_assedninja.library.utils.DisplayUtils;
 import me.lazy_assedninja.library.utils.NetworkUtils;
@@ -41,9 +41,9 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public WhatToEatService provideService(SecretRepository secretRepository) {
+    public WhatToEatService provideService() {
         return new Retrofit.Builder()
-                .baseUrl(secretRepository.URL)
+                .baseUrl(BuildConfig.URL)
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(new OkHttpClient()

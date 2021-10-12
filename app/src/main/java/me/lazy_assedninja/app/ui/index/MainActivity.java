@@ -1,16 +1,21 @@
 package me.lazy_assedninja.app.ui.index;
 
+import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -31,6 +36,11 @@ import me.lazy_assedninja.library.utils.DisplayUtils;
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity {
 
+    private final String[] PERMISSIONS = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+
     private MainActivityBinding binding;
     private MainViewModel viewModel;
 
@@ -39,6 +49,8 @@ public class MainActivity extends BaseActivity {
 
     private NavController navController;
     private SearchView searchView;
+
+    private ActivityResultLauncher<String[]> requestPermissions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +63,9 @@ public class MainActivity extends BaseActivity {
         initNavigationUI();
         initDrawer();
         initDrawerHeader();
-        initTagData();
+        initBottomNavigation();
+        initActivityResult();
+        initData();
     }
 
     private void initView() {
@@ -164,6 +178,14 @@ public class MainActivity extends BaseActivity {
             int itemID = menuItem.getItemId();
             if (viewModel.isLoggedIn()) {
                 navController.navigate(R.id.action_to_login_fragment);
+            } else if (itemID == R.id.map_fragment) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    navController.navigate(R.id.action_to_map_fragment);
+                } else {
+                    requestPermissions.launch(PERMISSIONS);
+                }
             } else if (itemID == R.id.promotion_fragment) {
                 navController.navigate(R.id.action_to_promotion_fragment);
             } else if (itemID == R.id.favorite_fragment) {
@@ -176,6 +198,20 @@ public class MainActivity extends BaseActivity {
             binding.drawer.close();
             return false;
         });
+        binding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    private void initDrawerHeader() {
+        DataBindingComponent dataBindingComponent =
+                EntryPoints.get(getApplicationContext(), ImageDataBindingComponent.class);
+        DrawerHeaderBinding drawerHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(),
+                R.layout.drawer_header, binding.navigationView, false, dataBindingComponent);
+        drawerHeaderBinding.setLifecycleOwner(this);
+        drawerHeaderBinding.setUser(viewModel.getUser());
+        binding.navigationView.addHeaderView(drawerHeaderBinding.getRoot());
+    }
+
+    private void initBottomNavigation() {
         binding.bottomNavigationView.setOnItemReselectedListener(menuItem -> {
             // Prevent fragment recreating when user double click.
         });
@@ -196,17 +232,16 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void initDrawerHeader() {
-        DataBindingComponent dataBindingComponent =
-                EntryPoints.get(getApplicationContext(), ImageDataBindingComponent.class);
-        DrawerHeaderBinding drawerHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(),
-                R.layout.drawer_header, binding.navigationView, false, dataBindingComponent);
-        drawerHeaderBinding.setLifecycleOwner(this);
-        drawerHeaderBinding.setUser(viewModel.getUser());
-        binding.navigationView.addHeaderView(drawerHeaderBinding.getRoot());
+    private void initActivityResult() {
+        requestPermissions = registerForActivityResult(
+                new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
+                    if (permissions.containsValue(true)) {
+                        navController.navigate(R.id.action_to_map_fragment);
+                    }
+                });
     }
 
-    private void initTagData() {
+    private void initData() {
         viewModel.initTags();
     }
 }
