@@ -20,7 +20,7 @@ public class User {
     private String createTime;
     private String updateTime;
 
-    @Embedded
+    @Embedded(prefix = "google_")
     private GoogleAccount googleAccount;
 
     public User() {

@@ -1,16 +1,26 @@
 package me.lazy_assedninja.app.ui.user.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
@@ -25,6 +35,10 @@ public class LoginFragment extends BaseFragment {
     private LoginViewModel viewModel;
 
     private NavController navController;
+
+    private GoogleSignInClient googleSignInClient;
+
+    private ActivityResultLauncher<Intent> googleSignIn;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -45,7 +59,9 @@ public class LoginFragment extends BaseFragment {
         navController = Navigation.findNavController(view);
 
         initView();
+        initGoogleSignIn();
         initData();
+        initActivityResult();
     }
 
     private void initView() {
@@ -70,9 +86,33 @@ public class LoginFragment extends BaseFragment {
                 viewModel.login(email, password);
             }
         });
+        binding.btGoogleLogin.setOnClickListener(v ->
+                googleSignIn.launch(googleSignInClient.getSignInIntent()));
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setUser(viewModel.user);
+    }
+
+    private void initGoogleSignIn() {
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions googleSignInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+        if (getContext() == null) return;
+        googleSignInClient = GoogleSignIn.getClient(getContext(), googleSignInOptions);
+
+    }
+
+    private void initActivityResult() {
+        googleSignIn = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+                    Task<GoogleSignInAccount> task =
+                            GoogleSignIn.getSignedInAccountFromIntent(activityResult.getData());
+                    handleSignInResult(task);
+                }
+        );
     }
 
     private void initData() {
@@ -84,9 +124,23 @@ public class LoginFragment extends BaseFragment {
                 showToast(R.string.success_login);
                 viewModel.loggedIn(userResource.getData().getId(), userResource.getData().getEmail());
                 navController.navigateUp();
+                googleSignInClient.signOut();
             } else if (userResource.getStatus().equals(Resource.ERROR)) {
                 showToast(userResource.getMessage());
             }
         });
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Bind google account
+            viewModel.googleLogin(account.getId());
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            showToast("Sign In Result: Failed code = " + e.getStatusCode());
+        }
     }
 }

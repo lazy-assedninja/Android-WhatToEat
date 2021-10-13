@@ -105,7 +105,6 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/cd_check"
             android:src="@drawable/ic_check"
-            android:tint="@color/white"
             app:backgroundTint="@color/colorAccent"
             app:fabCustomSize="48dp"
             app:layout_constraintBottom_toBottomOf="@id/card_view"

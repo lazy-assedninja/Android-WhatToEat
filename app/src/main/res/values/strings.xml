@@ -100,6 +100,7 @@
     <string name="reservation_amount"> 人</string>
 
     <!-- Settings -->
+    <string name="bt_bind_google">Bind Google</string>
     <string name="bt_reset_password">Reset password</string>
     <string name="bt_logout">Logout</string>
     <string name="bt_report">Report</string>
@@ -111,6 +112,7 @@
     <!-- ContentDescription -->
     <string name="cd_home">Home</string>
     <string name="cd_check">Check</string>
+    <string name="cd_google_login">Google Login</string>
 
     <!-- Success -->
     <string name="success_login">Login success.</string>

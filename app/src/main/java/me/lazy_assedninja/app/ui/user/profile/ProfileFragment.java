@@ -25,6 +25,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,13 +74,15 @@ public class ProfileFragment extends BaseFragment {
     private NavController navController;
     private Context context;
 
+    private GoogleSignInClient googleSignInClient;
+    private File headPortrait;
+    private Uri portraitUri;
+
     private ActivityResultLauncher<String[]> requestPermissions;
     private ActivityResultLauncher<Uri> takePicture;
     private ActivityResultLauncher<String> getContent;
-    private ActivityResultLauncher<Intent> startActivityForResult;
-
-    private File headPortrait;
-    private Uri portraitUri;
+    private ActivityResultLauncher<Intent> imageCrop;
+    private ActivityResultLauncher<Intent> googleSignIn;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -98,6 +107,7 @@ public class ProfileFragment extends BaseFragment {
         if (getContext() != null) context = getContext();
 
         initView();
+        initGoogleSignIn();
         initData();
         initFile();
         initActivityResult();
@@ -125,6 +135,8 @@ public class ProfileFragment extends BaseFragment {
             );
             portraitOptionsFragment.show(getParentFragmentManager(), "portrait_options");
         });
+        binding.btBindGoogle.setOnClickListener(v ->
+                googleSignIn.launch(googleSignInClient.getSignInIntent()));
         binding.btResetPassword.setOnClickListener(v ->
                 navController.navigate(R.id.action_to_reset_password_fragment));
         binding.btLogout.setOnClickListener(v -> {
@@ -135,11 +147,36 @@ public class ProfileFragment extends BaseFragment {
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setUser(viewModel.getUser());
-        binding.setResult(viewModel.result);
+        binding.setBindGoogleResult(viewModel.bindGoogleResult);
+        binding.setUploadResult(viewModel.uploadResult);
+    }
+
+    private void initGoogleSignIn() {
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions googleSignInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+        if (getContext() == null) return;
+        googleSignInClient = GoogleSignIn.getClient(getContext(), googleSignInOptions);
+
     }
 
     private void initData() {
-        viewModel.result.observe(getViewLifecycleOwner(), event -> {
+        viewModel.bindGoogleResult.observe(getViewLifecycleOwner(), event -> {
+            Resource<Result> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null) return;
+
+            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+                showToast(resultResource.getData().getResult());
+
+                googleSignInClient.signOut();
+            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+                showToast(resultResource.getMessage());
+            }
+        });
+        viewModel.uploadResult.observe(getViewLifecycleOwner(), event -> {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
@@ -180,7 +217,7 @@ public class ProfileFragment extends BaseFragment {
                 });
         takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
             if (result) {
-                startActivityForResult.launch(getImageCropIntent());
+                imageCrop.launch(getImageCropIntent());
             }
         });
         getContent = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
@@ -194,15 +231,22 @@ public class ProfileFragment extends BaseFragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    startActivityForResult.launch(getImageCropIntent());
+                    imageCrop.launch(getImageCropIntent());
                 }
         );
-        startActivityForResult = registerForActivityResult(
+        imageCrop = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), activityResult -> {
                     String fileName = viewModel.getUserEmail() + ".jpg";
                     viewModel.uploadFile(MultipartBody.Part.createFormData("file",
                             fileName, RequestBody.create(headPortrait,
                                     MediaType.parse("multipart/form-data"))));
+                }
+        );
+        googleSignIn = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), activityResult -> {
+                    Task<GoogleSignInAccount> task =
+                            GoogleSignIn.getSignedInAccountFromIntent(activityResult.getData());
+                    handleSignInResult(task);
                 }
         );
     }
@@ -221,5 +265,19 @@ public class ProfileFragment extends BaseFragment {
         intent.putExtra("outputX", 128);
         intent.putExtra("outputY", 128);
         return intent;
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Bind google account
+            viewModel.bindGoogleAccount(account.getId(), account.getEmail(), account.getDisplayName(),
+                    account.getPhotoUrl() == null ? "" : account.getPhotoUrl().getPath());
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            showToast("Sign In Result: Failed code = " + e.getStatusCode());
+        }
     }
 }

@@ -4,25 +4,33 @@ public class UserDTO {
 
     private String email;
     private String password;
+    private String googleID;
     private String oldPassword;
     private String newPassword;
     private String headPortrait;
     private String verificationCode;
 
+    private boolean isGoogleLogin;
+
     public UserDTO(String email) {
         this.email = email;
     }
 
-    public UserDTO(String email, String password) {
-        this.email = email;
+    public UserDTO(String emailOrGoogleID, String password, boolean isGoogleLogin) {
+        if (isGoogleLogin) {
+            this.googleID = emailOrGoogleID;
+        } else {
+            this.email = emailOrGoogleID;
+        }
         this.password = password;
+        this.isGoogleLogin = isGoogleLogin;
     }
 
     public UserDTO(String email, String oldPasswordOrVerificationCode, String newPassword, boolean isReset) {
         this.email = email;
-        if (isReset){
+        if (isReset) {
             this.oldPassword = oldPasswordOrVerificationCode;
-        }else{
+        } else {
             this.verificationCode = oldPasswordOrVerificationCode;
         }
         this.newPassword = newPassword;
@@ -74,5 +82,21 @@ public class UserDTO {
 
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
+    }
+
+    public String getGoogleID() {
+        return googleID;
+    }
+
+    public void setGoogleID(String googleID) {
+        this.googleID = googleID;
+    }
+
+    public boolean isGoogleLogin() {
+        return isGoogleLogin;
+    }
+
+    public void setGoogleLogin(boolean googleLogin) {
+        isGoogleLogin = googleLogin;
     }
 }

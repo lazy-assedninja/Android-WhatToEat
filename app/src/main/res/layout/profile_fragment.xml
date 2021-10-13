@@ -20,7 +20,11 @@
             type="LiveData&lt;User>" />
 
         <variable
-            name="result"
+            name="bindGoogleResult"
+            type="LiveData&lt;Event&lt;Resource&lt;Result>>>" />
+
+        <variable
+            name="uploadResult"
             type="LiveData&lt;Event&lt;Resource&lt;Result>>>" />
 
         <variable
@@ -157,11 +161,11 @@
                 android:id="@+id/bt_reset_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:gravity="start|center_vertical"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:paddingStart="24dp"
+                android:layout_marginTop="16dp"
                 android:paddingEnd="16dp"
                 android:text="@string/bt_reset_password"
                 android:textColor="@color/black"
@@ -172,6 +176,28 @@
                 app:iconPadding="12dp"
                 app:iconTint="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/cl_header"
+                app:rippleColor="@color/primary_color" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bt_bind_google"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                app:visibleOrGone="@{user.googleAccount == null}"
+                android:gravity="start|center_vertical"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="16dp"
+                android:text="@string/bt_bind_google"
+                android:textColor="@color/black"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="0dp"
+                app:icon="@drawable/ic_google"
+                app:iconGravity="start"
+                app:iconPadding="12dp"
+                app:iconTint="@null"
+                app:layout_constraintTop_toBottomOf="@id/bt_reset_password"
                 app:rippleColor="@color/primary_color" />
 
             <com.google.android.material.button.MaterialButton
@@ -193,7 +219,7 @@
                 app:iconPadding="16dp"
                 app:iconSize="20dp"
                 app:iconTint="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/bt_reset_password"
+                app:layout_constraintTop_toBottomOf="@id/bt_bind_google"
                 app:rippleColor="@color/primary_color" />
 
             <com.google.android.material.button.MaterialButton
@@ -217,12 +243,13 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
+                android:elevation="8dp"
                 android:indeterminateTint="@color/primary_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:visibleOrGone="@{result.peekContent().status == Resource.LOADING}" />
+                app:visibleOrGone="@{bindGoogleResult.peekContent().status == Resource.LOADING || uploadResult.peekContent().status == Resource.LOADING}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

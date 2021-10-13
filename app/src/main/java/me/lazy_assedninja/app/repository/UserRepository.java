@@ -15,6 +15,7 @@ import me.lazy_assedninja.app.api.ApiSuccessResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.dto.UserDTO;
+import me.lazy_assedninja.app.vo.GoogleAccount;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.User;
@@ -58,7 +59,11 @@ public class UserRepository {
 
             @Override
             protected LiveData<ApiResponse<User>> createCall() {
-                return whatToEatService.login(userDTO);
+                if (userDTO.isGoogleLogin()) {
+                    return whatToEatService.googleLogin(userDTO);
+                } else {
+                    return whatToEatService.login(userDTO);
+                }
             }
 
             @Override
@@ -113,6 +118,35 @@ public class UserRepository {
 
                     // Update data
                     setUserEmail(user.getEmail());
+                } else if (apiResponse instanceof ApiEmptyResponse) {
+                    resource = Resource.error("No response.", null);
+                } else if (apiResponse instanceof ApiErrorResponse) {
+                    resource = Resource.error(
+                            ((ApiErrorResponse<Result>) apiResponse).getErrorMessage(), null);
+                } else {
+                    resource = Resource.error("Unknown error.", null);
+                }
+            } catch (IOException e) {
+                resource = Resource.error(e.getMessage(), null);
+            }
+            result.postValue(new Event<>(resource));
+        });
+        return result;
+    }
+
+    public LiveData<Event<Resource<Result>>> bindGoogleAccount(GoogleAccount googleAccount) {
+        MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
+        executorUtils.networkIO().execute(() -> {
+            Resource<Result> resource = Resource.loading(null);
+            result.postValue(new Event<>(resource));
+            try {
+                Response<Result> response = whatToEatService.bindGoogleAccount(googleAccount).execute();
+                ApiResponse<Result> apiResponse = ApiResponse.create(response);
+                if (apiResponse instanceof ApiSuccessResponse) {
+                    resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
+
+                    // Update data
+                    userDao.updateGoogleID(googleAccount.getGoogleID(), timeUtils.now());
                 } else if (apiResponse instanceof ApiEmptyResponse) {
                     resource = Resource.error("No response.", null);
                 } else if (apiResponse instanceof ApiErrorResponse) {

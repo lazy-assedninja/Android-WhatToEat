@@ -13,6 +13,7 @@ import me.lazy_assedninja.app.repository.Event;
 import me.lazy_assedninja.app.repository.FileRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.utils.AbsentLiveData;
+import me.lazy_assedninja.app.vo.GoogleAccount;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.User;
@@ -21,10 +22,11 @@ import okhttp3.MultipartBody;
 @HiltViewModel
 public class ProfileViewModel extends ViewModel {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
     private FileRepository fileRepository;
 
     private final MutableLiveData<PictureDTO> uploadFile = new MutableLiveData<>();
+    private final MutableLiveData<GoogleAccount> bindGoogle = new MutableLiveData<>();
 
     @Inject
     public ProfileViewModel(UserRepository userRepository, FileRepository fileRepository) {
@@ -45,7 +47,19 @@ public class ProfileViewModel extends ViewModel {
         userRepository.setUserID(0);
     }
 
-    public LiveData<Event<Resource<Result>>> result = Transformations.switchMap(uploadFile, pictureDTO -> {
+    public LiveData<Event<Resource<Result>>> bindGoogleResult = Transformations.switchMap(bindGoogle, userDTO -> {
+        if (userDTO == null) {
+            return AbsentLiveData.create();
+        } else {
+            return userRepository.bindGoogleAccount(userDTO);
+        }
+    });
+
+    public void bindGoogleAccount(String googleID, String email, String name, String pictureURL){
+        bindGoogle.setValue(new GoogleAccount(googleID, email, name, pictureURL, userRepository.getUserID()));
+    }
+
+    public LiveData<Event<Resource<Result>>> uploadResult = Transformations.switchMap(uploadFile, pictureDTO -> {
         if (pictureDTO == null) {
             return AbsentLiveData.create();
         } else {

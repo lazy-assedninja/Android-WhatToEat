@@ -64,8 +64,8 @@ public class MainActivity extends BaseActivity {
         initDrawer();
         initDrawerHeader();
         initBottomNavigation();
-        initActivityResult();
         initData();
+        initActivityResult();
     }
 
     private void initView() {
@@ -232,6 +232,10 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private void initData() {
+        viewModel.initTags();
+    }
+
     private void initActivityResult() {
         requestPermissions = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
@@ -239,9 +243,5 @@ public class MainActivity extends BaseActivity {
                         navController.navigate(R.id.action_to_map_fragment);
                     }
                 });
-    }
-
-    private void initData() {
-        viewModel.initTags();
     }
 }

@@ -94,6 +94,7 @@ dependencies {
     implementation ThirdParty.retrofitGson
 
     // Google Service
+    implementation Google.auth
     implementation Google.map
     implementation Google.googleLocation
 

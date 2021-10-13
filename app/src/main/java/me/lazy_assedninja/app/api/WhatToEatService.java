@@ -6,7 +6,6 @@ import java.util.List;
 
 import me.lazy_assedninja.app.dto.CommentDTO;
 import me.lazy_assedninja.app.dto.FavoriteDTO;
-import me.lazy_assedninja.app.dto.GoogleAccountDTO;
 import me.lazy_assedninja.app.dto.PostDTO;
 import me.lazy_assedninja.app.dto.ReservationDTO;
 import me.lazy_assedninja.app.dto.StoreDTO;
@@ -42,13 +41,13 @@ public interface WhatToEatService {
     Call<Result> register(@Body User user);
 
     @POST("User/BindGoogleAccount")
-    LiveData<ApiResponse<Result>> bindGoogleAccount(@Body GoogleAccount googleAccount);
+    Call<Result> bindGoogleAccount(@Body GoogleAccount googleAccount);
 
     @POST("User/Login")
     LiveData<ApiResponse<User>> login(@Body UserDTO userDTO);
 
     @POST("User/GoogleLogin")
-    LiveData<ApiResponse<User>> googleLogin(@Body GoogleAccountDTO googleAccountDTO);
+    LiveData<ApiResponse<User>> googleLogin(@Body UserDTO userDTO);
 
     @POST("User/ResetPassword")
     Call<Result> resetPassword(@Body UserDTO userDTO);
