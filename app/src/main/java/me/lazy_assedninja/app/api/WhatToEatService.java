@@ -21,7 +21,6 @@ import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.app.vo.User;
 import okhttp3.MultipartBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -38,10 +37,10 @@ public interface WhatToEatService {
      * User
      */
     @POST("User/Register")
-    Call<Result> register(@Body User user);
+    LiveData<ApiResponse<Result>> register(@Body User user);
 
     @POST("User/BindGoogleAccount")
-    Call<Result> bindGoogleAccount(@Body GoogleAccount googleAccount);
+    LiveData<ApiResponse<Result>> bindGoogleAccount(@Body GoogleAccount googleAccount);
 
     @POST("User/Login")
     LiveData<ApiResponse<User>> login(@Body UserDTO userDTO);
@@ -50,19 +49,13 @@ public interface WhatToEatService {
     LiveData<ApiResponse<User>> googleLogin(@Body UserDTO userDTO);
 
     @POST("User/ResetPassword")
-    Call<Result> resetPassword(@Body UserDTO userDTO);
+    LiveData<ApiResponse<Result>> resetPassword(@Body UserDTO userDTO);
 
     @POST("User/SendVerificationCode")
-    Call<Result> sendVerificationCode(@Body UserDTO userDTO);
+    LiveData<ApiResponse<Result>> sendVerificationCode(@Body UserDTO userDTO);
 
     @POST("User/ForgetPassword")
-    Call<Result> forgetPassword(@Body UserDTO userDTO);
-
-    @POST("User/UpdatePermissionDeadline")
-    Call<ApiResponse<Result>> updatePermissionDeadline(@Body UserDTO userDTO);
-
-    @POST("User/UpdateHeadPortrait")
-    Call<Result> updateHeadPortrait(@Body UserDTO userDTO);
+    LiveData<ApiResponse<Result>> forgetPassword(@Body UserDTO userDTO);
 
     @POST("User/GetHeadPortrait")
     LiveData<ApiResponse<User>> getHeadPortrait(@Body UserDTO userDTO);
@@ -95,13 +88,13 @@ public interface WhatToEatService {
      * Favorite
      */
     @POST("Favorite/AddToFavorite")
-    Call<Result> addToFavorite(@Body Favorite favorite);
+    LiveData<ApiResponse<Result>> addToFavorite(@Body Favorite favorite);
 
     @POST("Favorite/GetFavoriteList")
     LiveData<ApiResponse<List<Store>>> getFavoriteList(@Body FavoriteDTO favoriteDTO);
 
     @POST("Favorite/CancelFavorite")
-    Call<Result> cancelFavorite(@Body Favorite favorite);
+    LiveData<ApiResponse<Result>> cancelFavorite(@Body Favorite favorite);
 
     /**
      * Promotion
@@ -113,13 +106,13 @@ public interface WhatToEatService {
      * Reservation
      */
     @POST("Reservation/CreateReservation")
-    Call<Result> createReservation(@Body Reservation reservation);
+    LiveData<ApiResponse<Result>> createReservation(@Body Reservation reservation);
 
     @POST("Reservation/GetReservationList")
     LiveData<ApiResponse<List<Reservation>>> getReservationList(@Body ReservationDTO reservationDTO);
 
     @POST("Reservation/CancelReservation")
-    Call<Result> cancelReservation(@Body ReservationDTO reservationDTO);
+    LiveData<ApiResponse<Result>> cancelReservation(@Body ReservationDTO reservationDTO);
 
     /**
      * CustomService
@@ -135,5 +128,5 @@ public interface WhatToEatService {
      **/
     @Multipart
     @POST("File/Upload")
-    Call<Result> upload(@Part MultipartBody.Part file);
+    LiveData<ApiResponse<Result>> upload(@Part MultipartBody.Part file);
 }

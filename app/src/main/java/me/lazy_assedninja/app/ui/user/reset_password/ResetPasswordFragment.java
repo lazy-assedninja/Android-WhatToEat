@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ResetPasswordFragmentBinding;
 import me.lazy_assedninja.app.vo.Resource;
+import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
@@ -74,7 +75,10 @@ public class ResetPasswordFragment extends BaseFragment {
     }
 
     private void initData() {
-        viewModel.result.observe(getViewLifecycleOwner(), resultResource -> {
+        viewModel.result.observe(getViewLifecycleOwner(), event -> {
+            Resource<Result> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null) return;
+
             if (resultResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
                 navController.navigateUp();

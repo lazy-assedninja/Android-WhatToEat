@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ForgetPasswordFragmentBinding;
 import me.lazy_assedninja.app.vo.Resource;
+import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
@@ -94,14 +95,20 @@ public class ForgetPasswordFragment extends BaseFragment {
     }
 
     private void initData() {
-        viewModel.sendVerificationResult.observe(getViewLifecycleOwner(), resultResource -> {
+        viewModel.sendVerificationResult.observe(getViewLifecycleOwner(), event -> {
+            Resource<Result> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null) return;
+
             if (resultResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
             } else if (resultResource.getStatus().equals(Resource.ERROR)) {
                 showToast(resultResource.getMessage());
             }
         });
-        viewModel.forgetPasswordResult.observe(getViewLifecycleOwner(), resultResource -> {
+        viewModel.forgetPasswordResult.observe(getViewLifecycleOwner(), event -> {
+            Resource<Result> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null) return;
+
             if (resultResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
                 navController.navigateUp();

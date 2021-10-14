@@ -7,13 +7,15 @@
 
         <import type="androidx.lifecycle.LiveData" />
 
+        <import type="me.lazy_assedninja.app.repository.Event" />
+
         <import type="me.lazy_assedninja.app.vo.Resource" />
 
         <import type="me.lazy_assedninja.app.vo.Result" />
 
         <variable
             name="result"
-            type="LiveData&lt;Resource&lt;Result>>" />
+            type="LiveData&lt;Event&lt;Resource&lt;Result>>>" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -136,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/colorAccent"
-                android:enabled="@{result.status != Resource.LOADING}"
+                android:enabled="@{result.peekContent().status != Resource.LOADING}"
                 android:text="@string/bt_choose"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/til_date"
@@ -174,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/colorAccent"
-                android:enabled="@{result.status != Resource.LOADING}"
+                android:enabled="@{result.peekContent().status != Resource.LOADING}"
                 android:text="@string/bt_choose"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/til_time"
@@ -188,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:backgroundTint="@color/primary_color"
-                android:enabled="@{result.status != Resource.LOADING}"
+                android:enabled="@{result.peekContent().status != Resource.LOADING}"
                 android:paddingStart="32dp"
                 android:paddingEnd="32dp"
                 android:text="@string/bt_reserve"
@@ -204,7 +206,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:visibleOrGone="@{result.status == Resource.LOADING}" />
+                app:visibleOrGone="@{result.peekContent().status == Resource.LOADING}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

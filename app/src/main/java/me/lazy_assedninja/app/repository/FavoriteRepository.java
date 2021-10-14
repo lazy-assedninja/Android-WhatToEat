@@ -2,17 +2,12 @@ package me.lazy_assedninja.app.repository;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import me.lazy_assedninja.app.api.ApiEmptyResponse;
-import me.lazy_assedninja.app.api.ApiErrorResponse;
 import me.lazy_assedninja.app.api.ApiResponse;
-import me.lazy_assedninja.app.api.ApiSuccessResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.FavoriteDao;
 import me.lazy_assedninja.app.db.StoreDao;
@@ -23,25 +18,21 @@ import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
 import me.lazy_assedninja.library.utils.NetworkUtils;
-import me.lazy_assedninja.library.utils.TimeUtils;
-import retrofit2.Response;
 
 public class FavoriteRepository {
 
     private final ExecutorUtils executorUtils;
     private final NetworkUtils networkUtils;
-    private final TimeUtils timeUtils;
     private final StoreDao storeDao;
     private final FavoriteDao favoriteDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
     public FavoriteRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
-                              TimeUtils timeUtils, StoreDao storeDao, FavoriteDao favoriteDao,
+                              StoreDao storeDao, FavoriteDao favoriteDao,
                               WhatToEatService whatToEatService) {
         this.executorUtils = executorUtils;
         this.networkUtils = networkUtils;
-        this.timeUtils = timeUtils;
         this.storeDao = storeDao;
         this.favoriteDao = favoriteDao;
         this.whatToEatService = whatToEatService;
@@ -73,34 +64,19 @@ public class FavoriteRepository {
     }
 
     public LiveData<Event<Resource<Result>>> changeFavoriteStatus(Favorite favorite) {
-        MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        executorUtils.networkIO().execute(() -> {
-            Resource<Result> resource = Resource.loading(null);
-            result.postValue(new Event<>(resource));
-            try {
-                Response<Result> response = (favorite.getStatus()) ?
-                        whatToEatService.addToFavorite(favorite).execute() :
-                        whatToEatService.cancelFavorite(favorite).execute();
-                ApiResponse<Result> apiResponse = ApiResponse.create(response);
-                if (apiResponse instanceof ApiSuccessResponse) {
-                    resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
+        return new NetworkResource<Result>(executorUtils) {
 
-                    // Update Db data
-                    executorUtils.diskIO().execute(() -> favoriteDao.updateFavoriteStatus(favorite.getStoreID(),
-                            favorite.getStatus(), timeUtils.now()));
-                } else if (apiResponse instanceof ApiEmptyResponse) {
-                    resource = Resource.error("No response.", null);
-                } else if (apiResponse instanceof ApiErrorResponse) {
-                    resource = Resource.error(
-                            ((ApiErrorResponse<Result>) apiResponse).getErrorMessage(), null);
-                } else {
-                    resource = Resource.error("Unknown error.", null);
-                }
-            } catch (IOException e) {
-                resource = Resource.error(e.getMessage(), null);
+            @Override
+            protected LiveData<ApiResponse<Result>> createCall() {
+                return (favorite.getStatus()) ?
+                        whatToEatService.addToFavorite(favorite) :
+                        whatToEatService.cancelFavorite(favorite);
             }
-            result.postValue(new Event<>(resource));
-        });
-        return result;
+
+            @Override
+            protected void saveCallResult(Result item) {
+                favoriteDao.updateFavoriteStatus(favorite.getStoreID(), favorite.getStatus());
+            }
+        }.asLiveData();
     }
 }

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.dto.UserDTO;
+import me.lazy_assedninja.app.repository.Event;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.utils.AbsentLiveData;
 import me.lazy_assedninja.app.vo.Resource;
@@ -27,7 +28,7 @@ public class ForgetPasswordViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    public LiveData<Resource<Result>> sendVerificationResult = Transformations.switchMap(sendVerificationCode, userDTO -> {
+    public LiveData<Event<Resource<Result>>> sendVerificationResult = Transformations.switchMap(sendVerificationCode, userDTO -> {
         if (userDTO == null) {
             return AbsentLiveData.create();
         } else {
@@ -35,7 +36,7 @@ public class ForgetPasswordViewModel extends ViewModel {
         }
     });
 
-    public LiveData<Resource<Result>> forgetPasswordResult = Transformations.switchMap(forgetPassword, userDTO -> {
+    public LiveData<Event<Resource<Result>>> forgetPasswordResult = Transformations.switchMap(forgetPassword, userDTO -> {
         if (userDTO == null) {
             return AbsentLiveData.create();
         } else {

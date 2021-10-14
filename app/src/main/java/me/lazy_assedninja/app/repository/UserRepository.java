@@ -4,14 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import java.io.IOException;
-
-import me.lazy_assedninja.app.api.ApiEmptyResponse;
-import me.lazy_assedninja.app.api.ApiErrorResponse;
 import me.lazy_assedninja.app.api.ApiResponse;
-import me.lazy_assedninja.app.api.ApiSuccessResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.dto.UserDTO;
@@ -21,7 +15,6 @@ import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.User;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
 import me.lazy_assedninja.library.utils.TimeUtils;
-import retrofit2.Response;
 
 public class UserRepository {
 
@@ -106,144 +99,76 @@ public class UserRepository {
     }
 
     public LiveData<Event<Resource<Result>>> register(User user) {
-        MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        executorUtils.networkIO().execute(() -> {
-            Resource<Result> resource = Resource.loading(null);
-            result.postValue(new Event<>(resource));
-            try {
-                Response<Result> response = whatToEatService.register(user).execute();
-                ApiResponse<Result> apiResponse = ApiResponse.create(response);
-                if (apiResponse instanceof ApiSuccessResponse) {
-                    resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
+        return new NetworkResource<Result>(executorUtils) {
 
-                    // Update data
-                    setUserEmail(user.getEmail());
-                } else if (apiResponse instanceof ApiEmptyResponse) {
-                    resource = Resource.error("No response.", null);
-                } else if (apiResponse instanceof ApiErrorResponse) {
-                    resource = Resource.error(
-                            ((ApiErrorResponse<Result>) apiResponse).getErrorMessage(), null);
-                } else {
-                    resource = Resource.error("Unknown error.", null);
-                }
-            } catch (IOException e) {
-                resource = Resource.error(e.getMessage(), null);
+            @Override
+            protected LiveData<ApiResponse<Result>> createCall() {
+                return whatToEatService.register(user);
             }
-            result.postValue(new Event<>(resource));
-        });
-        return result;
+
+            @Override
+            protected void saveCallResult(Result item) {
+                setUserEmail(user.getEmail());
+            }
+        }.asLiveData();
     }
 
     public LiveData<Event<Resource<Result>>> bindGoogleAccount(GoogleAccount googleAccount) {
-        MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        executorUtils.networkIO().execute(() -> {
-            Resource<Result> resource = Resource.loading(null);
-            result.postValue(new Event<>(resource));
-            try {
-                Response<Result> response = whatToEatService.bindGoogleAccount(googleAccount).execute();
-                ApiResponse<Result> apiResponse = ApiResponse.create(response);
-                if (apiResponse instanceof ApiSuccessResponse) {
-                    resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
+        return new NetworkResource<Result>(executorUtils) {
 
-                    // Update data
-                    userDao.updateGoogleID(googleAccount.getGoogleID(), timeUtils.now());
-                } else if (apiResponse instanceof ApiEmptyResponse) {
-                    resource = Resource.error("No response.", null);
-                } else if (apiResponse instanceof ApiErrorResponse) {
-                    resource = Resource.error(
-                            ((ApiErrorResponse<Result>) apiResponse).getErrorMessage(), null);
-                } else {
-                    resource = Resource.error("Unknown error.", null);
-                }
-            } catch (IOException e) {
-                resource = Resource.error(e.getMessage(), null);
+            @Override
+            protected LiveData<ApiResponse<Result>> createCall() {
+                return whatToEatService.bindGoogleAccount(googleAccount);
             }
-            result.postValue(new Event<>(resource));
-        });
-        return result;
+
+            @Override
+            protected void saveCallResult(Result item) {
+                userDao.updateGoogleID(googleAccount.getGoogleID(), timeUtils.now());
+            }
+        }.asLiveData();
     }
 
-    public LiveData<Resource<Result>> resetPassword(UserDTO userDTO) {
-        MutableLiveData<Resource<Result>> result = new MutableLiveData<>();
-        executorUtils.networkIO().execute(() -> {
-            Resource<Result> resource = Resource.loading(null);
-            result.postValue(resource);
-            try {
-                Response<Result> response = whatToEatService.resetPassword(userDTO).execute();
-                ApiResponse<Result> apiResponse = ApiResponse.create(response);
-                if (apiResponse instanceof ApiSuccessResponse) {
-                    resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
+    public LiveData<Event<Resource<Result>>> resetPassword(UserDTO userDTO) {
+        return new NetworkResource<Result>(executorUtils) {
 
-                    // Update data
-                    userDao.updatePassword(userDTO.getNewPassword(), timeUtils.now());
-                } else if (apiResponse instanceof ApiEmptyResponse) {
-                    resource = Resource.error("No response.", null);
-                } else if (apiResponse instanceof ApiErrorResponse) {
-                    resource = Resource.error(
-                            ((ApiErrorResponse<Result>) apiResponse).getErrorMessage(), null);
-                } else {
-                    resource = Resource.error("Unknown error.", null);
-                }
-            } catch (IOException e) {
-                resource = Resource.error(e.getMessage(), null);
+            @Override
+            protected LiveData<ApiResponse<Result>> createCall() {
+                return whatToEatService.resetPassword(userDTO);
             }
-            result.postValue(resource);
-        });
-        return result;
+
+            @Override
+            protected void saveCallResult(Result item) {
+                userDao.updatePassword(userDTO.getNewPassword(), timeUtils.now());
+            }
+        }.asLiveData();
     }
 
-    public LiveData<Resource<Result>> sendVerificationCode(UserDTO userDTO) {
-        MutableLiveData<Resource<Result>> result = new MutableLiveData<>();
-        executorUtils.networkIO().execute(() -> {
-            Resource<Result> resource = Resource.loading(null);
-            result.postValue(resource);
-            try {
-                Response<Result> response = whatToEatService.sendVerificationCode(userDTO).execute();
-                ApiResponse<Result> apiResponse = ApiResponse.create(response);
-                if (apiResponse instanceof ApiSuccessResponse) {
-                    resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
-                } else if (apiResponse instanceof ApiEmptyResponse) {
-                    resource = Resource.error("No response.", null);
-                } else if (apiResponse instanceof ApiErrorResponse) {
-                    resource = Resource.error(
-                            ((ApiErrorResponse<Result>) apiResponse).getErrorMessage(), null);
-                } else {
-                    resource = Resource.error("Unknown error.", null);
-                }
-            } catch (IOException e) {
-                resource = Resource.error(e.getMessage(), null);
+    public LiveData<Event<Resource<Result>>> sendVerificationCode(UserDTO userDTO) {
+        return new NetworkResource<Result>(executorUtils) {
+
+            @Override
+            protected LiveData<ApiResponse<Result>> createCall() {
+                return whatToEatService.sendVerificationCode(userDTO);
             }
-            result.postValue(resource);
-        });
-        return result;
+
+            @Override
+            protected void saveCallResult(Result item) {
+            }
+        }.asLiveData();
     }
 
-    public LiveData<Resource<Result>> forgetPassword(UserDTO userDTO) {
-        MutableLiveData<Resource<Result>> result = new MutableLiveData<>();
-        executorUtils.networkIO().execute(() -> {
-            Resource<Result> resource = Resource.loading(null);
-            result.postValue(resource);
-            try {
-                Response<Result> response = whatToEatService.forgetPassword(userDTO).execute();
-                ApiResponse<Result> apiResponse = ApiResponse.create(response);
-                if (apiResponse instanceof ApiSuccessResponse) {
-                    resource = Resource.success(((ApiSuccessResponse<Result>) apiResponse).getBody());
+    public LiveData<Event<Resource<Result>>> forgetPassword(UserDTO userDTO) {
+        return new NetworkResource<Result>(executorUtils) {
 
-                    // Update data
-                    userDao.updatePassword(userDTO.getNewPassword(), timeUtils.now());
-                } else if (apiResponse instanceof ApiEmptyResponse) {
-                    resource = Resource.error("No response.", null);
-                } else if (apiResponse instanceof ApiErrorResponse) {
-                    resource = Resource.error(
-                            ((ApiErrorResponse<Result>) apiResponse).getErrorMessage(), null);
-                } else {
-                    resource = Resource.error("Unknown error.", null);
-                }
-            } catch (IOException e) {
-                resource = Resource.error(e.getMessage(), null);
+            @Override
+            protected LiveData<ApiResponse<Result>> createCall() {
+                return whatToEatService.forgetPassword(userDTO);
             }
-            result.postValue(resource);
-        });
-        return result;
+
+            @Override
+            protected void saveCallResult(Result item) {
+                userDao.updatePassword(userDTO.getNewPassword(), timeUtils.now());
+            }
+        }.asLiveData();
     }
 }

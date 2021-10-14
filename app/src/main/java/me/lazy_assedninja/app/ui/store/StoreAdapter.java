@@ -31,6 +31,7 @@ public class StoreAdapter extends BaseListAdapter<Store, StoreItemBinding> {
             @Override
             public boolean areContentsTheSame(@NonNull Store oldItem, @NonNull Store newItem) {
                 return oldItem.getName().equals(newItem.getName()) &&
+                        oldItem.isFavorite() == newItem.isFavorite() &&
                         oldItem.getUpdateTime().equals(newItem.getUpdateTime());
             }
         });

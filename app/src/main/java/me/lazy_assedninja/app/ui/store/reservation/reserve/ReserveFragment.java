@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ReserveFragmentBinding;
 import me.lazy_assedninja.app.vo.Resource;
+import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 
 @AndroidEntryPoint
@@ -124,7 +125,10 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
         if (getArguments() == null) return;
         id = getArguments().getInt("store_id");
 
-        viewModel.result.observe(getViewLifecycleOwner(), resultResource -> {
+        viewModel.result.observe(getViewLifecycleOwner(), event -> {
+            Resource<Result> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null) return;
+
             if (resultResource.getStatus().equals(Resource.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
                 dismiss();
