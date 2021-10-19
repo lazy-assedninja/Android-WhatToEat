@@ -1,5 +1,7 @@
 package me.lazy_assedninja.app.ui.store.comment;
 
+import static java.util.Collections.emptyList;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,19 +9,31 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import javax.inject.Inject;
+
+import dagger.hilt.EntryPoints;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
+import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.CommentFragmentBinding;
-import me.lazy_assedninja.library.ui.BaseFragment;
+import me.lazy_assedninja.app.ui.store.comment.create_comment.CreateCommentFragment;
+import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
+import me.lazy_assedninja.library.utils.ExecutorUtils;
 
 @AndroidEntryPoint
-public class CommentFragment extends BaseFragment {
+public class CommentFragment extends BaseBottomSheetDialogFragment {
 
     private CommentFragmentBinding binding;
     private CommentViewModel viewModel;
+
+    @Inject
+    public ExecutorUtils executorUtils;
+
+    private CommentAdapter adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -37,5 +51,46 @@ public class CommentFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(CommentViewModel.class);
+
+        initView();
+        initData();
+    }
+
+    private void initView() {
+        DataBindingComponent dataBindingComponent = (getActivity() != null) ?
+                EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
+        adapter = new CommentAdapter(executorUtils, dataBindingComponent);
+        binding.rv.setAdapter(adapter);
+        binding.btAddComment.setOnClickListener(v -> {
+            if (viewModel.isLoggedIn()) {
+                showToast(R.string.error_please_login_first);
+                return;
+            }
+
+            CreateCommentFragment createCommentFragment = new CreateCommentFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("store_id", viewModel.getId());
+            createCommentFragment.setArguments(bundle);
+            createCommentFragment.show(getParentFragmentManager(), "add_comment");
+        });
+
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.setComments(viewModel.comments);
+    }
+
+    private void initData() {
+        if (getArguments() == null) return;
+        int id = getArguments().getInt("store_id");
+        viewModel.setId(id);
+
+        viewModel.requestComments(id);
+        viewModel.comments.observe(getViewLifecycleOwner(), listResource -> {
+            if (listResource.getData() != null) {
+                adapter.submitList(listResource.getData());
+            } else {
+                adapter.submitList(emptyList());
+            }
+            binding.setSize(adapter.getItemCount());
+        });
     }
 }

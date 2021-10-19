@@ -46,19 +46,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@{store.star}"
+                android:text="@{store.star.length() == 0 ? @string/tv_00 : store.star}"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name"
                 tools:text="0.0" />
 
-            <RatingBar
+            <androidx.appcompat.widget.AppCompatRatingBar
                 android:id="@+id/rating_bar"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:progressTint="@color/primary_color"
+                android:rating="@{Float.parseFloat(store.star.length() == 0 ? @string/tv_00 : store.star)}"
+                android:secondaryProgressTint="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="@id/tv_star"
                 app:layout_constraintStart_toEndOf="@id/tv_star"
                 app:layout_constraintTop_toTopOf="@id/tv_star" />

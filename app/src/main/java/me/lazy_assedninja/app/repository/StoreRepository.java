@@ -14,6 +14,7 @@ import me.lazy_assedninja.app.db.StoreDao;
 import me.lazy_assedninja.app.db.TagDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.dto.StoreDTO;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Reservation;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;

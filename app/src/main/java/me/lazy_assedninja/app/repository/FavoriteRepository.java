@@ -12,6 +12,7 @@ import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.FavoriteDao;
 import me.lazy_assedninja.app.db.StoreDao;
 import me.lazy_assedninja.app.dto.FavoriteDTO;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;

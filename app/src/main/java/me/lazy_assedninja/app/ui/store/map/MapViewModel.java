@@ -31,10 +31,6 @@ public class MapViewModel extends ViewModel {
         this.storeRepository = storeRepository;
     }
 
-    public int getUserID() {
-        return userRepository.getUserID();
-    }
-
     public LiveData<Resource<List<Store>>> stores = Transformations.switchMap(storeRequest, request -> {
         if (request == null) {
             return AbsentLiveData.create();
@@ -44,6 +40,6 @@ public class MapViewModel extends ViewModel {
     });
 
     public void requestStore() {
-        storeRequest.setValue(new StoreDTO(getUserID()));
+        storeRequest.setValue(new StoreDTO(userRepository.getUserID()));
     }
 }

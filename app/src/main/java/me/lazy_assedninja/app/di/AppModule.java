@@ -15,6 +15,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import me.lazy_assedninja.app.BuildConfig;
 import me.lazy_assedninja.app.api.WhatToEatService;
+import me.lazy_assedninja.app.db.CommentDao;
 import me.lazy_assedninja.app.db.FavoriteDao;
 import me.lazy_assedninja.app.db.HistoryDao;
 import me.lazy_assedninja.app.db.PromotionDao;
@@ -78,7 +79,6 @@ public class AppModule {
         return database.tagDao();
     }
 
-
     @Provides
     @Singleton
     public StoreDao provideStoreDao(WhatToEatDatabase database) {
@@ -87,14 +87,20 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public PromotionDao providePromotionDao(WhatToEatDatabase database) {
-        return database.promotionDao();
+    public FavoriteDao provideFavoriteDao(WhatToEatDatabase database) {
+        return database.favoriteDao();
     }
 
     @Provides
     @Singleton
-    public FavoriteDao provideFavoriteDao(WhatToEatDatabase database) {
-        return database.favoriteDao();
+    public CommentDao provideCommentDao(WhatToEatDatabase database) {
+        return database.commentDao();
+    }
+
+    @Provides
+    @Singleton
+    public PromotionDao providePromotionDao(WhatToEatDatabase database) {
+        return database.promotionDao();
     }
 
     @Provides

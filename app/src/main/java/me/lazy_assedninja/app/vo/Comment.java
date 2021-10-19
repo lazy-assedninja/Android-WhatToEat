@@ -1,7 +1,13 @@
 package me.lazy_assedninja.app.vo;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Comment {
 
+    @PrimaryKey
     private int id;
     private String star;
     private String content;
@@ -11,6 +17,18 @@ public class Comment {
     private int userID;
     private String userName;
     private String userPicture;
+
+    public Comment() {
+    }
+
+    @Ignore
+    public Comment(String star, String content, String createTime, int storeID, int userID) {
+        this.star = star;
+        this.content = content;
+        this.createTime = createTime;
+        this.storeID = storeID;
+        this.userID = userID;
+    }
 
     public int getId() {
         return id;

@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.dto.ReservationDTO;
-import me.lazy_assedninja.app.repository.Event;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.repository.ReservationRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.utils.AbsentLiveData;
@@ -34,10 +34,6 @@ public class ReservationViewModel extends ViewModel {
         this.reservationRepository = reservationRepository;
     }
 
-    public int getUserID() {
-        return userRepository.getUserID();
-    }
-
     public final LiveData<Resource<List<Reservation>>> reservations = Transformations.switchMap(reservationRequest, request -> {
         if (request == null) {
             return AbsentLiveData.create();
@@ -47,8 +43,8 @@ public class ReservationViewModel extends ViewModel {
     });
 
     public void requestReservation() {
-        if (reservationRequest.getValue() == null || reservationRequest.getValue().getId() != getUserID()) {
-            reservationRequest.setValue(new ReservationDTO("user", getUserID()));
+        if (reservationRequest.getValue() == null || reservationRequest.getValue().getId() != userRepository.getUserID()) {
+            reservationRequest.setValue(new ReservationDTO("user", userRepository.getUserID()));
         }
     }
 

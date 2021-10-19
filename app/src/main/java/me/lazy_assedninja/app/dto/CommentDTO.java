@@ -4,6 +4,10 @@ public class CommentDTO {
 
     private int storeID;
 
+    public CommentDTO(int storeID) {
+        this.storeID = storeID;
+    }
+
     public int getStoreID() {
         return storeID;
     }

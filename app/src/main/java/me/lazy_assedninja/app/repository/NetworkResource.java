@@ -9,6 +9,7 @@ import me.lazy_assedninja.app.api.ApiEmptyResponse;
 import me.lazy_assedninja.app.api.ApiErrorResponse;
 import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.ApiSuccessResponse;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.utils.ExecutorUtils;

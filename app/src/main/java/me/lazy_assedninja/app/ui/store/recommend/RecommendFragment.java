@@ -1,7 +1,8 @@
 package me.lazy_assedninja.app.ui.store.recommend;
 
+import static java.util.Collections.emptyList;
+
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,6 @@ import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
 import me.lazy_assedninja.library.utils.LogUtils;
-
-import static java.util.Collections.emptyList;
 
 @AndroidEntryPoint
 public class RecommendFragment extends BaseFragment {

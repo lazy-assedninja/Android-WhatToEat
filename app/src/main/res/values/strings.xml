@@ -60,6 +60,7 @@
     <string name="hint_amount">Amount</string>
     <string name="hint_date">Date</string>
     <string name="hint_time">Time</string>
+    <string name="hint_content">Content</string>
 
     <!-- Login -->
     <string name="bg_login">Login Background</string>
@@ -85,11 +86,16 @@
     <string name="bt_store_information">Information</string>
     <string name="bt_comment">Comment</string>
     <string name="bt_post">Post</string>
+    <string name="tv_empty">Empty.</string>
     
     <!-- Map -->
     <string name="bt_navigation">Navigation</string>
     <string name="bt_call">Call</string>
-    <string name="message_call">Calling to: </string>
+    <string name="toast_call">Calling to: </string>
+    <string name="tv_00">0.0</string>
+
+    <!-- Comment -->
+    <string name="tv_comment">Comment</string>
 
     <!-- Reserve -->
     <string name="tv_reserve">Reserve</string>
@@ -113,6 +119,7 @@
     <string name="cd_home">Home</string>
     <string name="cd_check">Check</string>
     <string name="cd_google_login">Google Login</string>
+    <string name="cd_add">Add</string>
 
     <!-- Success -->
     <string name="success_login">Login success.</string>
@@ -129,6 +136,7 @@
     <string name="error_amount_can_not_be_null">Amount can\'t be empty.</string>
     <string name="error_date_can_not_be_null">Date can\'t be empty.</string>
     <string name="error_time_can_not_be_null">Time can\'t be empty.</string>
+    <string name="error_content_can_not_be_null">Content can\'t be empty.</string>
     <string name="error_passwords_are_not_the_same">Password are not the same.</string>
     <string name="error_data_empty">Data empty.</string>
     <string name="error_please_login_first">Please login first.</string>

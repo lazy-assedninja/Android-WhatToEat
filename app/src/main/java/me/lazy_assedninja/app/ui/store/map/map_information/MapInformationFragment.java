@@ -81,7 +81,7 @@ public class MapInformationFragment extends BaseBottomSheetDialogFragment {
         binding.btCall.setOnClickListener(v -> {
             Store store = viewModel.getStore();
             if (!store.getPhone().isEmpty()) {
-                showToast(getString(R.string.message_call) + store.getPhone());
+                showToast(getString(R.string.toast_call) + store.getPhone());
             }
         });
 

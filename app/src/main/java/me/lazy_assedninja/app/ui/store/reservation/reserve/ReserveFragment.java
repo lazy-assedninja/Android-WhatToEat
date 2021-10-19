@@ -29,8 +29,6 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
     private ReserveFragmentBinding binding;
     private ReserveViewModel viewModel;
 
-    private int id;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +111,7 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
             } else if (time.isEmpty()) {
                 binding.tilTime.setError(getString(R.string.error_time_can_not_be_null));
             } else {
-                viewModel.reserve(name, phone, amount, date + " " + time, id);
+                viewModel.reserve(name, phone, amount, date + " " + time);
             }
         });
 
@@ -123,7 +121,8 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
 
     private void initData() {
         if (getArguments() == null) return;
-        id = getArguments().getInt("store_id");
+        int id = getArguments().getInt("store_id");
+        viewModel.setId(id);
 
         viewModel.result.observe(getViewLifecycleOwner(), event -> {
             Resource<Result> resultResource = event.getContentIfNotHandled();

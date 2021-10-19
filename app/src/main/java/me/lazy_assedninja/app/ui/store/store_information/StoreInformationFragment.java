@@ -27,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.StoreInformationFragmentBinding;
+import me.lazy_assedninja.app.ui.store.comment.CommentFragment;
 import me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
@@ -39,8 +40,6 @@ public class StoreInformationFragment extends BaseFragment {
     private StoreInformationViewModel viewModel;
 
     private NavController navController;
-
-    private int id;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -91,18 +90,34 @@ public class StoreInformationFragment extends BaseFragment {
             }
             viewModel.setFavoriteRequest();
         });
-        binding.ivComment.setOnClickListener(v ->
-                navController.navigate(StoreInformationFragmentDirections.actionToCommentFragment(id)));
+        binding.ivComment.setOnClickListener(v -> {
+            CommentFragment commentFragment = new CommentFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("store_id", viewModel.getId());
+            commentFragment.setArguments(bundle);
+            commentFragment.show(getParentFragmentManager(), "comment");
+        });
         binding.ivPost.setOnClickListener(v ->
-                navController.navigate(StoreInformationFragmentDirections.actionToPostFragment(id)));
+                navController.navigate(StoreInformationFragmentDirections.actionToPostFragment(viewModel.getId())));
         binding.btReserve.setOnClickListener(v -> {
+            if (viewModel.isLoggedIn()) {
+                showToast(R.string.error_please_login_first);
+                return;
+            }
+
             ReserveFragment reserveFragment = new ReserveFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("store_id", id);
+            bundle.putInt("store_id", viewModel.getId());
             reserveFragment.setArguments(bundle);
             reserveFragment.show(getParentFragmentManager(), "reserve");
         });
         binding.btAddReport.setOnClickListener(v -> {
+            if (viewModel.isLoggedIn()) {
+                showToast(R.string.error_please_login_first);
+                return;
+            }
+
+            //TODO Add Report
         });
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -110,8 +125,9 @@ public class StoreInformationFragment extends BaseFragment {
     }
 
     private void initData() {
-        id = StoreInformationFragmentArgs.fromBundle(getArguments()).getStoreID();
+        int id = StoreInformationFragmentArgs.fromBundle(getArguments()).getStoreID();
         binding.setStore(viewModel.getStore(id));
+        viewModel.setId(id);
 
         // Add to history
         viewModel.addHistory(id);

@@ -7,7 +7,7 @@
 
         <import type="androidx.lifecycle.LiveData" />
 
-        <import type="me.lazy_assedninja.app.repository.Event" />
+        <import type="me.lazy_assedninja.app.vo.Event" />
 
         <import type="me.lazy_assedninja.app.vo.Resource" />
 
@@ -36,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_light"
-        android:clipToPadding="true"
         android:paddingBottom="?android:actionBarSize"
         tools:context=".ui.user.profile.ProfileFragment">
 
@@ -66,6 +65,7 @@
                     android:src="@drawable/icon"
                     app:portraitError="@{@drawable/icon}"
                     app:portraitFallback="@{@drawable/icon}"
+                    app:portraitPlaceholder="@{@drawable/icon}"
                     app:portraitUrl="@{@string/user_portrait_path + user.headPortrait}"
                     app:portraitSignature="@{user.updateTime}"
                     app:layout_constraintBottom_toTopOf="@id/cv_identity"
@@ -138,7 +138,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:text="@{user.role}"
-                            android:textColor="#000"
+                            android:textColor="@color/black"
                             android:textSize="30sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"

@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.dto.StoreDTO;
-import me.lazy_assedninja.app.repository.Event;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
@@ -40,11 +40,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     public boolean isLoggedIn() {
-        return getUserID() == 0;
-    }
-
-    public int getUserID() {
-        return userRepository.getUserID();
+        return userRepository.getUserID() == 0;
     }
 
     public LiveData<Resource<List<Store>>> stores = Transformations.switchMap(storeRequest, request -> {
@@ -56,7 +52,7 @@ public class HomeViewModel extends ViewModel {
     });
 
     public void requestStore() {
-        storeRequest.setValue(new StoreDTO(getUserID(), 1));
+        storeRequest.setValue(new StoreDTO(userRepository.getUserID(), 1));
     }
 
     public void refresh() {
@@ -77,7 +73,7 @@ public class HomeViewModel extends ViewModel {
         Favorite favorite = favoriteRequest.getValue();
         if (favorite == null || favorite.getStoreID() != storeID ||
                 (favorite.getStoreID() == storeID && favorite.getStatus() == isFavorite)) {
-            favoriteRequest.setValue(new Favorite(getUserID(), storeID, !isFavorite));
+            favoriteRequest.setValue(new Favorite(userRepository.getUserID(), storeID, !isFavorite));
         }
     }
 }

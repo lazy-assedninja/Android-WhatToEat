@@ -5,21 +5,77 @@
 
     <data>
 
+        <import type="androidx.lifecycle.LiveData" />
+
+        <import type="me.lazy_assedninja.app.vo.Event" />
+
+        <import type="me.lazy_assedninja.app.vo.Resource" />
+
+        <import type="java.util.List" />
+
+        <import type="me.lazy_assedninja.app.vo.Comment" />
+
+        <variable
+            name="comments"
+            type="LiveData&lt;Resource&lt;List&lt;Comment>>>" />
+
+        <variable
+            name="size"
+            type="java.lang.Integer" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.store.comment.CommentFragment">
 
+        <View
+            android:layout_width="32dp"
+            android:layout_height="6dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_expandable_mark" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="16dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/comment_item" />
+
+        <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_margin="32dp"
+            android:indeterminateTint="@color/primary_color"
+            app:visibleOrGone="@{comments.status == Resource.LOADING}" />
+
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingTop="64dp"
+            android:paddingBottom="64dp"
+            android:text="@string/tv_empty"
+            android:textSize="32sp"
+            app:visibleOrGone="@{size == 0 &amp;&amp; comments.status != Resource.LOADING}" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bt_add_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CommentFragment"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/primary_color"
+            android:contentDescription="@string/cd_add"
+            android:src="@drawable/ic_add"
+            app:tint="@null"
+            app:visibleOrGone="@{comments.status != Resource.LOADING}" />
+    </FrameLayout>
 </layout>

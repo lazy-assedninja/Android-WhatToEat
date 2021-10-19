@@ -27,11 +27,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public boolean isLoggedIn() {
-        return getUserID() == 0;
-    }
-
-    public int getUserID() {
-        return userRepository.getUserID();
+        return userRepository.getUserID() == 0;
     }
 
     public LiveData<User> getUser() {

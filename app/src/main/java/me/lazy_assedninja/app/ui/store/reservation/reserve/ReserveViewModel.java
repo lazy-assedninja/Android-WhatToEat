@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import me.lazy_assedninja.app.repository.Event;
 import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.utils.AbsentLiveData;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Reservation;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
@@ -24,14 +24,16 @@ public class ReserveViewModel extends ViewModel {
 
     private final MutableLiveData<Reservation> reserve = new MutableLiveData<>();
 
+    private int id;
+
     @Inject
     public ReserveViewModel(UserRepository userRepository, StoreRepository storeRepository) {
         this.userRepository = userRepository;
         this.storeRepository = storeRepository;
     }
 
-    public int getUserID() {
-        return userRepository.getUserID();
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LiveData<Event<Resource<Result>>> result = Transformations.switchMap(reserve, reservation -> {
@@ -42,7 +44,7 @@ public class ReserveViewModel extends ViewModel {
         }
     });
 
-    public void reserve(String name, String phone, String amount, String time, int storeID) {
-        reserve.setValue(new Reservation(name, phone, amount, time, storeID, getUserID()));
+    public void reserve(String name, String phone, String amount, String time) {
+        reserve.setValue(new Reservation(name, phone, amount, time, id, userRepository.getUserID()));
     }
 }

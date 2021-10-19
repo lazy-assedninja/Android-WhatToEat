@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import me.lazy_assedninja.app.repository.Event;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.HistoryRepository;
 import me.lazy_assedninja.app.repository.StoreRepository;
@@ -27,8 +27,10 @@ public class StoreInformationViewModel extends ViewModel {
     private final HistoryRepository historyRepository;
     private FavoriteRepository favoriteRepository;
 
-    public LiveData<Store> store;
     private final MutableLiveData<Favorite> favoriteRequest = new MutableLiveData<>();
+
+    private int id;
+    public LiveData<Store> store;
 
     @Inject
     public StoreInformationViewModel(UserRepository userRepository, StoreRepository storeRepository,
@@ -40,11 +42,15 @@ public class StoreInformationViewModel extends ViewModel {
     }
 
     public boolean isLoggedIn() {
-        return getUserID() == 0;
+        return userRepository.getUserID() == 0;
     }
 
-    public int getUserID() {
-        return userRepository.getUserID();
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LiveData<Store> getStore(int id) {
@@ -69,7 +75,7 @@ public class StoreInformationViewModel extends ViewModel {
         boolean isFavorite = store.getValue().isFavorite();
         Favorite favorite = favoriteRequest.getValue();
         if (favorite == null || favorite.getStatus() == isFavorite) {
-            favoriteRequest.setValue(new Favorite(getUserID(), storeID, !isFavorite));
+            favoriteRequest.setValue(new Favorite(userRepository.getUserID(), storeID, !isFavorite));
         }
     }
 

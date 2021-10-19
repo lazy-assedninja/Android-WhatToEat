@@ -45,13 +45,14 @@ public class ImageBindingAdapters {
                 .into(imageView);
     }
 
-    @BindingAdapter(value = {"portraitUrl", "portraitError", "portraitFallback", "portraitSignature"},
-            requireAll = false)
-    public void bindPortrait(AppCompatImageView imageView, String picturePath, Drawable error,
-                             Drawable fallback, String signature) {
+    @BindingAdapter(value = {"portraitUrl", "portraitError", "portraitPlaceholder", "portraitFallback",
+            "portraitSignature"}, requireAll = false)
+    public void bindPortrait(AppCompatImageView imageView, String picturePath, Drawable placeholder,
+                             Drawable error, Drawable fallback, String signature) {
         if (signature == null) signature = "";
         Glide.with(imageView.getContext())
                 .load(BuildConfig.URL + picturePath)
+                .placeholder(placeholder)
                 .error(error)
                 .fallback(fallback)
                 .signature(new ObjectKey(signature))

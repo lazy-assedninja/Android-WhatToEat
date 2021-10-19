@@ -9,6 +9,7 @@ import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.dto.UserDTO;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.GoogleAccount;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;

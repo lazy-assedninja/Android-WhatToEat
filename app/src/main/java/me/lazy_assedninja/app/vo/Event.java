@@ -1,4 +1,4 @@
-package me.lazy_assedninja.app.repository;
+package me.lazy_assedninja.app.vo;
 
 import javax.annotation.Nullable;
 

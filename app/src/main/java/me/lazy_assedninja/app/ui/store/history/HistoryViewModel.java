@@ -10,7 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import me.lazy_assedninja.app.repository.Event;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.HistoryRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
@@ -42,11 +42,7 @@ public class HistoryViewModel extends ViewModel {
     }
 
     public boolean isLoggedIn() {
-        return getUserID() == 0;
-    }
-
-    public int getUserID() {
-        return userRepository.getUserID();
+        return userRepository.getUserID() == 0;
     }
 
     public LiveData<List<Store>> stores = Transformations.switchMap(storeRequest, ids -> {
@@ -76,7 +72,7 @@ public class HistoryViewModel extends ViewModel {
         Favorite favorite = favoriteRequest.getValue();
         if (favorite == null || favorite.getStoreID() != storeID ||
                 (favorite.getStoreID() == storeID && favorite.getStatus() == isFavorite)) {
-            favoriteRequest.setValue(new Favorite(getUserID(), storeID, !isFavorite));
+            favoriteRequest.setValue(new Favorite(userRepository.getUserID(), storeID, !isFavorite));
         }
     }
 }
