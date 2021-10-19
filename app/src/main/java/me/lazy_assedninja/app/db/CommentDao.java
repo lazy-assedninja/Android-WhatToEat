@@ -28,6 +28,6 @@ public interface CommentDao {
     @Query("DELETE FROM comment WHERE storeID == :storeID")
     void deleteByStoreID(int storeID);
 
-    @Query("SELECT COUNT(id) FROM comment")
-    int getCommentSize();
+    @Query("SELECT id FROM comment ORDER BY id DESC LIMIT 1")
+    int getLastCommentID();
 }
