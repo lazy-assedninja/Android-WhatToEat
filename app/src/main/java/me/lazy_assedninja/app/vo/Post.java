@@ -1,7 +1,12 @@
 package me.lazy_assedninja.app.vo;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Post {
 
+    @PrimaryKey
     private int id;
     private String title;
     private String content;

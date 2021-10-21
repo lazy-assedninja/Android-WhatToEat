@@ -28,6 +28,7 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.StoreInformationFragmentBinding;
 import me.lazy_assedninja.app.ui.store.comment.CommentFragment;
+import me.lazy_assedninja.app.ui.store.post.PostFragment;
 import me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
@@ -97,8 +98,13 @@ public class StoreInformationFragment extends BaseFragment {
             commentFragment.setArguments(bundle);
             commentFragment.show(getParentFragmentManager(), "comment");
         });
-        binding.ivPost.setOnClickListener(v ->
-                navController.navigate(StoreInformationFragmentDirections.actionToPostFragment(viewModel.getId())));
+        binding.ivPost.setOnClickListener(v -> {
+            PostFragment postFragment = new PostFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("store_id", viewModel.getId());
+            postFragment.setArguments(bundle);
+            postFragment.show(getParentFragmentManager(), "reserve");
+        });
         binding.btReserve.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
                 showToast(R.string.error_please_login_first);

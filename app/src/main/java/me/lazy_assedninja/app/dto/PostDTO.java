@@ -4,6 +4,10 @@ public class PostDTO {
 
     private int storeID;
 
+    public PostDTO(int storeID) {
+        this.storeID = storeID;
+    }
+
     public int getStoreID() {
         return storeID;
     }

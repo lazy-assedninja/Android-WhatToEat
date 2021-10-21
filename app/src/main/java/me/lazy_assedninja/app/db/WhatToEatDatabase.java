@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase;
 
 import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.app.vo.History;
+import me.lazy_assedninja.app.vo.Post;
 import me.lazy_assedninja.app.vo.Promotion;
 import me.lazy_assedninja.app.vo.Reservation;
 import me.lazy_assedninja.app.vo.Store;
@@ -15,7 +16,8 @@ import me.lazy_assedninja.app.vo.User;
  * Database descriptions.
  */
 @Database(entities = {
-        User.class, Tag.class, Store.class, Comment.class, Promotion.class, History.class, Reservation.class
+        User.class, Tag.class, Store.class, Comment.class, Post.class, Promotion.class, History.class,
+        Reservation.class
 }, version = 1, exportSchema = false)
 public abstract class WhatToEatDatabase extends RoomDatabase {
 
@@ -28,6 +30,8 @@ public abstract class WhatToEatDatabase extends RoomDatabase {
     public abstract FavoriteDao favoriteDao();
 
     public abstract CommentDao commentDao();
+
+    public abstract PostDao postDao();
 
     public abstract PromotionDao promotionDao();
 

@@ -78,9 +78,6 @@ public interface WhatToEatService {
     @POST("Store/GetCommentList")
     LiveData<ApiResponse<List<Comment>>> getCommentList(@Body CommentDTO commentDTO);
 
-    @POST("Store/CreatePost")
-    LiveData<ApiResponse<Result>> createPost(@Body Post post);
-
     @POST("Store/GetPostList")
     LiveData<ApiResponse<List<Post>>> getPostList(@Body PostDTO postDTO);
 

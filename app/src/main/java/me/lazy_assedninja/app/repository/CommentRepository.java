@@ -1,4 +1,4 @@
-package me.lazy_assedninja.app.dto;
+package me.lazy_assedninja.app.repository;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -12,8 +12,7 @@ import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.CommentDao;
 import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
-import me.lazy_assedninja.app.repository.NetworkBoundResource;
-import me.lazy_assedninja.app.repository.NetworkResource;
+import me.lazy_assedninja.app.dto.CommentDTO;
 import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Resource;

@@ -180,25 +180,6 @@
         <argument
             android:name="storeID"
             app:argType="integer" />
-
-        <action
-            android:id="@+id/action_to_post_fragment"
-            app:destination="@id/post_fragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/post_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.post.PostFragment"
-        android:label="@string/navigation_post_fragment"
-        tools:layout="@layout/post_fragment">
-
-        <argument
-            android:name="storeID"
-            app:argType="integer" />
     </fragment>
 
     <fragment

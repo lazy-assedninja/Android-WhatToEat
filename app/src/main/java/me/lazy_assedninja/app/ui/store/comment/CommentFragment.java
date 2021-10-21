@@ -13,6 +13,8 @@ import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import dagger.hilt.EntryPoints;
@@ -21,6 +23,7 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.CommentFragmentBinding;
 import me.lazy_assedninja.app.ui.store.comment.create_comment.CreateCommentFragment;
+import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
 
@@ -85,12 +88,14 @@ public class CommentFragment extends BaseBottomSheetDialogFragment {
 
         viewModel.requestComments(id);
         viewModel.comments.observe(getViewLifecycleOwner(), listResource -> {
-            if (listResource.getData() != null) {
-                adapter.submitList(listResource.getData());
+            List<Comment> list = listResource.getData();
+            if (list != null) {
+                adapter.submitList(list);
+                binding.setSize(list.size());
             } else {
                 adapter.submitList(emptyList());
+                binding.setSize(0);
             }
-            binding.setSize(adapter.getItemCount());
         });
     }
 }

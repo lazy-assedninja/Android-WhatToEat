@@ -18,6 +18,7 @@ import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.CommentDao;
 import me.lazy_assedninja.app.db.FavoriteDao;
 import me.lazy_assedninja.app.db.HistoryDao;
+import me.lazy_assedninja.app.db.PostDao;
 import me.lazy_assedninja.app.db.PromotionDao;
 import me.lazy_assedninja.app.db.ReservationDao;
 import me.lazy_assedninja.app.db.StoreDao;
@@ -95,6 +96,12 @@ public class AppModule {
     @Singleton
     public CommentDao provideCommentDao(WhatToEatDatabase database) {
         return database.commentDao();
+    }
+
+    @Provides
+    @Singleton
+    public PostDao providePostDao(WhatToEatDatabase database) {
+        return database.postDao();
     }
 
     @Provides
