@@ -70,7 +70,7 @@ public class CommentRepository {
         }.asLiveData();
     }
 
-    public LiveData<Event<Resource<Result>>> addComment(Comment comment) {
+    public LiveData<Event<Resource<Result>>> createComment(Comment comment) {
         return new NetworkResource<Result>(executorUtils) {
 
             @Override

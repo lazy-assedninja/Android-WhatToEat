@@ -44,7 +44,7 @@ public class CreateCommentViewModel extends ViewModel {
         if (comment == null) {
             return AbsentLiveData.create();
         } else {
-            return commentRepository.addComment(comment);
+            return commentRepository.createComment(comment);
         }
     });
 

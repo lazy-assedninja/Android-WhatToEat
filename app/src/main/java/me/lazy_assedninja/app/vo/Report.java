@@ -2,22 +2,17 @@ package me.lazy_assedninja.app.vo;
 
 public class Report {
 
-    private int id;
     private String content;
     private String createTime;
 
-    private int storeID;
-    private String storeName;
+    private Integer storeID;
     private int userID;
-    private String userName;
-    private String userPicture;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Report(String content, String createTime, Integer storeID, int userID) {
+        this.content = content;
+        this.createTime = createTime;
+        this.storeID = storeID;
+        this.userID = userID;
     }
 
     public String getContent() {
@@ -36,20 +31,12 @@ public class Report {
         this.createTime = createTime;
     }
 
-    public int getStoreID() {
+    public Integer getStoreID() {
         return storeID;
     }
 
-    public void setStoreID(int storeID) {
+    public void setStoreID(Integer storeID) {
         this.storeID = storeID;
-    }
-
-    public String getStoreName() {
-        return storeName;
-    }
-
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
     }
 
     public int getUserID() {
@@ -58,21 +45,5 @@ public class Report {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserPicture() {
-        return userPicture;
-    }
-
-    public void setUserPicture(String userPicture) {
-        this.userPicture = userPicture;
     }
 }

@@ -117,9 +117,6 @@ public interface WhatToEatService {
     @POST("CustomService/CreateReport")
     LiveData<ApiResponse<Result>> createReport(@Body Report report);
 
-    @GET("CustomService/GetReportList")
-    LiveData<ApiResponse<List<Report>>> getReportList();
-
     /**
      * Picture
      **/

@@ -38,6 +38,10 @@ public class ProfileViewModel extends ViewModel {
         return userRepository.getUserFromDb();
     }
 
+    public int getUserID(){
+        return userRepository.getUserID();
+    }
+
     public String getUserEmail() {
         return userRepository.getUserEmail();
     }

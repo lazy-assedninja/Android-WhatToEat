@@ -66,7 +66,7 @@
             app:visibleOrGone="@{size == 0 &amp;&amp; comments.status != Resource.LOADING}" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/bt_add_comment"
+            android:id="@+id/bt_create_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"

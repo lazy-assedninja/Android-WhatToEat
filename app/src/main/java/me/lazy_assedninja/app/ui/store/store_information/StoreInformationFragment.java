@@ -11,8 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.transition.TransitionInflater;
 
 import com.bumptech.glide.load.DataSource;
@@ -30,6 +28,7 @@ import me.lazy_assedninja.app.databinding.StoreInformationFragmentBinding;
 import me.lazy_assedninja.app.ui.store.comment.CommentFragment;
 import me.lazy_assedninja.app.ui.store.post.PostFragment;
 import me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment;
+import me.lazy_assedninja.app.ui.user.create_report.CreateReportFragment;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
@@ -39,8 +38,6 @@ public class StoreInformationFragment extends BaseFragment {
 
     private StoreInformationFragmentBinding binding;
     private StoreInformationViewModel viewModel;
-
-    private NavController navController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -77,7 +74,6 @@ public class StoreInformationFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(StoreInformationViewModel.class);
-        navController = Navigation.findNavController(view);
 
         initView();
         initData();
@@ -103,7 +99,7 @@ public class StoreInformationFragment extends BaseFragment {
             Bundle bundle = new Bundle();
             bundle.putInt("store_id", viewModel.getId());
             postFragment.setArguments(bundle);
-            postFragment.show(getParentFragmentManager(), "reserve");
+            postFragment.show(getParentFragmentManager(), "post");
         });
         binding.btReserve.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
@@ -123,7 +119,12 @@ public class StoreInformationFragment extends BaseFragment {
                 return;
             }
 
-            //TODO Add Report
+            CreateReportFragment createReportFragment = new CreateReportFragment();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("is_store", true);
+            bundle.putInt("id", viewModel.getId());
+            createReportFragment.setArguments(bundle);
+            createReportFragment.show(getParentFragmentManager(), "create_report");
         });
 
         binding.setLifecycleOwner(getViewLifecycleOwner());

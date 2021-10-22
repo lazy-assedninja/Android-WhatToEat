@@ -64,7 +64,7 @@ public class CommentFragment extends BaseBottomSheetDialogFragment {
                 EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
         adapter = new CommentAdapter(executorUtils, dataBindingComponent);
         binding.rv.setAdapter(adapter);
-        binding.btAddComment.setOnClickListener(v -> {
+        binding.btCreateComment.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
                 showToast(R.string.error_please_login_first);
                 return;

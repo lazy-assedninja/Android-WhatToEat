@@ -45,13 +45,13 @@ import me.lazy_assedninja.app.BuildConfig;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.ProfileFragmentBinding;
+import me.lazy_assedninja.app.ui.user.create_report.CreateReportFragment;
 import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsCallback;
 import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsFragment;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.utils.LogUtils;
-import me.lazy_assedninja.library.utils.TimeUtils;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -68,8 +68,6 @@ public class ProfileFragment extends BaseFragment {
 
     @Inject
     public LogUtils logUtils;
-    @Inject
-    public TimeUtils timeUtils;
 
     private NavController navController;
     private Context context;
@@ -143,7 +141,13 @@ public class ProfileFragment extends BaseFragment {
             viewModel.logout();
             navController.navigate(R.id.action_to_home_fragment);
         });
-        binding.btReport.setOnClickListener(v -> navController.navigate(R.id.action_to_report_fragment));
+        binding.btReport.setOnClickListener(v -> {
+            CreateReportFragment createReportFragment = new CreateReportFragment();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("is_store", false);
+            createReportFragment.setArguments(bundle);
+            createReportFragment.show(getParentFragmentManager(), "create_report");
+        });
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setUser(viewModel.getUser());

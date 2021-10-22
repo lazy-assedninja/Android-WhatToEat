@@ -151,10 +151,6 @@ public class UserRepository {
             protected LiveData<ApiResponse<Result>> createCall() {
                 return whatToEatService.sendVerificationCode(userDTO);
             }
-
-            @Override
-            protected void saveCallResult(Result item) {
-            }
         }.asLiveData();
     }
 

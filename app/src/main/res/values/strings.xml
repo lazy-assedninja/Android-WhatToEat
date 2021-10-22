@@ -97,6 +97,9 @@
     <!-- Comment -->
     <string name="tv_comment">Comment</string>
 
+    <!-- Report -->
+    <string name="tv_report">Report</string>
+
     <!-- Reserve -->
     <string name="tv_reserve">Reserve</string>
     <string name="bt_choose">Choose</string>

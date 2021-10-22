@@ -69,7 +69,8 @@ public abstract class NetworkResource<T> {
     protected abstract LiveData<ApiResponse<T>> createCall();
 
     @WorkerThread
-    protected abstract void saveCallResult(T item);
+    protected void saveCallResult(T item) {
+    }
 
     @WorkerThread
     protected T processResponse(ApiSuccessResponse<T> response) {
