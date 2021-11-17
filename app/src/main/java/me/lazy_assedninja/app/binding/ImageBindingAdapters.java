@@ -22,6 +22,8 @@ import me.lazy_assedninja.library.utils.LogUtils;
 public class ImageBindingAdapters {
 
     private static final String LOG_TAG = "BindingAdapters";
+    private static final String STORE_FOLDER = "File/Store/";
+    private static final String USER_FOLDER = "File/User/";
 
     public final LogUtils logUtils;
 
@@ -36,7 +38,7 @@ public class ImageBindingAdapters {
                           RequestListener<Drawable> listener, Drawable placeholder,
                           Drawable error, Drawable fallback) {
         Glide.with(imageView.getContext())
-                .load(BuildConfig.URL + picturePath)
+                .load(BuildConfig.URL + STORE_FOLDER + picturePath)
                 .listener(listener)
                 .placeholder(placeholder)
                 .error(error)
@@ -51,7 +53,7 @@ public class ImageBindingAdapters {
                              Drawable error, Drawable fallback, String signature) {
         if (signature == null) signature = "";
         Glide.with(imageView.getContext())
-                .load(BuildConfig.URL + picturePath)
+                .load(BuildConfig.URL + USER_FOLDER + picturePath)
                 .placeholder(placeholder)
                 .error(error)
                 .fallback(fallback)
