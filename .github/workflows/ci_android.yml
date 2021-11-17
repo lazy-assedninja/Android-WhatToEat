@@ -28,6 +28,24 @@ jobs:
         
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
+
+  secret:
+    name: Set Up Secrets
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up local.properties
+        env:
+          URL: ${{ secrets.URL }}
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+        run: echo "URL=\"$URL\"" >> local.properties && echo "MAPS_API_KEY=\"$MAPS_API_KEY\"" >> local.properties
       
   apk:
     name: Generate APK
@@ -36,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     
     # Identifies "gradle_vaildation" jobs that must complete successfully before this job will run.
-    needs: gradle_vaildation
+    needs: [gradle_vaildation, secret]
     
     steps:
     
@@ -69,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     
     # Identifies "gradle_vaildation" jobs that must complete successfully before this job will run.
-    needs: gradle_vaildation
+    needs: [gradle_vaildation, secret]
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
