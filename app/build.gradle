@@ -2,22 +2,21 @@ import me.lazy_assedninja.plugins.*
 
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
     id 'androidx.navigation.safeargs'
     id 'dagger.hilt.android.plugin'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
-    compileSdkVersion ConfigVersions.compileSdkVersion
-    buildToolsVersion ConfigVersions.buildToolsVersion
+    compileSdkVersion ConfigsVersion.COMPILE_SDK_VERSION
+    buildToolsVersion ConfigsVersion.BUILD_TOOLS_VERSION
 
     defaultConfig {
         applicationId "me.lazy_assedninja.what_to_eat"
-        minSdkVersion ConfigVersions.minSampleSdkVersion
-        targetSdkVersion ConfigVersions.targetSdkVersion
-        versionCode ConfigVersions.versionCode
-        versionName ConfigVersions.versionName
+        minSdkVersion ConfigsVersion.MIN_SDK_VERSION
+        targetSdkVersion ConfigsVersion.TARGET_SDK_VERSION
+        versionCode ConfigsVersion.VERSION_CODE
+        versionName ConfigsVersion.VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -61,45 +60,42 @@ dependencies {
     implementation project(path: ':library')
 
     // Components
-    implementation AndroidX.appCompat
-    implementation AndroidX.constraintLayout
-    implementation AndroidX.swipeRefreshLayout
-    implementation Google.material
-    implementation ThirdParty.ticketView
+    implementation AndroidX.APP_COMPAT
+    implementation AndroidX.CONSTRAINT_LAYOUT
+    implementation AndroidX.SWIPE_REFRESH_LAYOUT
+    implementation Google.MATERIAL
+    implementation ThirdParty.TICKET_VIEW
 
     // Hilt
-    implementation Google.hilt
-    annotationProcessor Google.hiltCompiler
+    implementation Google.DAGGER_HILT
+    annotationProcessor Google.DAGGER_HILT_COMPILER
 
     // Navigation
-    implementation AndroidX.navigationFragment
-    implementation AndroidX.navigationUI
-
-    // ViewPager2
-    implementation AndroidX.viewPager2
+    implementation AndroidX.NAVIGATION_UI
+    implementation AndroidX.NAVIGATION_FRAGMENT
 
     // Glide
-    implementation ThirdParty.glide
-    annotationProcessor ThirdParty.glideCompiler
+    implementation ThirdParty.GLIDE
+    annotationProcessor ThirdParty.GLIDE_COMPILER
 
     // Room
-    implementation AndroidX.room
-    annotationProcessor AndroidX.roomCompiler
+    implementation AndroidX.ROOM
+    annotationProcessor AndroidX.ROOM_COMPILER
 
     // OkHttp
-    implementation ThirdParty.okHttpInterceptor
+    implementation ThirdParty.OK_HTTP_INTERCEPTOR
 
     // Retrofit2
-    implementation ThirdParty.retrofit
-    implementation ThirdParty.retrofitGson
+    implementation ThirdParty.RETROFIT
+    implementation ThirdParty.RETROFIT_GSON
 
     // Google Service
-    implementation Google.auth
-    implementation Google.map
-    implementation Google.googleLocation
+    implementation Google.PLAY_SERVICE_AUTH
+    implementation Google.PLAY_SERVICE_LOCATION
+    implementation Google.PLAY_SERVICE_MAP
 
     // Test
-    testImplementation Junit.junit
-    androidTestImplementation AndroidX.testJunit
-    androidTestImplementation AndroidX.testEspresso
+    testImplementation ThirdParty.JUNIT
+    androidTestImplementation AndroidX.ANDROIDX_JUNIT
+    androidTestImplementation AndroidX.ANDROIDX_ESPRESSO
 }
