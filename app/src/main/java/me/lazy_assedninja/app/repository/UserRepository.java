@@ -109,6 +109,8 @@ public class UserRepository {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
+                String password = user.getPassword();
+                user.setPassword(encryptUtils.sha256(password));
                 return whatToEatService.register(user);
             }
 
@@ -139,6 +141,8 @@ public class UserRepository {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
+                String password = userDTO.getNewPassword();
+                userDTO.setPassword(encryptUtils.sha256(password));
                 return whatToEatService.resetPassword(userDTO);
             }
 
@@ -164,6 +168,8 @@ public class UserRepository {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
+                String password = userDTO.getNewPassword();
+                userDTO.setNewPassword(encryptUtils.sha256(password));
                 return whatToEatService.forgetPassword(userDTO);
             }
 
