@@ -13,7 +13,6 @@ import com.bumptech.glide.signature.ObjectKey;
 import javax.inject.Inject;
 
 import me.lazy_assedninja.app.BuildConfig;
-import me.lazy_assedninja.library.utils.LogUtils;
 
 /**
  * Binding adapters that work with LogUtils.
@@ -21,15 +20,11 @@ import me.lazy_assedninja.library.utils.LogUtils;
 @SuppressWarnings("unused")
 public class ImageBindingAdapters {
 
-    private static final String LOG_TAG = "BindingAdapters";
     private static final String STORE_FOLDER = "File/Store/";
     private static final String USER_FOLDER = "File/User/";
 
-    public final LogUtils logUtils;
-
     @Inject
-    public ImageBindingAdapters(LogUtils logUtils) {
-        this.logUtils = logUtils;
+    public ImageBindingAdapters() {
     }
 
     @BindingAdapter(value = {"imageUrl", "requestListener", "placeholder", "error", "fallback"},

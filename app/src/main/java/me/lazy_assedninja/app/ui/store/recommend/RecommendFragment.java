@@ -30,7 +30,6 @@ import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.LogUtils;
 
 @AndroidEntryPoint
 public class RecommendFragment extends BaseFragment {
@@ -40,8 +39,6 @@ public class RecommendFragment extends BaseFragment {
 
     @Inject
     public ExecutorUtils executorUtils;
-    @Inject
-    public LogUtils logUtils;
 
     private NavController navController;
     private StoreAdapter adapter;

@@ -10,8 +10,6 @@ import android.view.WindowMetrics;
 
 import androidx.annotation.RequiresApi;
 
-import javax.inject.Inject;
-
 @SuppressWarnings({"RedundantSuppression", "deprecation", "unused"})
 public class DisplayUtils {
 

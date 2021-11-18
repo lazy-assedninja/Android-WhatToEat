@@ -14,6 +14,7 @@ import me.lazy_assedninja.app.vo.GoogleAccount;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.User;
+import me.lazy_assedninja.library.utils.EncryptUtils;
 import me.lazy_assedninja.library.utils.ExecutorUtils;
 import me.lazy_assedninja.library.utils.TimeUtils;
 
@@ -25,14 +26,16 @@ public class UserRepository {
 
     private final Context context;
     private final ExecutorUtils executorUtils;
+    private final EncryptUtils encryptUtils;
     private final TimeUtils timeUtils;
     private final UserDao userDao;
     private final WhatToEatService whatToEatService;
 
-    public UserRepository(Context context, ExecutorUtils executorUtils, TimeUtils timeUtils,
-                          UserDao userDao, WhatToEatService whatToEatService) {
+    public UserRepository(Context context, ExecutorUtils executorUtils, EncryptUtils encryptUtils,
+                          TimeUtils timeUtils, UserDao userDao, WhatToEatService whatToEatService) {
         this.context = context;
         this.executorUtils = executorUtils;
+        this.encryptUtils = encryptUtils;
         this.timeUtils = timeUtils;
         this.userDao = userDao;
         this.whatToEatService = whatToEatService;
@@ -56,6 +59,8 @@ public class UserRepository {
                 if (userDTO.isGoogleLogin()) {
                     return whatToEatService.googleLogin(userDTO);
                 } else {
+                    String password = userDTO.getPassword();
+                    userDTO.setPassword(encryptUtils.sha256(password));
                     return whatToEatService.login(userDTO);
                 }
             }
