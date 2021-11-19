@@ -141,8 +141,10 @@ public class UserRepository {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
-                String password = userDTO.getNewPassword();
-                userDTO.setPassword(encryptUtils.sha256(password));
+                String oldPassword = userDTO.getOldPassword();
+                userDTO.setOldPassword(encryptUtils.sha256(oldPassword));
+                String newPassword = userDTO.getNewPassword();
+                userDTO.setNewPassword(encryptUtils.sha256(newPassword));
                 return whatToEatService.resetPassword(userDTO);
             }
 
