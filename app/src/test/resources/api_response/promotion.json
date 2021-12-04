@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "title": "打折",
+    "picture": "dou.jpg",
+    "discount": "20%",
+    "notice": "測試1",
+    "deadline": "2021-11-11 11:11:11",
+    "create_time": "2021-11-11 11:11:11",
+    "store_id": 15
+  },
+  {
+    "id": 2,
+    "title": "促銷活動",
+    "picture": "dumpling2.jpg",
+    "discount": "10%",
+    "notice": "測試2",
+    "deadline": "2021-11-11 11:11:11",
+    "create_time": "2021-11-11 11:11:11",
+    "store_id": 2
+  }
+]

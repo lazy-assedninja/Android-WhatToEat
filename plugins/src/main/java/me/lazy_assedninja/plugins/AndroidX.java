@@ -1,5 +1,6 @@
 package me.lazy_assedninja.plugins;
 
+
 public class AndroidX {
 
     public static final String APP_COMPAT = "androidx.appcompat:appcompat:"
@@ -17,10 +18,13 @@ public class AndroidX {
     public static final String SWIPE_REFRESH_LAYOUT = "androidx.swiperefreshlayout:swiperefreshlayout:"
             + DependenciesVersion.SWIPE_REFRESH_LAYOUT;
 
-    public static final String ARCH_CORE = "androidx.arch.core:core-testing:"
-            + DependenciesVersion.ANDROIDX_ARCH_CORE;
-    public static final String ANDROIDX_JUNIT = "androidx.test.ext:junit:"
-            + DependenciesVersion.ANDROIDX_JUNIT;
-    public static final String ANDROIDX_ESPRESSO = "androidx.test.espresso:espresso-core:"
-            + DependenciesVersion.ANDROIDX_ESPRESSO;
+    // Test
+    public static final String CORE_TESTING = "androidx.arch.core:core-testing:"
+            + DependenciesVersion.CORE_TESTING;
+    public static final String TEST_CORE = "androidx.test:core:" + DependenciesVersion.TEST_CORE;
+    public static final String JUNIT_RUNNER = "androidx.test:runner:" + DependenciesVersion.JUNIT_RUNNER;
+    public static final String EXT_JUNIT = "androidx.test.ext:junit:"
+            + DependenciesVersion.EXT_JUNIT;
+    public static final String ESPRESSO_CORE = "androidx.test.espresso:espresso-core:"
+            + DependenciesVersion.ESPRESSO_CORE;
 }

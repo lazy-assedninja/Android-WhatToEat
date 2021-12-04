@@ -1,5 +1,6 @@
 package me.lazy_assedninja.plugins;
 
+@SuppressWarnings("unused")
 public class ThirdParty {
 
     public static final String GLIDE = "com.github.bumptech.glide:glide:"

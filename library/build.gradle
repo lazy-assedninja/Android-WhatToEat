@@ -50,6 +50,6 @@ dependencies {
 
     // Test
     testImplementation ThirdParty.JUNIT
-    androidTestImplementation AndroidX.ANDROIDX_JUNIT
-    androidTestImplementation AndroidX.ANDROIDX_ESPRESSO
+    androidTestImplementation AndroidX.EXT_JUNIT
+    androidTestImplementation AndroidX.ESPRESSO_CORE
 }

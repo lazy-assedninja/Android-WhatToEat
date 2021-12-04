@@ -3,6 +3,7 @@ package me.lazy_assedninja.plugins;
 /**
  * Gradle's default config
  */
+@SuppressWarnings("unused")
 public class ConfigsVersion {
 
     public static final Integer COMPILE_SDK_VERSION = 30;

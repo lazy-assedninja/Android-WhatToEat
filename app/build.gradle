@@ -18,7 +18,13 @@ android {
         versionCode ConfigsVersion.VERSION_CODE
         versionName ConfigsVersion.VERSION_NAME
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.incremental" : "true"]
+            }
+        }
+
+        testInstrumentationRunner "me.lazy_assedninja.app.util.WhatToEatTestRunner"
     }
 
     buildTypes {
@@ -44,13 +50,30 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    sourceSets {
+        androidTest.java.srcDirs += "src/test-common/java"
+        test.java.srcDirs += "src/test-common/java"
     }
 
     buildFeatures {
         //noinspection DataBindingWithoutKapt
         dataBinding true
+    }
+
+    hilt {
+        enableAggregatingTask = true
+    }
+
+    testOptions{
+        unitTests.all {
+            testLogging {
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            }
+        }
     }
 }
 
@@ -95,7 +118,16 @@ dependencies {
     implementation Google.PLAY_SERVICE_MAP
 
     // Test
-    testImplementation ThirdParty.JUNIT
-    androidTestImplementation AndroidX.ANDROIDX_JUNIT
-    androidTestImplementation AndroidX.ANDROIDX_ESPRESSO
+    testImplementation AndroidX.CORE_TESTING
+    testImplementation AndroidX.TEST_CORE
+    testImplementation AndroidX.JUNIT_RUNNER
+    testImplementation AndroidX.EXT_JUNIT
+    testImplementation Google.DAGGER_HILT_TESTING
+    testImplementation ThirdParty.MOCKITO_CORE
+    testImplementation ThirdParty.MOCK_WEB_SERVER
+
+    androidTestImplementation AndroidX.CORE_TESTING
+    androidTestImplementation AndroidX.EXT_JUNIT
+    androidTestImplementation AndroidX.ESPRESSO_CORE
+    androidTestImplementation Google.DAGGER_HILT_TESTING
 }

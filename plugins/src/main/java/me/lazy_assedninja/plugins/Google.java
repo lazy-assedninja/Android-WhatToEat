@@ -1,5 +1,6 @@
 package me.lazy_assedninja.plugins;
 
+@SuppressWarnings("unused")
 public class Google {
 
     public static final String MATERIAL = "com.google.android.material:material:"
@@ -13,5 +14,7 @@ public class Google {
     public static final String DAGGER_HILT = "com.google.dagger:hilt-android:"
             + DependenciesVersion.DAGGER_HILT;
     public static final String DAGGER_HILT_COMPILER = "com.google.dagger:hilt-compiler:"
+            + DependenciesVersion.DAGGER_HILT;
+    public static final String DAGGER_HILT_TESTING = "com.google.dagger:hilt-android-testing:"
             + DependenciesVersion.DAGGER_HILT;
 }
