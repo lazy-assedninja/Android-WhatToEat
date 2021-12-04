@@ -26,8 +26,9 @@ import me.lazy_assedninja.app.ui.store.StoreAdapter;
 import me.lazy_assedninja.app.ui.store.StoreCallback;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
+import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 import static java.util.Collections.emptyList;
 
@@ -38,7 +39,7 @@ public class HistoryFragment extends BaseFragment {
     private HistoryViewModel viewModel;
 
     @Inject
-    public ExecutorUtils executorUtils;
+    public ExecutorUtil executorUtil;
 
     private NavController navController;
     private StoreAdapter adapter;
@@ -69,7 +70,7 @@ public class HistoryFragment extends BaseFragment {
         DataBindingComponent dataBindingComponent = (getActivity() != null) ?
                 EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
         adapter = new StoreAdapter(
-                executorUtils,
+                executorUtil,
                 dataBindingComponent,
                 new StoreCallback() {
                     @Override
@@ -111,9 +112,9 @@ public class HistoryFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+            if (resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+            } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
             }
         });

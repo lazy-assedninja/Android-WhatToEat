@@ -7,6 +7,8 @@
 
         <import type="androidx.lifecycle.LiveData" />
 
+        <import type="me.lazy_assedninja.app.vo.Status" />
+
         <import type="me.lazy_assedninja.app.vo.Resource" />
 
         <import type="java.util.List" />
@@ -35,6 +37,6 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:indeterminateTint="@color/primary_color"
-            app:visibleOrGone="@{promotions.status == Resource.LOADING}" />
+            app:visibleOrGone="@{promotions.status == Status.LOADING}" />
     </FrameLayout>
 </layout>

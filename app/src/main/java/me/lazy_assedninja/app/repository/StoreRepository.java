@@ -20,13 +20,13 @@ import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.app.vo.Tag;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.NetworkUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.NetworkUtil;
 
 public class StoreRepository {
 
-    private final ExecutorUtils executorUtils;
-    private final NetworkUtils networkUtils;
+    private final ExecutorUtil executorUtil;
+    private final NetworkUtil networkUtil;
     private final WhatToEatDatabase db;
     private final TagDao tagDao;
     private final StoreDao storeDao;
@@ -34,11 +34,11 @@ public class StoreRepository {
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public StoreRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
+    public StoreRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil,
                            WhatToEatDatabase db, TagDao tagDao, StoreDao storeDao,
                            ReservationDao reservationDao, WhatToEatService whatToEatService) {
-        this.executorUtils = executorUtils;
-        this.networkUtils = networkUtils;
+        this.executorUtil = executorUtil;
+        this.networkUtil = networkUtil;
         this.db = db;
         this.tagDao = tagDao;
         this.storeDao = storeDao;
@@ -47,7 +47,7 @@ public class StoreRepository {
     }
 
     public LiveData<Resource<List<Store>>> loadStores(StoreDTO storeDTO) {
-        return new NetworkBoundResource<List<Store>, List<Store>>(executorUtils) {
+        return new NetworkBoundResource<List<Store>, List<Store>>(executorUtil) {
 
             @Override
             protected LiveData<List<Store>> loadFromDb() {
@@ -56,7 +56,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty() || networkUtils.isConnected();
+                return data == null || data.isEmpty() || networkUtil.isConnected();
             }
 
             @Override
@@ -79,7 +79,7 @@ public class StoreRepository {
     }
 
     public LiveData<Resource<List<Store>>> loadAllStores(StoreDTO storeDTO) {
-        return new NetworkBoundResource<List<Store>, List<Store>>(executorUtils) {
+        return new NetworkBoundResource<List<Store>, List<Store>>(executorUtil) {
 
             @Override
             protected LiveData<List<Store>> loadFromDb() {
@@ -88,7 +88,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty() || networkUtils.isConnected();
+                return data == null || data.isEmpty() || networkUtil.isConnected();
             }
 
             @Override
@@ -104,7 +104,7 @@ public class StoreRepository {
     }
 
     public LiveData<Resource<List<Store>>> search(StoreDTO storeDTO) {
-        return new NetworkBoundResource<List<Store>, List<Store>>(executorUtils) {
+        return new NetworkBoundResource<List<Store>, List<Store>>(executorUtil) {
 
             @Override
             protected LiveData<List<Store>> loadFromDb() {
@@ -113,7 +113,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty() || networkUtils.isConnected();
+                return data == null || data.isEmpty() || networkUtil.isConnected();
             }
 
             @Override
@@ -137,7 +137,7 @@ public class StoreRepository {
     }
 
     public void initTags() {
-        executorUtils.diskIO().execute(() -> {
+        executorUtil.diskIO().execute(() -> {
             if (tagDao.getTagSize() != 2) {
                 tagDao.insert(new Tag(2));
             }
@@ -145,7 +145,7 @@ public class StoreRepository {
     }
 
     public LiveData<Event<Resource<Result>>> reserve(Reservation reservation) {
-        return new NetworkResource<Result>(executorUtils) {
+        return new NetworkResource<Result>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {

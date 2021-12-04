@@ -9,6 +9,8 @@
 
         <import type="me.lazy_assedninja.app.vo.Event" />
 
+        <import type="me.lazy_assedninja.app.vo.Status" />
+
         <import type="me.lazy_assedninja.app.vo.Resource" />
 
         <import type="me.lazy_assedninja.app.vo.Result" />
@@ -120,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:backgroundTint="@color/primary_color"
-                android:enabled="@{result.peekContent().status != Resource.LOADING}"
+                android:enabled="@{result.peekContent().status != Status.LOADING}"
                 android:paddingStart="32dp"
                 android:paddingEnd="32dp"
                 android:text="@string/bt_register"
@@ -136,7 +138,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:visibleOrGone="@{result.peekContent().status == Resource.LOADING}" />
+                app:visibleOrGone="@{result.peekContent().status == Status.LOADING}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

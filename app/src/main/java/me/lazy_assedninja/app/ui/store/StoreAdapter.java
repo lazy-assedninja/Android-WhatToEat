@@ -12,7 +12,7 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.StoreItemBinding;
 import me.lazy_assedninja.app.ui.base.BaseListAdapter;
 import me.lazy_assedninja.app.vo.Store;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 public class StoreAdapter extends BaseListAdapter<Store, StoreItemBinding> {
 
@@ -20,9 +20,9 @@ public class StoreAdapter extends BaseListAdapter<Store, StoreItemBinding> {
 
     private final StoreCallback storeCallback;
 
-    public StoreAdapter(ExecutorUtils executorUtils, DataBindingComponent dataBindingComponent,
+    public StoreAdapter(ExecutorUtil executorUtil, DataBindingComponent dataBindingComponent,
                         StoreCallback storeCallback) {
-        super(executorUtils, new DiffUtil.ItemCallback<Store>() {
+        super(executorUtil, new DiffUtil.ItemCallback<Store>() {
             @Override
             public boolean areItemsTheSame(@NonNull Store oldItem, @NonNull Store newItem) {
                 return oldItem.getId() == newItem.getId();

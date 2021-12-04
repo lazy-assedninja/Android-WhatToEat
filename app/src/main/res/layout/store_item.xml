@@ -7,6 +7,8 @@
 
         <import type="androidx.lifecycle.LiveData" />
 
+        <import type="me.lazy_assedninja.app.vo.Status" />
+
         <import type="me.lazy_assedninja.app.vo.Resource" />
 
         <import type="java.util.List" />
@@ -126,7 +128,7 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:enabled="@{resource.status != Resource.LOADING}"
+                android:enabled="@{resource.status != Status.LOADING}"
                 android:text="@string/bt_favorite"
                 android:textColor="@color/black"
                 app:icon="@{store.isFavorite? @drawable/ic_heart_checked : @drawable/ic_heart_unchecked}"

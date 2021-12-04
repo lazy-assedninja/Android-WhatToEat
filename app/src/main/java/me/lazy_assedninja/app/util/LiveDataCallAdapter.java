@@ -1,4 +1,4 @@
-package me.lazy_assedninja.app.utils;
+package me.lazy_assedninja.app.util;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -33,14 +33,14 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiRespon
     @NonNull
     @Override
     public LiveData<ApiResponse<R>> adapt(@NonNull Call<R> call) {
-        return new LiveData<ApiResponse<R>>() {
+        return new LiveData<>() {
             private final AtomicBoolean started = new AtomicBoolean(false);
 
             @Override
             protected void onActive() {
                 super.onActive();
                 if (started.compareAndSet(false, true)) {
-                    call.enqueue(new Callback<R>() {
+                    call.enqueue(new Callback<>() {
                         @Override
                         public void onResponse(@NonNull Call<R> call, @NonNull Response<R> response) {
                             postValue(ApiResponse.create(response));

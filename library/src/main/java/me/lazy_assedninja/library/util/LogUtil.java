@@ -1,15 +1,15 @@
-package me.lazy_assedninja.library.utils;
+package me.lazy_assedninja.library.util;
 
 import javax.inject.Inject;
 
 import me.lazy_assedninja.library.BuildConfig;
 
 @SuppressWarnings("unused")
-public class LogUtils {
+public class LogUtil {
     private static final boolean isDebug = BuildConfig.DEBUG;
 
     @Inject
-    public LogUtils() {
+    public LogUtil() {
     }
 
     public void v(String tag, String msg) {

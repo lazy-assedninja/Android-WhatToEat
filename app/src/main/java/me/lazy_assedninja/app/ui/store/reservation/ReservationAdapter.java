@@ -11,14 +11,14 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ReservationItemBinding;
 import me.lazy_assedninja.app.ui.base.BaseListAdapter;
 import me.lazy_assedninja.app.vo.Reservation;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 public class ReservationAdapter extends BaseListAdapter<Reservation, ReservationItemBinding> {
 
     private final ReservationCallback reservationCallback;
 
-    protected ReservationAdapter(ExecutorUtils executorUtils, ReservationCallback reservationCallback) {
-        super(executorUtils, new DiffUtil.ItemCallback<Reservation>() {
+    protected ReservationAdapter(ExecutorUtil executorUtil, ReservationCallback reservationCallback) {
+        super(executorUtil, new DiffUtil.ItemCallback<Reservation>() {
             @Override
             public boolean areItemsTheSame(@NonNull Reservation oldItem, @NonNull Reservation newItem) {
                 return oldItem.getId() == newItem.getId();

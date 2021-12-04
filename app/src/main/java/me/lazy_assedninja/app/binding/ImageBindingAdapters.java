@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import me.lazy_assedninja.app.BuildConfig;
 
 /**
- * Binding adapters that work with LogUtils.
+ * Binding adapters that work with LogUtil.
  */
 @SuppressWarnings("unused")
 public class ImageBindingAdapters {

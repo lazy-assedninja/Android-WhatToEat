@@ -12,7 +12,7 @@ import me.lazy_assedninja.app.api.ApiSuccessResponse;
 import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 /**
  * A generic class that can provide a resource backed by the network.
@@ -21,13 +21,13 @@ import me.lazy_assedninja.library.utils.ExecutorUtils;
  */
 public abstract class NetworkResource<T> {
 
-    private final ExecutorUtils executorUtils;
+    private final ExecutorUtil executorUtil;
 
     private final MediatorLiveData<Event<Resource<T>>> result = new MediatorLiveData<>();
 
     @MainThread
-    public NetworkResource(ExecutorUtils executorUtils) {
-        this.executorUtils = executorUtils;
+    public NetworkResource(ExecutorUtil executorUtil) {
+        this.executorUtil = executorUtil;
 
         fetchFromNetwork();
     }
@@ -41,7 +41,7 @@ public abstract class NetworkResource<T> {
 
             Resource<T> resource;
             if (response instanceof ApiSuccessResponse) {
-                executorUtils.diskIO().execute(() ->
+                executorUtil.diskIO().execute(() ->
                         saveCallResult(processResponse((ApiSuccessResponse<T>) response)));
 
                 resource = (Resource.success(((ApiSuccessResponse<T>) response).getBody()));

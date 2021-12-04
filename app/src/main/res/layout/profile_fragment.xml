@@ -9,6 +9,8 @@
 
         <import type="me.lazy_assedninja.app.vo.Event" />
 
+        <import type="me.lazy_assedninja.app.vo.Status" />
+
         <import type="me.lazy_assedninja.app.vo.Resource" />
 
         <import type="me.lazy_assedninja.app.vo.User" />
@@ -253,7 +255,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:visibleOrGone="@{bindGoogleResult.peekContent().status == Resource.LOADING || uploadResult.peekContent().status == Resource.LOADING}" />
+                app:visibleOrGone="@{bindGoogleResult.peekContent().status == Status.LOADING || uploadResult.peekContent().status == Status.LOADING}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.AsyncDifferConfig;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 /**
  * A generic RecyclerView adapter that uses Data Binding & DiffUtil.
@@ -18,9 +18,9 @@ import me.lazy_assedninja.library.utils.ExecutorUtils;
  */
 public abstract class BaseListAdapter<T, V extends ViewDataBinding> extends ListAdapter<T, BaseViewHolder<V>> {
 
-    protected BaseListAdapter(ExecutorUtils executorUtils, @NonNull DiffUtil.ItemCallback<T> diffCallback) {
+    protected BaseListAdapter(ExecutorUtil executorUtil, @NonNull DiffUtil.ItemCallback<T> diffCallback) {
         super(new AsyncDifferConfig.Builder<>(diffCallback)
-                .setBackgroundThreadExecutor(executorUtils.diskIO())
+                .setBackgroundThreadExecutor(executorUtil.diskIO())
                 .build());
     }
 

@@ -11,12 +11,12 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.PostItemBinding;
 import me.lazy_assedninja.app.ui.base.BaseListAdapter;
 import me.lazy_assedninja.app.vo.Post;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 public class PostAdapter extends BaseListAdapter<Post, PostItemBinding> {
 
-    protected PostAdapter(ExecutorUtils executorUtils) {
-        super(executorUtils, new DiffUtil.ItemCallback<Post>() {
+    protected PostAdapter(ExecutorUtil executorUtil) {
+        super(executorUtil, new DiffUtil.ItemCallback<Post>() {
             @Override
             public boolean areItemsTheSame(@NonNull Post oldItem, @NonNull Post newItem) {
                 return oldItem.getId() == newItem.getId();

@@ -50,8 +50,9 @@ import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsCallb
 import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsFragment;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
+import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
-import me.lazy_assedninja.library.utils.LogUtils;
+import me.lazy_assedninja.library.util.LogUtil;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -67,7 +68,7 @@ public class ProfileFragment extends BaseFragment {
     private ProfileViewModel viewModel;
 
     @Inject
-    public LogUtils logUtils;
+    public LogUtil logUtil;
 
     private NavController navController;
     private Context context;
@@ -172,11 +173,11 @@ public class ProfileFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+            if (resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
 
                 googleSignInClient.signOut();
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+            } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
             }
         });
@@ -184,9 +185,9 @@ public class ProfileFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+            if (resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+            } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
             }
         });
@@ -197,13 +198,13 @@ public class ProfileFragment extends BaseFragment {
             File imageFolder = new File(context.getExternalFilesDir("images").getPath());
             if (!imageFolder.exists()) {
                 boolean isSuccessful = imageFolder.mkdir();
-                logUtils.d("ProfileFragment", "Create images folder result: " + isSuccessful);
+                logUtil.d("ProfileFragment", "Create images folder result: " + isSuccessful);
             }
 
             headPortrait = new File(imageFolder, "head_portrait.jpg");
             if (!headPortrait.exists()) {
                 boolean isSuccessful = headPortrait.createNewFile();
-                logUtils.d("ProfileFragment", "Create jpg file result: " + isSuccessful);
+                logUtil.d("ProfileFragment", "Create jpg file result: " + isSuccessful);
             }
             portraitUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID
                     + ".provider", headPortrait);
@@ -277,7 +278,7 @@ public class ProfileFragment extends BaseFragment {
 
             // Bind google account
             viewModel.bindGoogleAccount(account.getId(), account.getEmail(), account.getDisplayName(),
-                    account.getPhotoUrl() == null ? "" : account.getPhotoUrl().getPath());
+                    account.getPhotoUrl() == null ? "" : account.getPhotoUrl().toString());
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

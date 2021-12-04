@@ -14,9 +14,9 @@ import me.lazy_assedninja.app.vo.GoogleAccount;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.User;
-import me.lazy_assedninja.library.utils.EncryptUtils;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.TimeUtils;
+import me.lazy_assedninja.library.util.EncryptUtil;
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.TimeUtil;
 
 public class UserRepository {
 
@@ -25,24 +25,24 @@ public class UserRepository {
     private static final String USER_EMAIL = "user_email";
 
     private final Context context;
-    private final ExecutorUtils executorUtils;
-    private final EncryptUtils encryptUtils;
-    private final TimeUtils timeUtils;
+    private final ExecutorUtil executorUtil;
+    private final EncryptUtil encryptUtil;
+    private final TimeUtil timeUtil;
     private final UserDao userDao;
     private final WhatToEatService whatToEatService;
 
-    public UserRepository(Context context, ExecutorUtils executorUtils, EncryptUtils encryptUtils,
-                          TimeUtils timeUtils, UserDao userDao, WhatToEatService whatToEatService) {
+    public UserRepository(Context context, ExecutorUtil executorUtil, EncryptUtil encryptUtil,
+                          TimeUtil timeUtil, UserDao userDao, WhatToEatService whatToEatService) {
         this.context = context;
-        this.executorUtils = executorUtils;
-        this.encryptUtils = encryptUtils;
-        this.timeUtils = timeUtils;
+        this.executorUtil = executorUtil;
+        this.encryptUtil = encryptUtil;
+        this.timeUtil = timeUtil;
         this.userDao = userDao;
         this.whatToEatService = whatToEatService;
     }
 
     public LiveData<Resource<User>> loadUser(UserDTO userDTO) {
-        return new NetworkBoundResource<User, User>(executorUtils) {
+        return new NetworkBoundResource<User, User>(executorUtil) {
 
             @Override
             protected LiveData<User> loadFromDb() {
@@ -60,7 +60,7 @@ public class UserRepository {
                     return whatToEatService.googleLogin(userDTO);
                 } else {
                     String password = userDTO.getPassword();
-                    userDTO.setPassword(encryptUtils.sha256(password));
+                    userDTO.setPassword(encryptUtil.sha256(password));
                     return whatToEatService.login(userDTO);
                 }
             }
@@ -101,16 +101,16 @@ public class UserRepository {
     }
 
     public void deleteUser() {
-        executorUtils.diskIO().execute(userDao::delete);
+        executorUtil.diskIO().execute(userDao::delete);
     }
 
     public LiveData<Event<Resource<Result>>> register(User user) {
-        return new NetworkResource<Result>(executorUtils) {
+        return new NetworkResource<Result>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
                 String password = user.getPassword();
-                user.setPassword(encryptUtils.sha256(password));
+                user.setPassword(encryptUtil.sha256(password));
                 return whatToEatService.register(user);
             }
 
@@ -122,7 +122,7 @@ public class UserRepository {
     }
 
     public LiveData<Event<Resource<Result>>> bindGoogleAccount(GoogleAccount googleAccount) {
-        return new NetworkResource<Result>(executorUtils) {
+        return new NetworkResource<Result>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
@@ -131,32 +131,32 @@ public class UserRepository {
 
             @Override
             protected void saveCallResult(Result item) {
-                userDao.updateGoogleID(googleAccount.getGoogleID(), timeUtils.now());
+                userDao.updateGoogleID(googleAccount.getGoogleID(), timeUtil.now());
             }
         }.asLiveData();
     }
 
     public LiveData<Event<Resource<Result>>> resetPassword(UserDTO userDTO) {
-        return new NetworkResource<Result>(executorUtils) {
+        return new NetworkResource<Result>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
                 String oldPassword = userDTO.getOldPassword();
-                userDTO.setOldPassword(encryptUtils.sha256(oldPassword));
+                userDTO.setOldPassword(encryptUtil.sha256(oldPassword));
                 String newPassword = userDTO.getNewPassword();
-                userDTO.setNewPassword(encryptUtils.sha256(newPassword));
+                userDTO.setNewPassword(encryptUtil.sha256(newPassword));
                 return whatToEatService.resetPassword(userDTO);
             }
 
             @Override
             protected void saveCallResult(Result item) {
-                userDao.updatePassword(userDTO.getNewPassword(), timeUtils.now());
+                userDao.updatePassword(userDTO.getNewPassword(), timeUtil.now());
             }
         }.asLiveData();
     }
 
     public LiveData<Event<Resource<Result>>> sendVerificationCode(UserDTO userDTO) {
-        return new NetworkResource<Result>(executorUtils) {
+        return new NetworkResource<Result>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
@@ -166,18 +166,18 @@ public class UserRepository {
     }
 
     public LiveData<Event<Resource<Result>>> forgetPassword(UserDTO userDTO) {
-        return new NetworkResource<Result>(executorUtils) {
+        return new NetworkResource<Result>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
                 String password = userDTO.getNewPassword();
-                userDTO.setNewPassword(encryptUtils.sha256(password));
+                userDTO.setNewPassword(encryptUtil.sha256(password));
                 return whatToEatService.forgetPassword(userDTO);
             }
 
             @Override
             protected void saveCallResult(Result item) {
-                userDao.updatePassword(userDTO.getNewPassword(), timeUtils.now());
+                userDao.updatePassword(userDTO.getNewPassword(), timeUtil.now());
             }
         }.asLiveData();
     }

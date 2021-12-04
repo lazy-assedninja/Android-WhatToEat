@@ -1,4 +1,4 @@
-package me.lazy_assedninja.app.utils;
+package me.lazy_assedninja.app.util;
 
 import androidx.lifecycle.LiveData;
 

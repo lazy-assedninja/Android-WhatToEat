@@ -17,6 +17,7 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ForgetPasswordFragmentBinding;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
+import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
@@ -99,9 +100,9 @@ public class ForgetPasswordFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+            if (resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+            } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
             }
         });
@@ -109,10 +110,10 @@ public class ForgetPasswordFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+            if (resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
                 navController.navigateUp();
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+            } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
             }
         });

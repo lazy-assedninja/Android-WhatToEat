@@ -31,6 +31,7 @@ import me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment;
 import me.lazy_assedninja.app.ui.user.create_report.CreateReportFragment;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
+import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
@@ -143,9 +144,9 @@ public class StoreInformationFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+            if (resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+            } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
             }
         });

@@ -17,8 +17,9 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ReservationFragmentBinding;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
+import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 import static java.util.Collections.emptyList;
 
@@ -29,7 +30,7 @@ public class ReservationFragment extends BaseFragment {
     private ReservationViewModel viewModel;
 
     @Inject
-    public ExecutorUtils executorUtils;
+    public ExecutorUtil executorUtil;
 
     private ReservationAdapter adapter;
 
@@ -56,7 +57,7 @@ public class ReservationFragment extends BaseFragment {
     }
 
     private void initView() {
-        adapter = new ReservationAdapter(executorUtils, (reservation) ->
+        adapter = new ReservationAdapter(executorUtil, (reservation) ->
                 viewModel.setCancelRequest(reservation));
         binding.rv.setAdapter(adapter);
 
@@ -89,9 +90,9 @@ public class ReservationFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+            if (resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+            } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
             }
         });

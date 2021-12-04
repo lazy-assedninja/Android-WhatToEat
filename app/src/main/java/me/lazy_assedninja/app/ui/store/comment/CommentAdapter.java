@@ -12,14 +12,14 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.CommentItemBinding;
 import me.lazy_assedninja.app.ui.base.BaseListAdapter;
 import me.lazy_assedninja.app.vo.Comment;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 public class CommentAdapter extends BaseListAdapter<Comment, CommentItemBinding> {
 
     private final DataBindingComponent dataBindingComponent;
 
-    protected CommentAdapter(ExecutorUtils executorUtils, DataBindingComponent dataBindingComponent) {
-        super(executorUtils, new DiffUtil.ItemCallback<Comment>() {
+    protected CommentAdapter(ExecutorUtil executorUtil, DataBindingComponent dataBindingComponent) {
+        super(executorUtil, new DiffUtil.ItemCallback<>() {
             @Override
             public boolean areItemsTheSame(@NonNull Comment oldItem, @NonNull Comment newItem) {
                 return oldItem.getId() == newItem.getId();

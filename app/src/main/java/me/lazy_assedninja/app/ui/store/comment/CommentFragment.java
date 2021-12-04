@@ -25,7 +25,7 @@ import me.lazy_assedninja.app.databinding.CommentFragmentBinding;
 import me.lazy_assedninja.app.ui.store.comment.create_comment.CreateCommentFragment;
 import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 @AndroidEntryPoint
 public class CommentFragment extends BaseBottomSheetDialogFragment {
@@ -34,7 +34,7 @@ public class CommentFragment extends BaseBottomSheetDialogFragment {
     private CommentViewModel viewModel;
 
     @Inject
-    public ExecutorUtils executorUtils;
+    public ExecutorUtil executorUtil;
 
     private CommentAdapter adapter;
 
@@ -62,7 +62,7 @@ public class CommentFragment extends BaseBottomSheetDialogFragment {
     private void initView() {
         DataBindingComponent dataBindingComponent = (getActivity() != null) ?
                 EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
-        adapter = new CommentAdapter(executorUtils, dataBindingComponent);
+        adapter = new CommentAdapter(executorUtil, dataBindingComponent);
         binding.rv.setAdapter(adapter);
         binding.btCreateComment.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {

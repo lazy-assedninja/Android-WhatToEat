@@ -1,5 +1,7 @@
 package me.lazy_assedninja.app.vo;
 
+import java.util.Objects;
+
 import javax.annotation.Nullable;
 
 public class Event<T> {
@@ -34,5 +36,18 @@ public class Event<T> {
     public T peekContent() {
         return content;
     }
-}
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        else if (object == null || getClass() != object.getClass()) return false;
+
+        Event<?> resource = (Event<?>) object;
+        return Objects.equals(content, resource.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return content.hashCode();
+    }
+}

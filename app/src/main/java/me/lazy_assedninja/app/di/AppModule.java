@@ -25,9 +25,9 @@ import me.lazy_assedninja.app.db.StoreDao;
 import me.lazy_assedninja.app.db.TagDao;
 import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
-import me.lazy_assedninja.app.utils.LiveDataCallAdapterFactory;
-import me.lazy_assedninja.library.utils.DisplayUtils;
-import me.lazy_assedninja.library.utils.NetworkUtils;
+import me.lazy_assedninja.app.util.LiveDataCallAdapterFactory;
+import me.lazy_assedninja.library.util.DisplayUtil;
+import me.lazy_assedninja.library.util.NetworkUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -124,13 +124,13 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public DisplayUtils provideDisplayUtils(@ApplicationContext Context context) {
-        return new DisplayUtils(context);
+    public DisplayUtil provideDisplayUtil(@ApplicationContext Context context) {
+        return new DisplayUtil(context);
     }
 
     @Provides
     @Singleton
-    public NetworkUtils provideNetworkUtils(@ApplicationContext Context context) {
-        return new NetworkUtils(context);
+    public NetworkUtil provideNetworkUtil(@ApplicationContext Context context) {
+        return new NetworkUtil(context);
     }
 }

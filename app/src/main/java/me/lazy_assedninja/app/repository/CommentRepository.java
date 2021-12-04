@@ -18,24 +18,24 @@ import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.User;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.NetworkUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.NetworkUtil;
 
 public class CommentRepository {
 
-    private final ExecutorUtils executorUtils;
-    private final NetworkUtils networkUtils;
+    private final ExecutorUtil executorUtil;
+    private final NetworkUtil networkUtil;
     private final WhatToEatDatabase db;
     private final UserDao userDao;
     private final CommentDao commentDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public CommentRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
+    public CommentRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil,
                              WhatToEatDatabase db, UserDao userDao, CommentDao commentDao,
                              WhatToEatService whatToEatService) {
-        this.executorUtils = executorUtils;
-        this.networkUtils = networkUtils;
+        this.executorUtil = executorUtil;
+        this.networkUtil = networkUtil;
         this.db = db;
         this.userDao = userDao;
         this.commentDao = commentDao;
@@ -43,7 +43,7 @@ public class CommentRepository {
     }
 
     public LiveData<Resource<List<Comment>>> loadComments(CommentDTO commentDTO) {
-        return new NetworkBoundResource<List<Comment>, List<Comment>>(executorUtils) {
+        return new NetworkBoundResource<List<Comment>, List<Comment>>(executorUtil) {
 
             @Override
             protected LiveData<List<Comment>> loadFromDb() {
@@ -52,7 +52,7 @@ public class CommentRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Comment> data) {
-                return data == null || data.isEmpty() || networkUtils.isConnected();
+                return data == null || data.isEmpty() || networkUtil.isConnected();
             }
 
             @Override
@@ -71,7 +71,7 @@ public class CommentRepository {
     }
 
     public LiveData<Event<Resource<Result>>> createComment(Comment comment) {
-        return new NetworkResource<Result>(executorUtils) {
+        return new NetworkResource<Result>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {

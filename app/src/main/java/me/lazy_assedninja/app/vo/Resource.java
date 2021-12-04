@@ -1,5 +1,11 @@
 package me.lazy_assedninja.app.vo;
 
+import static me.lazy_assedninja.app.vo.Status.ERROR;
+import static me.lazy_assedninja.app.vo.Status.LOADING;
+import static me.lazy_assedninja.app.vo.Status.SUCCESS;
+
+import java.util.Objects;
+
 /**
  * A generic class that holds a value with its loading status.
  *
@@ -7,15 +13,11 @@ package me.lazy_assedninja.app.vo;
  */
 public class Resource<T> {
 
-    public static final String SUCCESS = "SUCCESS";
-    public static final String ERROR = "ERROR";
-    public static final String LOADING = "LOADING";
+    private final Status status;
+    private final T data;
+    private final String message;
 
-    private String status;
-    private T data;
-    private String message;
-
-    public Resource(String status, T data, String message) {
+    public Resource(Status status, T data, String message) {
         this.status = status;
         this.data = data;
         this.message = message;
@@ -33,27 +35,34 @@ public class Resource<T> {
         return new Resource<>(ERROR, data, message);
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public T getData() {
         return data;
     }
 
-    public void setData(T data) {
-        this.data = data;
-    }
-
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        else if (object == null || getClass() != object.getClass()) return false;
+
+        Resource<?> resource = (Resource<?>) object;
+        if (status != resource.status) return false;
+        else if (!Objects.equals(message, resource.message)) return false;
+        else return Objects.equals(data, resource.data);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = status.hashCode();
+        result = result + (message != null ? message.hashCode() : 0)
+                + (data != null ? data.hashCode() : 0);
+        return result;
     }
 }

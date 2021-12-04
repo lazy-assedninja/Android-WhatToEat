@@ -26,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.LoginFragmentBinding;
 import me.lazy_assedninja.app.vo.Resource;
+import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
@@ -120,13 +121,14 @@ public class LoginFragment extends BaseFragment {
             binding.tilEmail.getEditText().setText(viewModel.getUserEmail());
 
         viewModel.user.observe(getViewLifecycleOwner(), userResource -> {
-            if (userResource.getStatus().equals(Resource.SUCCESS)) {
+            if (userResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(R.string.success_login);
                 viewModel.loggedIn(userResource.getData().getId(), userResource.getData().getEmail());
                 navController.navigateUp();
                 googleSignInClient.signOut();
-            } else if (userResource.getStatus().equals(Resource.ERROR)) {
+            } else if (userResource.getStatus().equals(Status.ERROR)) {
                 showToast(userResource.getMessage());
+                googleSignInClient.signOut();
             }
         });
     }

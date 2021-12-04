@@ -13,7 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.dto.CommentDTO;
 import me.lazy_assedninja.app.repository.CommentRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
-import me.lazy_assedninja.app.utils.AbsentLiveData;
+import me.lazy_assedninja.app.util.AbsentLiveData;
 import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.app.vo.Resource;
 

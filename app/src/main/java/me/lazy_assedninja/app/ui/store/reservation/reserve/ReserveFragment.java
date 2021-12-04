@@ -21,6 +21,7 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ReserveFragmentBinding;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
+import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 
 @AndroidEntryPoint
@@ -128,10 +129,10 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Resource.SUCCESS)) {
+            if (resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
                 dismiss();
-            } else if (resultResource.getStatus().equals(Resource.ERROR)) {
+            } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
             }
         });

@@ -11,9 +11,9 @@ import dagger.hilt.android.scopes.ViewModelScoped;
 import me.lazy_assedninja.app.api.WhatToEatService;
 import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.repository.UserRepository;
-import me.lazy_assedninja.library.utils.EncryptUtils;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.TimeUtils;
+import me.lazy_assedninja.library.util.EncryptUtil;
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.TimeUtil;
 
 /**
  * Hilt module that installs into SingletonComponent.
@@ -26,10 +26,10 @@ public class RepositoryModule {
     @Provides
     @ViewModelScoped
     public UserRepository provideUserRepository(@ApplicationContext Context context,
-                                                ExecutorUtils executorUtils, EncryptUtils encryptUtils,
-                                                TimeUtils timeUtils, UserDao userDao,
+                                                ExecutorUtil executorUtil, EncryptUtil encryptUtil,
+                                                TimeUtil timeUtil, UserDao userDao,
                                                 WhatToEatService whatToEatService) {
-        return new UserRepository(context, executorUtils, encryptUtils, timeUtils, userDao,
+        return new UserRepository(context, executorUtil, encryptUtil, timeUtil, userDao,
                 whatToEatService);
     }
 }

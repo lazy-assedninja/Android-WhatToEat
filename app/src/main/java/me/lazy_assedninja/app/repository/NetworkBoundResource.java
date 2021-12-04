@@ -11,7 +11,7 @@ import me.lazy_assedninja.app.api.ApiErrorResponse;
 import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.ApiSuccessResponse;
 import me.lazy_assedninja.app.vo.Resource;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network.
@@ -21,15 +21,15 @@ import me.lazy_assedninja.library.utils.ExecutorUtils;
  */
 public abstract class NetworkBoundResource<ResultType, RequestType> {
 
-    private final ExecutorUtils executorUtils;
+    private final ExecutorUtil executorUtil;
 
     private final MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
 
     @MainThread
-    public NetworkBoundResource(ExecutorUtils executorUtils) {
-        this.executorUtils = executorUtils;
+    public NetworkBoundResource(ExecutorUtil executorUtil) {
+        this.executorUtil = executorUtil;
 
-        result.setValue(Resource.loading(null));
+        setValue(Resource.loading(null));
         LiveData<ResultType> dbSource = loadFromDb();
         result.addSource(dbSource, data -> {
             result.removeSource(dbSource);
@@ -52,9 +52,9 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             result.removeSource(apiResponse);
             result.removeSource(dbSource);
             if (response instanceof ApiSuccessResponse) {
-                executorUtils.diskIO().execute(() -> {
+                executorUtil.diskIO().execute(() -> {
                     saveCallResult(processResponse((ApiSuccessResponse<RequestType>) response));
-                    executorUtils.mainThread().execute(() ->
+                    executorUtil.mainThread().execute(() ->
                             // We specially request a new live data,
                             // otherwise we will get immediately last cached value,
                             // which may not be updated with latest results received from network.
@@ -62,7 +62,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
                                     setValue(Resource.success(newData))));
                 });
             } else if (response instanceof ApiEmptyResponse) {
-                executorUtils.mainThread().execute(() ->
+                executorUtil.mainThread().execute(() ->
                         // Reload from disk whatever we had.
                         result.addSource(loadFromDb(), newData ->
                                 setValue(Resource.success(newData))));

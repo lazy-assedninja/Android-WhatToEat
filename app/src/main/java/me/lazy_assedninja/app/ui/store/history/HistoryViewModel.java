@@ -14,17 +14,17 @@ import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.HistoryRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
-import me.lazy_assedninja.app.utils.AbsentLiveData;
+import me.lazy_assedninja.app.util.AbsentLiveData;
 import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 @HiltViewModel
 public class HistoryViewModel extends ViewModel {
 
-    private final ExecutorUtils executorUtils;
+    private final ExecutorUtil executorUtil;
     private final UserRepository userRepository;
     private FavoriteRepository favoriteRepository;
     private HistoryRepository historyRepository;
@@ -33,9 +33,9 @@ public class HistoryViewModel extends ViewModel {
     private final MutableLiveData<Favorite> favoriteRequest = new MutableLiveData<>();
 
     @Inject
-    public HistoryViewModel(ExecutorUtils executorUtils, UserRepository userRepository,
+    public HistoryViewModel(ExecutorUtil executorUtil, UserRepository userRepository,
                             FavoriteRepository favoriteRepository, HistoryRepository historyRepository) {
-        this.executorUtils = executorUtils;
+        this.executorUtil = executorUtil;
         this.userRepository = userRepository;
         this.favoriteRepository = favoriteRepository;
         this.historyRepository = historyRepository;
@@ -55,7 +55,7 @@ public class HistoryViewModel extends ViewModel {
 
     public void requestHistory() {
         if (storeRequest.getValue() == null) {
-            executorUtils.diskIO().execute(() ->
+            executorUtil.diskIO().execute(() ->
                     storeRequest.postValue(historyRepository.getHistoryIDs()));
         }
     }

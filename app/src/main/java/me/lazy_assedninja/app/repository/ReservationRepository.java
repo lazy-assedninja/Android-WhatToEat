@@ -16,30 +16,30 @@ import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Reservation;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.NetworkUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.NetworkUtil;
 
 public class ReservationRepository {
 
-    private final ExecutorUtils executorUtils;
-    private final NetworkUtils networkUtils;
+    private final ExecutorUtil executorUtil;
+    private final NetworkUtil networkUtil;
     private final WhatToEatDatabase db;
     private final ReservationDao reservationDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public ReservationRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
+    public ReservationRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil,
                                  WhatToEatDatabase db, ReservationDao reservationDao,
                                  WhatToEatService whatToEatService) {
-        this.executorUtils = executorUtils;
-        this.networkUtils = networkUtils;
+        this.executorUtil = executorUtil;
+        this.networkUtil = networkUtil;
         this.db = db;
         this.reservationDao = reservationDao;
         this.whatToEatService = whatToEatService;
     }
 
     public LiveData<Resource<List<Reservation>>> loadReservations(ReservationDTO reservationDTO) {
-        return new NetworkBoundResource<List<Reservation>, List<Reservation>>(executorUtils) {
+        return new NetworkBoundResource<List<Reservation>, List<Reservation>>(executorUtil) {
 
             @Override
             protected LiveData<List<Reservation>> loadFromDb() {
@@ -48,7 +48,7 @@ public class ReservationRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Reservation> data) {
-                return data == null || data.isEmpty() || networkUtils.isConnected();
+                return data == null || data.isEmpty() || networkUtil.isConnected();
             }
 
             @Override
@@ -66,8 +66,9 @@ public class ReservationRepository {
         }.asLiveData();
     }
 
-    public LiveData<Event<Resource<Result>>> addOrCancelReservation(boolean isAdd, Reservation reservation) {
-        return new NetworkResource<Result>(executorUtils) {
+    public LiveData<Event<Resource<Result>>> addOrCancelReservation(boolean isAdd,
+                                                                    Reservation reservation) {
+        return new NetworkResource<Result>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {

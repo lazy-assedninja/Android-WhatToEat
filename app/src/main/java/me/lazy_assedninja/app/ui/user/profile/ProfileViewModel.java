@@ -12,7 +12,7 @@ import me.lazy_assedninja.app.dto.PictureDTO;
 import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.repository.FileRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
-import me.lazy_assedninja.app.utils.AbsentLiveData;
+import me.lazy_assedninja.app.util.AbsentLiveData;
 import me.lazy_assedninja.app.vo.GoogleAccount;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;

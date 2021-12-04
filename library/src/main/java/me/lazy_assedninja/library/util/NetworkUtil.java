@@ -1,17 +1,16 @@
-package me.lazy_assedninja.library.utils;
+package me.lazy_assedninja.library.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
-import android.os.Build;
 
 @SuppressWarnings({"RedundantSuppression", "deprecation", "unused"})
-public class NetworkUtils {
+public class NetworkUtil {
 
     private final Context context;
 
-    public NetworkUtils(Context context) {
+    public NetworkUtil(Context context) {
         this.context = context;
     }
 

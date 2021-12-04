@@ -1,14 +1,14 @@
-package me.lazy_assedninja.library.utils;
+package me.lazy_assedninja.library.util;
 
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 
 @SuppressWarnings("unsed")
-public class TimeUtils {
+public class TimeUtil {
 
     @Inject
-    public TimeUtils() {
+    public TimeUtil() {
     }
 
     public String now() {

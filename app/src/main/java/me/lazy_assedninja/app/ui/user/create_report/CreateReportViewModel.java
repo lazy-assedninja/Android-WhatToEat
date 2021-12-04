@@ -10,17 +10,17 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.repository.CustomServiceRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
-import me.lazy_assedninja.app.utils.AbsentLiveData;
+import me.lazy_assedninja.app.util.AbsentLiveData;
 import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Report;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
-import me.lazy_assedninja.library.utils.TimeUtils;
+import me.lazy_assedninja.library.util.TimeUtil;
 
 @HiltViewModel
 public class CreateReportViewModel extends ViewModel {
 
-    private final TimeUtils timeUtils;
+    private final TimeUtil timeUtil;
     private final UserRepository userRepository;
     private CustomServiceRepository customServiceRepository;
 
@@ -29,9 +29,9 @@ public class CreateReportViewModel extends ViewModel {
     private Integer id;
 
     @Inject
-    public CreateReportViewModel(TimeUtils timeUtils, UserRepository userRepository,
+    public CreateReportViewModel(TimeUtil timeUtil, UserRepository userRepository,
                                  CustomServiceRepository customServiceRepository) {
-        this.timeUtils = timeUtils;
+        this.timeUtil = timeUtil;
         this.userRepository = userRepository;
         this.customServiceRepository = customServiceRepository;
     }
@@ -53,6 +53,6 @@ public class CreateReportViewModel extends ViewModel {
     });
 
     public void createReport(String content) {
-        createReport.setValue(new Report(content, timeUtils.now(), id, userRepository.getUserID()));
+        createReport.setValue(new Report(content, timeUtil.now(), id, userRepository.getUserID()));
     }
 }

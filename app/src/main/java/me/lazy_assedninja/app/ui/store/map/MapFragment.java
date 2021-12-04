@@ -1,6 +1,5 @@
 package me.lazy_assedninja.app.ui.store.map;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -61,7 +59,7 @@ public class MapFragment extends BaseFragment {
         binding.setStores(viewModel.stores);
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressWarnings("MissingPermission")
     private void initMapFragment() {
         if (getActivity() == null) return;
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();

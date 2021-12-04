@@ -1,4 +1,4 @@
-package me.lazy_assedninja.library.utils;
+package me.lazy_assedninja.library.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -6,10 +6,10 @@ import java.security.NoSuchAlgorithmException;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
-public class EncryptUtils {
+public class EncryptUtil {
 
     @Inject
-    public EncryptUtils() {
+    public EncryptUtil() {
     }
 
     @Nullable

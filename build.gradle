@@ -8,8 +8,8 @@ buildscript {
     }
 
     repositories {
-        google()
         mavenCentral()
+        google()
     }
 
     dependencies {
@@ -27,8 +27,8 @@ plugins {
 
 allprojects {
     repositories {
-        google()
         mavenCentral()
+        google()
     }
 
     tasks.withType(JavaCompile) {

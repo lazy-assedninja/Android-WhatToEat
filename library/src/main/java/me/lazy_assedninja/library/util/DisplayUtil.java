@@ -1,4 +1,4 @@
-package me.lazy_assedninja.library.utils;
+package me.lazy_assedninja.library.util;
 
 import android.content.Context;
 import android.graphics.Insets;
@@ -11,11 +11,11 @@ import android.view.WindowMetrics;
 import androidx.annotation.RequiresApi;
 
 @SuppressWarnings({"RedundantSuppression", "deprecation", "unused"})
-public class DisplayUtils {
+public class DisplayUtil {
 
     private final Context context;
 
-    public DisplayUtils(Context context) {
+    public DisplayUtil(Context context) {
         this.context = context;
     }
 

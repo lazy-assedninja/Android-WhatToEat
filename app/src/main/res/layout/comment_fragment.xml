@@ -9,6 +9,8 @@
 
         <import type="me.lazy_assedninja.app.vo.Event" />
 
+        <import type="me.lazy_assedninja.app.vo.Status" />
+
         <import type="me.lazy_assedninja.app.vo.Resource" />
 
         <import type="java.util.List" />
@@ -51,7 +53,7 @@
             android:layout_gravity="center"
             android:layout_margin="32dp"
             android:indeterminateTint="@color/primary_color"
-            app:visibleOrGone="@{comments.status == Resource.LOADING}" />
+            app:visibleOrGone="@{comments.status == Status.LOADING}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_empty"
@@ -63,7 +65,7 @@
             android:paddingBottom="64dp"
             android:text="@string/tv_empty"
             android:textSize="32sp"
-            app:visibleOrGone="@{size == 0 &amp;&amp; comments.status != Resource.LOADING}" />
+            app:visibleOrGone="@{size == 0 &amp;&amp; comments.status != Status.LOADING}" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/bt_create_comment"
@@ -76,6 +78,6 @@
             android:contentDescription="@string/cd_add"
             android:src="@drawable/ic_add"
             app:tint="@null"
-            app:visibleOrGone="@{comments.status != Resource.LOADING}" />
+            app:visibleOrGone="@{comments.status != Status.LOADING}" />
     </FrameLayout>
 </layout>

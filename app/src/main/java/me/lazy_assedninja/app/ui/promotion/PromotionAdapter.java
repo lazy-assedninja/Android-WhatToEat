@@ -11,15 +11,15 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.PromotionItemBinding;
 import me.lazy_assedninja.app.ui.base.BaseListAdapter;
 import me.lazy_assedninja.app.vo.Promotion;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 public class PromotionAdapter extends BaseListAdapter<Promotion, PromotionItemBinding> {
 
     private final PromotionCallback promotionCallback;
 
-    protected PromotionAdapter(ExecutorUtils executorUtils,
+    protected PromotionAdapter(ExecutorUtil executorUtil,
                                PromotionCallback promotionCallback) {
-        super(executorUtils, new DiffUtil.ItemCallback<Promotion>() {
+        super(executorUtil, new DiffUtil.ItemCallback<Promotion>() {
             @Override
             public boolean areItemsTheSame(@NonNull Promotion oldItem, @NonNull Promotion newItem) {
                 return oldItem.getId() == newItem.getId();

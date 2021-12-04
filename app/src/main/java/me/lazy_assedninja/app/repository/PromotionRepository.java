@@ -13,30 +13,30 @@ import me.lazy_assedninja.app.db.PromotionDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.vo.Promotion;
 import me.lazy_assedninja.app.vo.Resource;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.NetworkUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.NetworkUtil;
 
 public class PromotionRepository {
 
-    private final ExecutorUtils executorUtils;
-    private final NetworkUtils networkUtils;
+    private final ExecutorUtil executorUtil;
+    private final NetworkUtil networkUtil;
     private final WhatToEatDatabase db;
     private final PromotionDao promotionDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public PromotionRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
+    public PromotionRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil,
                                WhatToEatDatabase db, PromotionDao promotionDao,
                                WhatToEatService whatToEatService) {
-        this.executorUtils = executorUtils;
-        this.networkUtils = networkUtils;
+        this.executorUtil = executorUtil;
+        this.networkUtil = networkUtil;
         this.db = db;
         this.promotionDao = promotionDao;
         this.whatToEatService = whatToEatService;
     }
 
     public LiveData<Resource<List<Promotion>>> loadPromotions() {
-        return new NetworkBoundResource<List<Promotion>, List<Promotion>>(executorUtils) {
+        return new NetworkBoundResource<List<Promotion>, List<Promotion>>(executorUtil) {
 
             @Override
             protected LiveData<List<Promotion>> loadFromDb() {
@@ -45,7 +45,7 @@ public class PromotionRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Promotion> data) {
-                return data == null || data.isEmpty() || networkUtils.isConnected();
+                return data == null || data.isEmpty() || networkUtil.isConnected();
             }
 
             @Override

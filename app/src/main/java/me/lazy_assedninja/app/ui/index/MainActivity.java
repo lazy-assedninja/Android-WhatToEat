@@ -31,7 +31,7 @@ import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.DrawerHeaderBinding;
 import me.lazy_assedninja.app.databinding.MainActivityBinding;
 import me.lazy_assedninja.library.ui.BaseActivity;
-import me.lazy_assedninja.library.utils.DisplayUtils;
+import me.lazy_assedninja.library.util.DisplayUtil;
 
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity {
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
     private MainViewModel viewModel;
 
     @Inject
-    public DisplayUtils displayUtils;
+    public DisplayUtil displayUtil;
 
     private NavController navController;
     private SearchView searchView;
@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity {
         MenuItem menuItem = binding.toolbar.getMenu().findItem(R.id.action_to_search_fragment);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setIconifiedByDefault(true);
-        searchView.setMaxWidth(displayUtils.getScreenWidthPix());
+        searchView.setMaxWidth(displayUtil.getScreenWidthPix());
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnSearchClickListener(v -> {
             if (navController.getCurrentDestination() == null) return;

@@ -57,9 +57,6 @@ public interface WhatToEatService {
     @POST("User/ForgetPassword")
     LiveData<ApiResponse<Result>> forgetPassword(@Body UserDTO userDTO);
 
-    @POST("User/GetHeadPortrait")
-    LiveData<ApiResponse<User>> getHeadPortrait(@Body UserDTO userDTO);
-
     /**
      * Store
      */

@@ -14,29 +14,29 @@ import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.dto.PostDTO;
 import me.lazy_assedninja.app.vo.Post;
 import me.lazy_assedninja.app.vo.Resource;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
-import me.lazy_assedninja.library.utils.NetworkUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.NetworkUtil;
 
 public class PostRepository {
 
-    private final ExecutorUtils executorUtils;
-    private final NetworkUtils networkUtils;
+    private final ExecutorUtil executorUtil;
+    private final NetworkUtil networkUtil;
     private final WhatToEatDatabase db;
     private final PostDao postDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public PostRepository(ExecutorUtils executorUtils, NetworkUtils networkUtils,
+    public PostRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil,
                           WhatToEatDatabase db, PostDao postDao, WhatToEatService whatToEatService) {
-        this.executorUtils = executorUtils;
-        this.networkUtils = networkUtils;
+        this.executorUtil = executorUtil;
+        this.networkUtil = networkUtil;
         this.db = db;
         this.postDao = postDao;
         this.whatToEatService = whatToEatService;
     }
 
     public LiveData<Resource<List<Post>>> loadPosts(PostDTO postDTO) {
-        return new NetworkBoundResource<List<Post>, List<Post>>(executorUtils) {
+        return new NetworkBoundResource<List<Post>, List<Post>>(executorUtil) {
 
             @Override
             protected LiveData<List<Post>> loadFromDb() {
@@ -45,7 +45,7 @@ public class PostRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Post> data) {
-                return data == null || data.isEmpty() || networkUtils.isConnected();
+                return data == null || data.isEmpty() || networkUtil.isConnected();
             }
 
             @Override

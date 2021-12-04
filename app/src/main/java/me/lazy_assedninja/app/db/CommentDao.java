@@ -25,9 +25,9 @@ public interface CommentDao {
     @Query("SELECT * FROM comment WHERE storeID == :storeID")
     LiveData<List<Comment>> getComments(int storeID);
 
-    @Query("DELETE FROM comment WHERE storeID == :storeID")
-    void deleteByStoreID(int storeID);
-
     @Query("SELECT id FROM comment ORDER BY id DESC LIMIT 1")
     int getLastCommentID();
+
+    @Query("DELETE FROM comment WHERE storeID == :storeID")
+    void deleteByStoreID(int storeID);
 }

@@ -10,17 +10,17 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.repository.CommentRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
-import me.lazy_assedninja.app.utils.AbsentLiveData;
+import me.lazy_assedninja.app.util.AbsentLiveData;
 import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
-import me.lazy_assedninja.library.utils.TimeUtils;
+import me.lazy_assedninja.library.util.TimeUtil;
 
 @HiltViewModel
 public class CreateCommentViewModel extends ViewModel {
 
-    private final TimeUtils timeUtils;
+    private final TimeUtil timeUtil;
     private final UserRepository userRepository;
     private CommentRepository commentRepository;
 
@@ -29,9 +29,9 @@ public class CreateCommentViewModel extends ViewModel {
     private int id;
 
     @Inject
-    public CreateCommentViewModel(TimeUtils timeUtils, UserRepository userRepository,
+    public CreateCommentViewModel(TimeUtil timeUtil, UserRepository userRepository,
                                   CommentRepository commentRepository) {
-        this.timeUtils = timeUtils;
+        this.timeUtil = timeUtil;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
     }
@@ -49,6 +49,6 @@ public class CreateCommentViewModel extends ViewModel {
     });
 
     public void createComment(String star, String content) {
-        createComment.setValue(new Comment(star, content, timeUtils.now(), id, userRepository.getUserID()));
+        createComment.setValue(new Comment(star, content, timeUtil.now(), id, userRepository.getUserID()));
     }
 }

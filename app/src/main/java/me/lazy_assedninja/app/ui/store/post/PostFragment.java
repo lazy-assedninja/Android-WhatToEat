@@ -21,7 +21,7 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.PostFragmentBinding;
 import me.lazy_assedninja.app.vo.Post;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 @AndroidEntryPoint
 public class PostFragment extends BaseBottomSheetDialogFragment {
@@ -30,7 +30,7 @@ public class PostFragment extends BaseBottomSheetDialogFragment {
     private PostViewModel viewModel;
 
     @Inject
-    public ExecutorUtils executorUtils;
+    public ExecutorUtil executorUtil;
 
     private PostAdapter adapter;
 
@@ -56,7 +56,7 @@ public class PostFragment extends BaseBottomSheetDialogFragment {
     }
 
     private void initView() {
-        adapter = new PostAdapter(executorUtils);
+        adapter = new PostAdapter(executorUtil);
         binding.rv.setAdapter(adapter);
 
         binding.setLifecycleOwner(getViewLifecycleOwner());

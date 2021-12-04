@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.PromotionFragmentBinding;
 import me.lazy_assedninja.library.ui.BaseFragment;
-import me.lazy_assedninja.library.utils.ExecutorUtils;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 
 import static java.util.Collections.emptyList;
 
@@ -29,7 +29,7 @@ public class PromotionFragment extends BaseFragment {
     private PromotionViewModel viewModel;
 
     @Inject
-    public ExecutorUtils executorUtils;
+    public ExecutorUtil executorUtil;
 
     private NavController navController;
     private PromotionAdapter adapter;
@@ -57,7 +57,7 @@ public class PromotionFragment extends BaseFragment {
     }
 
     private void initView() {
-        adapter = new PromotionAdapter(executorUtils, (id) ->
+        adapter = new PromotionAdapter(executorUtil, (id) ->
                 navController.navigate(PromotionFragmentDirections.actionToPromotionInformationFragment(id))
         );
         binding.rv.setAdapter(adapter);
