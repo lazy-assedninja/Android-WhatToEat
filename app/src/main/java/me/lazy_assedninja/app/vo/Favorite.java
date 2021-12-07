@@ -9,8 +9,10 @@ public class Favorite {
 
     private boolean status;
 
-    public Favorite(int userID, int storeID, boolean status) {
-        this.userID = userID;
+    public Favorite() {
+    }
+
+    public Favorite(int storeID, boolean status) {
         this.storeID = storeID;
         this.status = status;
     }

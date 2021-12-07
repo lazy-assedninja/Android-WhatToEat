@@ -53,9 +53,9 @@ public class CommentViewModel extends ViewModel {
         }
     });
 
-    public void requestComments(int storeID) {
+    public void requestComment(CommentDTO commentDTO) {
         if (commentRequest.getValue() == null) {
-            commentRequest.setValue(new CommentDTO(storeID));
+            commentRequest.setValue(commentDTO);
         }
     }
 }

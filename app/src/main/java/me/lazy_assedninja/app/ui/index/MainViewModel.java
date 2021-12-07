@@ -15,14 +15,11 @@ import me.lazy_assedninja.app.vo.User;
 public class MainViewModel extends ViewModel {
 
     private final UserRepository userRepository;
-    private final StoreRepository storeRepository;
     private final HistoryRepository historyRepository;
 
     @Inject
-    public MainViewModel(UserRepository userRepository, StoreRepository storeRepository,
-                         HistoryRepository historyRepository) {
+    public MainViewModel(UserRepository userRepository, HistoryRepository historyRepository) {
         this.userRepository = userRepository;
-        this.storeRepository = storeRepository;
         this.historyRepository = historyRepository;
     }
 
@@ -36,9 +33,5 @@ public class MainViewModel extends ViewModel {
 
     public void clearHistory() {
         historyRepository.deleteAll();
-    }
-
-    public void initTags() {
-        storeRepository.initTags();
     }
 }

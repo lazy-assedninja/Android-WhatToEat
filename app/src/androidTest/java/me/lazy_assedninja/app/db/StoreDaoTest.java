@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static me.lazy_assedninja.app.common.LiveDataTestUtil.getOrAwaitValue;
 import static me.lazy_assedninja.app.common.TestUtil.createStore;
-import static me.lazy_assedninja.app.common.TestUtil.createTag;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -33,7 +32,6 @@ public class StoreDaoTest extends DbTest {
 
     @Before
     public void init() {
-        db.tagDao().insert(createTag(1));
         storeDao = db.storeDao();
 
         List<Store> list = new ArrayList<>();
@@ -65,7 +63,7 @@ public class StoreDaoTest extends DbTest {
     }
 
     @Test
-    public void insertAndGetStoresByTagID() throws TimeoutException, InterruptedException {
+    public void insertAndGetStoresByTag() throws TimeoutException, InterruptedException {
         List<Store> data = getOrAwaitValue(storeDao.getStores(1));
         assertThat(data.get(0).getName(), is(name));
     }

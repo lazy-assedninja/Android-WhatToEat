@@ -15,12 +15,11 @@ public class GoogleAccount {
     }
 
     @Ignore
-    public GoogleAccount(String googleID, String email, String name, String pictureURL, int userID) {
+    public GoogleAccount(String googleID, String email, String name, String pictureURL) {
         this.googleID = googleID;
         this.email = email;
         this.name = name;
         this.pictureURL = pictureURL;
-        this.userID = userID;
     }
 
     public String getGoogleID() {

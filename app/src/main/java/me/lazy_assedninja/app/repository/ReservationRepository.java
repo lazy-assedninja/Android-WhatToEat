@@ -66,19 +66,19 @@ public class ReservationRepository {
         }.asLiveData();
     }
 
-    public LiveData<Event<Resource<Result>>> addOrCancelReservation(boolean isAdd,
-                                                                    Reservation reservation) {
+    public LiveData<Event<Resource<Result>>> createOrCancelReservation(boolean isCreate,
+                                                                       Reservation reservation) {
         return new NetworkResource<Result>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
-                return (isAdd) ? whatToEatService.createReservation(reservation) :
-                        whatToEatService.cancelReservation(new ReservationDTO(reservation.getId()));
+                return (isCreate) ? whatToEatService.createReservation(reservation) :
+                        whatToEatService.cancelReservation(reservation);
             }
 
             @Override
             protected void saveCallResult(Result item) {
-                if (isAdd) {
+                if (isCreate) {
                     reservationDao.insert(reservation);
                 } else {
                     reservationDao.delete(reservation);

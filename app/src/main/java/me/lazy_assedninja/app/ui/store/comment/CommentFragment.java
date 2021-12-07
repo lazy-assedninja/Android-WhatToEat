@@ -22,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.CommentFragmentBinding;
+import me.lazy_assedninja.app.dto.CommentDTO;
 import me.lazy_assedninja.app.ui.store.comment.create_comment.CreateCommentFragment;
 import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
@@ -85,8 +86,8 @@ public class CommentFragment extends BaseBottomSheetDialogFragment {
         if (getArguments() == null) return;
         int id = getArguments().getInt("store_id");
         viewModel.setId(id);
+        viewModel.requestComment(new CommentDTO(id));
 
-        viewModel.requestComments(id);
         viewModel.comments.observe(getViewLifecycleOwner(), listResource -> {
             List<Comment> list = listResource.getData();
             if (list != null) {

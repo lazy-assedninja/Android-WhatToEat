@@ -10,6 +10,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import static me.lazy_assedninja.app.common.TestUtil.createCommentDTO;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -22,6 +24,7 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.lazy_assedninja.app.dto.CommentDTO;
 import me.lazy_assedninja.app.repository.CommentRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.store.comment.CommentViewModel;
@@ -45,21 +48,22 @@ public class CommentViewModelTest {
         assertThat(viewModel.comments, notNullValue());
 
         verify(commentRepository, never()).loadComments(any());
-        viewModel.requestComments(1);
+        viewModel.requestComment(createCommentDTO());
         verify(commentRepository, never()).loadComments(any());
     }
 
     @Test
     public void sendResultToUI() {
+        CommentDTO commentDTO = createCommentDTO();
         MutableLiveData<Resource<List<Comment>>> list = new MutableLiveData<>();
-        when(commentRepository.loadComments(any())).thenReturn(list);
+        when(commentRepository.loadComments(commentDTO)).thenReturn(list);
         Observer<Resource<List<Comment>>> observer = mock(Observer.class);
         viewModel.comments.observeForever(observer);
-        viewModel.requestComments(1);
+        viewModel.requestComment(commentDTO);
         verify(observer, never()).onChanged(any());
+
         List<Comment> data = new ArrayList<>();
         Resource<List<Comment>> resource = Resource.success(data);
-
         list.setValue(resource);
         verify(observer).onChanged(resource);
     }
@@ -68,8 +72,10 @@ public class CommentViewModelTest {
     public void loadComments() {
         viewModel.comments.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(commentRepository);
-        viewModel.requestComments(1);
-        verify(commentRepository).loadComments(any());
+
+        CommentDTO commentDTO = createCommentDTO();
+        viewModel.requestComment(commentDTO);
+        verify(commentRepository).loadComments(commentDTO);
         verifyNoMoreInteractions(commentRepository);
     }
 

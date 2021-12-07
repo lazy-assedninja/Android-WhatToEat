@@ -52,7 +52,10 @@ public class CreateReportViewModel extends ViewModel {
         }
     });
 
-    public void createReport(String content) {
-        createReport.setValue(new Report(content, timeUtil.now(), id, userRepository.getUserID()));
+    public void createReport(Report report) {
+        report.setCreateTime(timeUtil.now());
+        report.setStoreID(id);
+        report.setUserID(userRepository.getUserID());
+        createReport.setValue(report);
     }
 }

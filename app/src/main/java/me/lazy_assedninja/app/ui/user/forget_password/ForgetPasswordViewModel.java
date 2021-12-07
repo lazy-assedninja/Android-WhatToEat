@@ -44,12 +44,11 @@ public class ForgetPasswordViewModel extends ViewModel {
         }
     });
 
-    public void sendVerificationCode(String email) {
-        sendVerificationCode.setValue(new UserDTO(email));
+    public void sendVerificationCode(UserDTO userDTO) {
+        sendVerificationCode.setValue(userDTO);
     }
 
-    public void forgetPassword(String email, String verificationCode, String newPassword) {
-        forgetPassword.setValue(new UserDTO(email, verificationCode, newPassword,
-                false));
+    public void forgetPassword(UserDTO userDTO) {
+        forgetPassword.setValue(userDTO);
     }
 }

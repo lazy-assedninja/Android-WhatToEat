@@ -58,9 +58,9 @@ public class PromotionViewModelTest {
         viewModel.promotions.observeForever(observer);
         viewModel.requestPromotion();
         verify(observer, never()).onChanged(any());
-        List<Promotion> listData = new ArrayList<>();
-        Resource<List<Promotion>> resource = Resource.success(listData);
 
+        List<Promotion> data = new ArrayList<>();
+        Resource<List<Promotion>> resource = Resource.success(data);
         list.setValue(resource);
         verify(observer).onChanged(resource);
     }
@@ -69,6 +69,7 @@ public class PromotionViewModelTest {
     public void loadPromotions() {
         viewModel.promotions.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(promotionRepository);
+
         viewModel.requestPromotion();
         verify(promotionRepository).loadPromotions();
         verifyNoMoreInteractions(promotionRepository);

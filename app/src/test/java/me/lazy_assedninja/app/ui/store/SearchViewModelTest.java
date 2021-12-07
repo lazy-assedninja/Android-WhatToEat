@@ -11,7 +11,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import static me.lazy_assedninja.app.common.TestUtil.createFavorite;
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
+import static me.lazy_assedninja.app.common.TestUtil.createStoreDTO;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
@@ -25,11 +27,13 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.lazy_assedninja.app.dto.StoreDTO;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.store.search.SearchViewModel;
 import me.lazy_assedninja.app.vo.Event;
+import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
@@ -53,41 +57,43 @@ public class SearchViewModelTest {
         assertThat(viewModel.stores, notNullValue());
 
         verify(storeRepository, never()).search(any());
-        viewModel.setStoreRequest("keyword");
+        viewModel.search(createStoreDTO());
         verify(storeRepository, never()).search(any());
 
         // Change favorite status
         assertThat(viewModel.result, notNullValue());
 
         verify(favoriteRepository, never()).changeFavoriteStatus(any());
-        viewModel.setFavoriteRequest(1, true);
+        viewModel.changeFavoriteStatus(createFavorite());
         verify(favoriteRepository, never()).changeFavoriteStatus(any());
     }
 
     @Test
     public void sendResultToUI() {
         // Search stores
+        StoreDTO storeDTO = createStoreDTO();
         MutableLiveData<Resource<List<Store>>> list = new MutableLiveData<>();
-        when(storeRepository.search(any())).thenReturn(list);
+        when(storeRepository.search(storeDTO)).thenReturn(list);
         Observer<Resource<List<Store>>> listObserver = mock(Observer.class);
         viewModel.stores.observeForever(listObserver);
-        viewModel.setStoreRequest("keyword");
+        viewModel.search(storeDTO);
         verify(listObserver, never()).onChanged(any());
+
         List<Store> listData = new ArrayList<>();
         Resource<List<Store>> listResource = Resource.success(listData);
-
         list.setValue(listResource);
         verify(listObserver).onChanged(listResource);
 
         // Change favorite status
+        Favorite favorite = createFavorite();
         MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        when(favoriteRepository.changeFavoriteStatus(any())).thenReturn(result);
+        when(favoriteRepository.changeFavoriteStatus(favorite)).thenReturn(result);
         Observer<Event<Resource<Result>>> resultObserver = mock(Observer.class);
         viewModel.result.observeForever(resultObserver);
-        viewModel.setFavoriteRequest(1, true);
+        viewModel.changeFavoriteStatus(favorite);
+
         verify(resultObserver, never()).onChanged(any());
         Event<Resource<Result>> resultResource = new Event<>(Resource.success(createResult()));
-
         result.setValue(resultResource);
         verify(resultObserver).onChanged(resultResource);
     }
@@ -95,35 +101,42 @@ public class SearchViewModelTest {
     @Test
     public void search() {
         viewModel.stores.observeForever(mock(Observer.class));
-        verifyNoMoreInteractions(storeRepository);
-        viewModel.setStoreRequest("keyword");
-        verify(storeRepository).search(any());
+        verifyNoMoreInteractions(userRepository, storeRepository);
+
+        StoreDTO storeDTO = createStoreDTO();
+        viewModel.search(storeDTO);
+        verify(userRepository).getUserID();
+        verify(storeRepository).search(storeDTO);
         verifyNoMoreInteractions(storeRepository);
     }
 
     @Test
     public void changeFavoriteStatus() {
         viewModel.result.observeForever(mock(Observer.class));
-        verifyNoMoreInteractions(favoriteRepository);
-        viewModel.setFavoriteRequest(1, true);
-        verify(favoriteRepository).changeFavoriteStatus(any());
-        verifyNoMoreInteractions(favoriteRepository);
+        verifyNoMoreInteractions(userRepository, favoriteRepository);
+
+        Favorite favorite = createFavorite();
+        viewModel.changeFavoriteStatus(favorite);
+        verify(userRepository).getUserID();
+        verify(favoriteRepository).changeFavoriteStatus(favorite);
+        verifyNoMoreInteractions(userRepository, favoriteRepository);
     }
 
     @Test
     public void refresh() {
-        viewModel.setStoreRequest("keyword");
+        StoreDTO storeDTO = createStoreDTO();
+        viewModel.search(storeDTO);
         verifyNoMoreInteractions(storeRepository);
         viewModel.refresh();
         verifyNoMoreInteractions(storeRepository);
+
         Observer<Resource<List<Store>>> userObserver = mock(Observer.class);
         viewModel.stores.observeForever(userObserver);
-
-        verify(storeRepository).search(any());
+        verify(storeRepository).search(storeDTO);
         reset(storeRepository);
 
         viewModel.refresh();
-        verify(storeRepository).search(any());
+        verify(storeRepository).search(storeDTO);
         reset(storeRepository);
         viewModel.stores.removeObserver(userObserver);
 

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static me.lazy_assedninja.app.common.TestUtil.createFavorite;
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -29,6 +30,7 @@ import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.store.history.HistoryViewModel;
 import me.lazy_assedninja.app.util.InstantExecutorUtil;
 import me.lazy_assedninja.app.vo.Event;
+import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
@@ -59,7 +61,7 @@ public class HistoryViewModelTest {
         assertThat(viewModel.result, notNullValue());
 
         verify(favoriteRepository, never()).changeFavoriteStatus(any());
-        viewModel.setFavoriteRequest(1, true);
+        viewModel.changeFavoriteStatus(createFavorite());
         verify(favoriteRepository, never()).changeFavoriteStatus(any());
     }
 
@@ -67,7 +69,7 @@ public class HistoryViewModelTest {
     public void sendResultToUI() {
         // Load stores
         MutableLiveData<List<Store>> list = new MutableLiveData<>();
-        when(historyRepository.loadHistories(any())).thenReturn(list);
+        when(historyRepository.loadHistories(new ArrayList<>())).thenReturn(list);
         Observer<List<Store>> listObserver = mock(Observer.class);
         viewModel.stores.observeForever(listObserver);
         viewModel.requestHistory();
@@ -78,14 +80,15 @@ public class HistoryViewModelTest {
         verify(listObserver).onChanged(listData);
 
         // Change favorite status
+        Favorite favorite = createFavorite();
         MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        when(favoriteRepository.changeFavoriteStatus(any())).thenReturn(result);
+        when(favoriteRepository.changeFavoriteStatus(favorite)).thenReturn(result);
         Observer<Event<Resource<Result>>> resultObserver = mock(Observer.class);
         viewModel.result.observeForever(resultObserver);
-        viewModel.setFavoriteRequest(1, true);
+        viewModel.changeFavoriteStatus(favorite);
         verify(resultObserver, never()).onChanged(any());
-        Event<Resource<Result>> resultResource = new Event<>(Resource.success(createResult()));
 
+        Event<Resource<Result>> resultResource = new Event<>(Resource.success(createResult()));
         result.setValue(resultResource);
         verify(resultObserver).onChanged(resultResource);
     }
@@ -94,9 +97,12 @@ public class HistoryViewModelTest {
     public void loadHistories() {
         viewModel.stores.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(historyRepository);
+
+        List<Integer> ids = new ArrayList<>();
+        when(historyRepository.getHistoryIDs()).thenReturn(ids);
         viewModel.requestHistory();
         verify(historyRepository).getHistoryIDs();
-        verify(historyRepository).loadHistories(any());
+        verify(historyRepository).loadHistories(ids);
         verifyNoMoreInteractions(historyRepository);
     }
 
@@ -104,8 +110,11 @@ public class HistoryViewModelTest {
     public void changeFavoriteStatus() {
         viewModel.result.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(favoriteRepository);
-        viewModel.setFavoriteRequest(1, true);
-        verify(favoriteRepository).changeFavoriteStatus(any());
+
+        Favorite favorite = createFavorite();
+        viewModel.changeFavoriteStatus(favorite);
+        verify(userRepository).getUserID();
+        verify(favoriteRepository).changeFavoriteStatus(favorite);
         verifyNoMoreInteractions(favoriteRepository);
     }
 

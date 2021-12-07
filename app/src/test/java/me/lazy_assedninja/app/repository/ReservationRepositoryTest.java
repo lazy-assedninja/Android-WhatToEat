@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static me.lazy_assedninja.app.common.TestUtil.createReservation;
 import static me.lazy_assedninja.app.common.TestUtil.createReservationDTO;
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
 import static me.lazy_assedninja.app.util.ApiUtil.successCall;
@@ -27,6 +26,7 @@ import java.util.List;
 
 import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
+import me.lazy_assedninja.app.common.TestUtil;
 import me.lazy_assedninja.app.db.ReservationDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.dto.ReservationDTO;
@@ -60,12 +60,12 @@ public class ReservationRepositoryTest {
 
     @Test
     public void loadReservationsFromNetwork() {
-        ReservationDTO reservationDTO = createReservationDTO();
         MutableLiveData<List<Reservation>> dbData = new MutableLiveData<>();
         when(reservationDao.getReservations()).thenReturn(dbData);
 
+        ReservationDTO reservationDTO = createReservationDTO();
         List<Reservation> list = new ArrayList<>();
-        list.add(createReservation(1, "reservation name"));
+        list.add(TestUtil.createReservation(1, "reservation name"));
         LiveData<ApiResponse<List<Reservation>>> call = successCall(list);
         when(service.getReservationList(reservationDTO)).thenReturn(call);
 
@@ -95,34 +95,44 @@ public class ReservationRepositoryTest {
         MutableLiveData<List<Reservation>> dbData = new MutableLiveData<>();
         when(reservationDao.getReservations()).thenReturn(dbData);
 
-        LiveData<Resource<List<Reservation>>> data = repository.loadReservations(reservationDTO);
-        verify(reservationDao).getReservations();
-        verifyNoMoreInteractions(service);
-
         Observer<Resource<List<Reservation>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.loadReservations(reservationDTO).observeForever(observer);
+        verify(reservationDao).getReservations();
         verifyNoMoreInteractions(service);
         verify(observer).onChanged(Resource.loading(null));
 
         List<Reservation> list = new ArrayList<>();
-        list.add(createReservation(1, "reservation name"));
+        list.add(TestUtil.createReservation(1, "reservation name"));
         dbData.postValue(list);
         verify(observer).onChanged(Resource.success(list));
     }
 
     @Test
-    public void addReservation() {
-        Reservation reservation = createReservation();
+    public void createReservation() {
+        Reservation reservation = TestUtil.createReservation();
         Result result = createResult();
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.createReservation(reservation)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.addOrCancelReservation(true,
-                reservation);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.createOrCancelReservation(true, reservation).observeForever(observer);
         verify(service).createReservation(reservation);
         verify(reservationDao).insert(reservation);
+
+        verify(observer).onChanged(new Event<>(Resource.success(result)));
+    }
+
+    @Test
+    public void cancelReservation() {
+        Reservation reservation = TestUtil.createReservation();
+        Result result = createResult();
+        LiveData<ApiResponse<Result>> call = successCall(result);
+        when(service.cancelReservation(reservation)).thenReturn(call);
+
+        Observer<Event<Resource<Result>>> observer = mock(Observer.class);
+        repository.createOrCancelReservation(false, reservation).observeForever(observer);
+        verify(service).cancelReservation(reservation);
+        verify(reservationDao).delete(reservation);
 
         verify(observer).onChanged(new Event<>(Resource.success(result)));
     }

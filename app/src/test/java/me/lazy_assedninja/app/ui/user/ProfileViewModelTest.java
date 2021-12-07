@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static me.lazy_assedninja.app.common.TestUtil.createFile;
+import static me.lazy_assedninja.app.common.TestUtil.createGoogleAccount;
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -24,8 +25,10 @@ import me.lazy_assedninja.app.repository.FileRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.user.profile.ProfileViewModel;
 import me.lazy_assedninja.app.vo.Event;
+import me.lazy_assedninja.app.vo.GoogleAccount;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
+import okhttp3.MultipartBody;
 
 @SuppressWarnings("unchecked")
 @RunWith(JUnit4.class)
@@ -44,8 +47,7 @@ public class ProfileViewModelTest {
         assertThat(viewModel.bindGoogleResult, notNullValue());
 
         verify(userRepository, never()).bindGoogleAccount(any());
-        viewModel.bindGoogleAccount("google ID", "email", "name",
-                "picture URL");
+        viewModel.bindGoogleAccount(createGoogleAccount());
         verify(userRepository, never()).bindGoogleAccount(any());
 
         // Upload file
@@ -59,27 +61,28 @@ public class ProfileViewModelTest {
     @Test
     public void sendResultToUI() {
         // Bind google account
+        GoogleAccount googleAccount = createGoogleAccount();
         MutableLiveData<Event<Resource<Result>>> bindGoogleResult = new MutableLiveData<>();
-        when(userRepository.bindGoogleAccount(any())).thenReturn(bindGoogleResult);
+        when(userRepository.bindGoogleAccount(googleAccount)).thenReturn(bindGoogleResult);
         Observer<Event<Resource<Result>>> bindGoogleObserver = mock(Observer.class);
         viewModel.bindGoogleResult.observeForever(bindGoogleObserver);
-        viewModel.bindGoogleAccount("google ID", "email", "name",
-                "picture URL");
+        viewModel.bindGoogleAccount(googleAccount);
         verify(bindGoogleObserver, never()).onChanged(any());
-        Event<Resource<Result>> bindGoogleResource = new Event<>(Resource.success(createResult()));
 
+        Event<Resource<Result>> bindGoogleResource = new Event<>(Resource.success(createResult()));
         bindGoogleResult.setValue(bindGoogleResource);
         verify(bindGoogleObserver).onChanged(bindGoogleResource);
 
         // Upload file
+        MultipartBody.Part file = createFile();
         MutableLiveData<Event<Resource<Result>>> uploadFileResult = new MutableLiveData<>();
-        when(fileRepository.upload(any())).thenReturn(uploadFileResult);
+        when(fileRepository.upload(file)).thenReturn(uploadFileResult);
         Observer<Event<Resource<Result>>> uploadFileObserver = mock(Observer.class);
         viewModel.uploadResult.observeForever(uploadFileObserver);
-        viewModel.uploadFile(createFile());
+        viewModel.uploadFile(file);
         verify(uploadFileObserver, never()).onChanged(any());
-        Event<Resource<Result>> uploadFileResource = new Event<>(Resource.success(createResult()));
 
+        Event<Resource<Result>> uploadFileResource = new Event<>(Resource.success(createResult()));
         uploadFileResult.setValue(uploadFileResource);
         verify(uploadFileObserver).onChanged(uploadFileResource);
     }
@@ -88,10 +91,11 @@ public class ProfileViewModelTest {
     public void bindGoogleAccount() {
         viewModel.bindGoogleResult.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(userRepository);
-        viewModel.bindGoogleAccount("google ID", "email", "name",
-                "picture URL");
+
+        GoogleAccount googleAccount = createGoogleAccount();
+        viewModel.bindGoogleAccount(googleAccount);
         verify(userRepository).getUserID();
-        verify(userRepository).bindGoogleAccount(any());
+        verify(userRepository).bindGoogleAccount(googleAccount);
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -99,8 +103,10 @@ public class ProfileViewModelTest {
     public void uploadFile() {
         viewModel.uploadResult.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(fileRepository);
-        viewModel.uploadFile(createFile());
-        verify(fileRepository).upload(any());
+
+        MultipartBody.Part file = createFile();
+        viewModel.uploadFile(file);
+        verify(fileRepository).upload(file);
         verifyNoMoreInteractions(fileRepository);
     }
 

@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static me.lazy_assedninja.app.common.TestUtil.createReservation;
+import static me.lazy_assedninja.app.common.TestUtil.createReservationDTO;
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -25,6 +26,7 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.lazy_assedninja.app.dto.ReservationDTO;
 import me.lazy_assedninja.app.repository.ReservationRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.store.reservation.ReservationViewModel;
@@ -51,41 +53,44 @@ public class ReservationViewModelTest {
         assertThat(viewModel.reservations, notNullValue());
 
         verify(reservationRepository, never()).loadReservations(any());
-        viewModel.requestReservation();
+        viewModel.requestReservation(createReservationDTO());
         verify(reservationRepository, never()).loadReservations(any());
 
-        // Add or cancel reservation
+        // cancel reservation
         assertThat(viewModel.result, notNullValue());
 
-        verify(reservationRepository, never()).addOrCancelReservation(anyBoolean(), any());
-        viewModel.setCancelRequest(createReservation());
-        verify(reservationRepository, never()).addOrCancelReservation(anyBoolean(), any());
+        verify(reservationRepository, never()).createOrCancelReservation(anyBoolean(), any());
+        viewModel.cancelReservation(createReservation());
+        verify(reservationRepository, never()).createOrCancelReservation(anyBoolean(), any());
     }
 
     @Test
     public void sendResultToUI() {
         // Load reservations
+        ReservationDTO reservationDTO = createReservationDTO();
         MutableLiveData<Resource<List<Reservation>>> list = new MutableLiveData<>();
-        when(reservationRepository.loadReservations(any())).thenReturn(list);
+        when(reservationRepository.loadReservations(reservationDTO)).thenReturn(list);
         Observer<Resource<List<Reservation>>> listObserver = mock(Observer.class);
         viewModel.reservations.observeForever(listObserver);
-        viewModel.requestReservation();
+        viewModel.requestReservation(reservationDTO);
         verify(listObserver, never()).onChanged(any());
+
         List<Reservation> listData = new ArrayList<>();
         Resource<List<Reservation>> listResource = Resource.success(listData);
-
         list.setValue(listResource);
         verify(listObserver).onChanged(listResource);
 
-        // Add or cancel reservation
+        // Cancel reservation
+        Reservation reservation = createReservation();
         MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        when(reservationRepository.addOrCancelReservation(anyBoolean(), any())).thenReturn(result);
+        when(reservationRepository.createOrCancelReservation(false, reservation))
+                .thenReturn(result);
         Observer<Event<Resource<Result>>> resultObserver = mock(Observer.class);
         viewModel.result.observeForever(resultObserver);
-        viewModel.setCancelRequest(createReservation());
+        viewModel.cancelReservation(reservation);
         verify(resultObserver, never()).onChanged(any());
-        Event<Resource<Result>> resultResource = new Event<>(Resource.success(createResult()));
 
+        Event<Resource<Result>> resultResource = new Event<>(Resource.success(createResult()));
         result.setValue(resultResource);
         verify(resultObserver).onChanged(resultResource);
     }
@@ -94,8 +99,10 @@ public class ReservationViewModelTest {
     public void loadReservations() {
         viewModel.reservations.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(reservationRepository);
-        viewModel.requestReservation();
-        verify(reservationRepository).loadReservations(any());
+
+        ReservationDTO reservationDTO = createReservationDTO();
+        viewModel.requestReservation(reservationDTO);
+        verify(reservationRepository).loadReservations(reservationDTO);
         verifyNoMoreInteractions(reservationRepository);
     }
 
@@ -103,25 +110,28 @@ public class ReservationViewModelTest {
     public void cancelReservation() {
         viewModel.result.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(reservationRepository);
-        viewModel.setCancelRequest(createReservation());
-        verify(reservationRepository).addOrCancelReservation(anyBoolean(), any());
+
+        Reservation reservation = createReservation();
+        viewModel.cancelReservation(reservation);
+        verify(reservationRepository).createOrCancelReservation(false, reservation);
         verifyNoMoreInteractions(reservationRepository);
     }
 
     @Test
     public void refresh() {
-        viewModel.requestReservation();
+        ReservationDTO reservationDTO = createReservationDTO();
+        viewModel.requestReservation(reservationDTO);
         verifyNoMoreInteractions(reservationRepository);
         viewModel.refresh();
         verifyNoMoreInteractions(reservationRepository);
+
         Observer<Resource<List<Reservation>>> userObserver = mock(Observer.class);
         viewModel.reservations.observeForever(userObserver);
-
-        verify(reservationRepository).loadReservations(any());
+        verify(reservationRepository).loadReservations(reservationDTO);
         reset(reservationRepository);
 
         viewModel.refresh();
-        verify(reservationRepository).loadReservations(any());
+        verify(reservationRepository).loadReservations(reservationDTO);
         reset(reservationRepository);
         viewModel.reservations.removeObserver(userObserver);
 

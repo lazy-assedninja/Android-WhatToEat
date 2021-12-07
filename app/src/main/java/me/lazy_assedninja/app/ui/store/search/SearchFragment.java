@@ -27,9 +27,11 @@ import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.content_provider.SuggestionProvider;
 import me.lazy_assedninja.app.databinding.SearchFragmentBinding;
 import me.lazy_assedninja.app.databinding.StoreItemBinding;
+import me.lazy_assedninja.app.dto.StoreDTO;
 import me.lazy_assedninja.app.ui.store.StoreAdapter;
 import me.lazy_assedninja.app.ui.store.StoreCallback;
 import me.lazy_assedninja.app.ui.store.home.HomeFragmentDirections;
+import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -89,7 +91,7 @@ public class SearchFragment extends BaseFragment {
                             return;
                         }
 
-                        viewModel.setFavoriteRequest(storeID, isFavorite);
+                        viewModel.changeFavoriteStatus(new Favorite(storeID, isFavorite));
                     }
 
                     @Override
@@ -117,7 +119,7 @@ public class SearchFragment extends BaseFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                viewModel.setStoreRequest(query);
+                viewModel.search(new StoreDTO(query));
 
                 // Save to SuggestionProvider
                 SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getActivity(),

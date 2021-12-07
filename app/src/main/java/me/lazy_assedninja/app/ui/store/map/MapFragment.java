@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.MapFragmentBinding;
+import me.lazy_assedninja.app.dto.StoreDTO;
 import me.lazy_assedninja.app.ui.store.map.map_information.MapInformationFragment;
 import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.library.ui.BaseFragment;
@@ -75,7 +76,7 @@ public class MapFragment extends BaseFragment {
                 return true;
             });
 
-            viewModel.requestStore();
+            viewModel.requestStore(new StoreDTO());
 
             // Move camera
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()

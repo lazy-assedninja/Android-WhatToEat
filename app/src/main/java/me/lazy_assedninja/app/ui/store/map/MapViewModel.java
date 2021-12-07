@@ -39,7 +39,10 @@ public class MapViewModel extends ViewModel {
         }
     });
 
-    public void requestStore() {
-        storeRequest.setValue(new StoreDTO(userRepository.getUserID()));
+    public void requestStore(StoreDTO storeDTO) {
+        if (storeRequest.getValue() == null){
+            storeDTO.setUserID(userRepository.getUserID());
+            storeRequest.setValue(storeDTO);
+        }
     }
 }

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
+import static me.lazy_assedninja.app.common.TestUtil.createUser;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
@@ -25,6 +26,7 @@ import me.lazy_assedninja.app.ui.user.register.RegisterViewModel;
 import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
+import me.lazy_assedninja.app.vo.User;
 
 @SuppressWarnings("unchecked")
 @RunWith(JUnit4.class)
@@ -41,20 +43,21 @@ public class RegisterViewModelTest {
         assertThat(viewModel.result, notNullValue());
 
         verify(userRepository, never()).register(any());
-        viewModel.register("name", "email", "password");
+        viewModel.register(createUser());
         verify(userRepository, never()).register(any());
     }
 
     @Test
     public void sendResultToUI(){
+        User user = createUser();
         MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        when(userRepository.register(any())).thenReturn(result);
+        when(userRepository.register(user)).thenReturn(result);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
         viewModel.result.observeForever(observer);
-        viewModel.register("name", "email", "password");
+        viewModel.register(user);
         verify(observer, never()).onChanged(any());
-        Event<Resource<Result>> resource = new Event<>(Resource.success(createResult()));
 
+        Event<Resource<Result>> resource = new Event<>(Resource.success(createResult()));
         result.setValue(resource);
         verify(observer).onChanged(resource);
     }
@@ -63,8 +66,10 @@ public class RegisterViewModelTest {
     public void register(){
         viewModel.result.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(userRepository);
-        viewModel.register("name", "email", "password");
-        verify(userRepository).register(any());
+
+        User user = createUser();
+        viewModel.register(user);
+        verify(userRepository).register(user);
         verifyNoMoreInteractions(userRepository);
     }
 }

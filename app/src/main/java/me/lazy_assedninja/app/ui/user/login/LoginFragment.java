@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.LoginFragmentBinding;
+import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
@@ -84,7 +85,7 @@ public class LoginFragment extends BaseFragment {
             } else if (password.isEmpty()) {
                 binding.tilPassword.setError(getString(R.string.error_password_can_not_be_null));
             } else {
-                viewModel.login(email, password);
+                viewModel.login(new UserDTO(email, password, false));
             }
         });
         binding.btGoogleLogin.setOnClickListener(v ->

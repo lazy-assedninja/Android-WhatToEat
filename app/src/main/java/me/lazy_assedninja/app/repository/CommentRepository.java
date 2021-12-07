@@ -82,8 +82,7 @@ public class CommentRepository {
             protected void saveCallResult(Result item) {
                 db.runInTransaction(() -> {
                     User user = userDao.getUser();
-                    int lastID = commentDao.getLastCommentID();
-                    comment.setId(lastID + 1);
+                    comment.setId(commentDao.getLastCommentID() + 1);
                     comment.setUserName(user.getName());
                     comment.setUserPicture(user.getHeadPortrait());
                     commentDao.insert(comment);

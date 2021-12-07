@@ -48,7 +48,10 @@ public class CreateCommentViewModel extends ViewModel {
         }
     });
 
-    public void createComment(String star, String content) {
-        createComment.setValue(new Comment(star, content, timeUtil.now(), id, userRepository.getUserID()));
+    public void createComment(Comment comment) {
+        comment.setCreateTime(timeUtil.now());
+        comment.setStoreID(id);
+        comment.setUserID(userRepository.getUserID());
+        createComment.setValue(comment);
     }
 }

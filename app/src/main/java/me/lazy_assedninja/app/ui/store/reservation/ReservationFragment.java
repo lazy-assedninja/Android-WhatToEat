@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ReservationFragmentBinding;
+import me.lazy_assedninja.app.dto.ReservationDTO;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -58,7 +59,7 @@ public class ReservationFragment extends BaseFragment {
 
     private void initView() {
         adapter = new ReservationAdapter(executorUtil, (reservation) ->
-                viewModel.setCancelRequest(reservation));
+                viewModel.cancelReservation(reservation));
         binding.rv.setAdapter(adapter);
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -76,7 +77,7 @@ public class ReservationFragment extends BaseFragment {
     }
 
     private void initData() {
-        viewModel.requestReservation();
+        viewModel.requestReservation(new ReservationDTO("user"));
 
         viewModel.reservations.observe(getViewLifecycleOwner(), listResource -> {
             binding.swipeRefreshLayout.setRefreshing(false);

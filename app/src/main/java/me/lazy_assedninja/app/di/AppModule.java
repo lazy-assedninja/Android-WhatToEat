@@ -22,7 +22,6 @@ import me.lazy_assedninja.app.db.PostDao;
 import me.lazy_assedninja.app.db.PromotionDao;
 import me.lazy_assedninja.app.db.ReservationDao;
 import me.lazy_assedninja.app.db.StoreDao;
-import me.lazy_assedninja.app.db.TagDao;
 import me.lazy_assedninja.app.db.UserDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.util.LiveDataCallAdapterFactory;
@@ -72,12 +71,6 @@ public class AppModule {
     @Singleton
     public UserDao provideUserDao(WhatToEatDatabase database) {
         return database.userDao();
-    }
-
-    @Provides
-    @Singleton
-    public TagDao provideTagDao(WhatToEatDatabase database) {
-        return database.tagDao();
     }
 
     @Provides

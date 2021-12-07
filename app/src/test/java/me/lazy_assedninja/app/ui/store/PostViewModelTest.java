@@ -10,6 +10,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import static me.lazy_assedninja.app.common.TestUtil.createPostDTO;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -22,6 +24,7 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.lazy_assedninja.app.dto.PostDTO;
 import me.lazy_assedninja.app.repository.PostRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.store.post.PostViewModel;
@@ -44,21 +47,22 @@ public class PostViewModelTest {
         assertThat(viewModel.posts, notNullValue());
 
         verify(postRepository, never()).loadPosts(any());
-        viewModel.requestPosts(1);
+        viewModel.requestPost(createPostDTO());
         verify(postRepository, never()).loadPosts(any());
     }
 
     @Test
     public void sendResultToUI() {
+        PostDTO postDTO = createPostDTO();
         MutableLiveData<Resource<List<Post>>> list = new MutableLiveData<>();
-        when(postRepository.loadPosts(any())).thenReturn(list);
+        when(postRepository.loadPosts(postDTO)).thenReturn(list);
         Observer<Resource<List<Post>>> observer = mock(Observer.class);
         viewModel.posts.observeForever(observer);
-        viewModel.requestPosts(1);
+        viewModel.requestPost(postDTO);
         verify(observer, never()).onChanged(any());
+
         List<Post> data = new ArrayList<>();
         Resource<List<Post>> resource = Resource.success(data);
-
         list.setValue(resource);
         verify(observer).onChanged(resource);
     }
@@ -67,8 +71,10 @@ public class PostViewModelTest {
     public void loadPosts() {
         viewModel.posts.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(postRepository);
-        viewModel.requestPosts(1);
-        verify(postRepository).loadPosts(any());
+
+        PostDTO postDTO = createPostDTO();
+        viewModel.requestPost(postDTO);
+        verify(postRepository).loadPosts(postDTO);
         verifyNoMoreInteractions(postRepository);
     }
 

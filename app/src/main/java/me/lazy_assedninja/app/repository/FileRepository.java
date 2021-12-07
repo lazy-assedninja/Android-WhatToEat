@@ -22,7 +22,8 @@ public class FileRepository {
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public FileRepository(ExecutorUtil executorUtil, TimeUtil timeUtil, UserDao userDao, WhatToEatService whatToEatService) {
+    public FileRepository(ExecutorUtil executorUtil, TimeUtil timeUtil, UserDao userDao,
+                          WhatToEatService whatToEatService) {
         this.executorUtil = executorUtil;
         this.timeUtil = timeUtil;
         this.userDao = userDao;

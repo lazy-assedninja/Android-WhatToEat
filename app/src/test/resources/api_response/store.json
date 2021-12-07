@@ -29,21 +29,5 @@
     "updateTime": "2021-11-11 11:11:11",
     "isFavorite": false,
     "tagID": 1
-  },
-  {
-    "id": 3,
-    "placeID": "ChIJC8ObMXqpQjQRXnbI0Upn_4Y",
-    "name": "大嗑西式餐館",
-    "address": "台北市中正區濟南路二段18-3號",
-    "phone": "02 2394 8810",
-    "picture": "da_ke.jpg",
-    "latitude": "25.040981",
-    "longitude": "121.528242",
-    "website": "http://inlineapps.com/booking/ducky",
-    "star": 5.0,
-    "createTime": "2021-11-11 11:11:11",
-    "updateTime": "2021-11-11 11:11:11",
-    "isFavorite": false,
-    "tagID": 1
   }
 ]

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static me.lazy_assedninja.app.common.TestUtil.createUser;
+import static me.lazy_assedninja.app.common.TestUtil.createUserDTO;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
@@ -20,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.user.login.LoginViewModel;
 import me.lazy_assedninja.app.vo.Resource;
@@ -40,21 +42,21 @@ public class LoginViewModelTest {
         assertThat(viewModel.user, notNullValue());
 
         verify(userRepository, never()).loadUser(any());
-        viewModel.login("email", "password");
+        viewModel.login(createUserDTO());
         verify(userRepository, never()).loadUser(any());
     }
 
     @Test
     public void sendResultToUI() {
+        UserDTO userDTO = createUserDTO();
         MutableLiveData<Resource<User>> list = new MutableLiveData<>();
-        when(userRepository.loadUser(any())).thenReturn(list);
+        when(userRepository.loadUser(userDTO)).thenReturn(list);
         Observer<Resource<User>> observer = mock(Observer.class);
         viewModel.user.observeForever(observer);
-        viewModel.login("email", "password");
+        viewModel.login(userDTO);
         verify(observer, never()).onChanged(any());
-        User data = createUser();
-        Resource<User> resource = Resource.success(data);
 
+        Resource<User> resource = Resource.success(createUser());
         list.setValue(resource);
         verify(observer).onChanged(resource);
     }
@@ -63,8 +65,10 @@ public class LoginViewModelTest {
     public void loadUser() {
         viewModel.user.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(userRepository);
-        viewModel.login("email", "password");
-        verify(userRepository).loadUser(any());
+
+        UserDTO userDTO = createUserDTO();
+        viewModel.login(userDTO);
+        verify(userRepository).loadUser(userDTO);
         verifyNoMoreInteractions(userRepository);
     }
 

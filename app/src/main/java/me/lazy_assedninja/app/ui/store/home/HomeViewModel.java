@@ -11,11 +11,11 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.app.dto.StoreDTO;
-import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.repository.FavoriteRepository;
 import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.util.AbsentLiveData;
+import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
@@ -51,8 +51,12 @@ public class HomeViewModel extends ViewModel {
         }
     });
 
-    public void requestStore() {
-        storeRequest.setValue(new StoreDTO(userRepository.getUserID(), 1));
+    public void requestStore(StoreDTO storeDTO) {
+        if (storeRequest.getValue() == null|| storeRequest.getValue().getUserID() !=
+                userRepository.getUserID()) {
+            storeDTO.setUserID(userRepository.getUserID());
+            storeRequest.setValue(storeDTO);
+        }
     }
 
     public void refresh() {
@@ -69,11 +73,12 @@ public class HomeViewModel extends ViewModel {
         }
     });
 
-    public void setFavoriteRequest(int storeID, boolean isFavorite) {
-        Favorite favorite = favoriteRequest.getValue();
-        if (favorite == null || favorite.getStoreID() != storeID ||
-                (favorite.getStoreID() == storeID && favorite.getStatus() == isFavorite)) {
-            favoriteRequest.setValue(new Favorite(userRepository.getUserID(), storeID, !isFavorite));
+    public void changeFavoriteStatus(Favorite favorite) {
+        Favorite request = favoriteRequest.getValue();
+        if (request == null || request.getStoreID() != favorite.getStoreID() ||
+                (request.getStoreID() == favorite.getStoreID() && request.getStatus() == favorite.getStatus())) {
+            favorite.setUserID(userRepository.getUserID());
+            favoriteRequest.setValue(favorite);
         }
     }
 }

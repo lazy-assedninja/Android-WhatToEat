@@ -106,7 +106,7 @@ public interface WhatToEatService {
     LiveData<ApiResponse<List<Reservation>>> getReservationList(@Body ReservationDTO reservationDTO);
 
     @POST("Reservation/CancelReservation")
-    LiveData<ApiResponse<Result>> cancelReservation(@Body ReservationDTO reservationDTO);
+    LiveData<ApiResponse<Result>> cancelReservation(@Body Reservation reservation);
 
     /**
      * CustomService

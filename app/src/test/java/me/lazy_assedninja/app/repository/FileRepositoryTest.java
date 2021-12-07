@@ -54,9 +54,8 @@ public class FileRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.upload(file)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.upload(file);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.upload(file).observeForever(observer);
         verify(service).upload(file);
 
         verify(observer).onChanged(new Event<>(Resource.success(result)));

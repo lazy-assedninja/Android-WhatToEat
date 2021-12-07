@@ -59,8 +59,9 @@ public class ProfileViewModel extends ViewModel {
         }
     });
 
-    public void bindGoogleAccount(String googleID, String email, String name, String pictureURL){
-        bindGoogle.setValue(new GoogleAccount(googleID, email, name, pictureURL, userRepository.getUserID()));
+    public void bindGoogleAccount(GoogleAccount googleAccount){
+        googleAccount.setUserID(userRepository.getUserID());
+        bindGoogle.setValue(googleAccount);
     }
 
     public LiveData<Event<Resource<Result>>> uploadResult = Transformations.switchMap(uploadFile, pictureDTO -> {

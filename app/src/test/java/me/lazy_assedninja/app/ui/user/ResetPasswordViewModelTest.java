@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
+import static me.lazy_assedninja.app.common.TestUtil.createUserDTO;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
@@ -20,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.user.reset_password.ResetPasswordViewModel;
 import me.lazy_assedninja.app.vo.Event;
@@ -41,20 +43,21 @@ public class ResetPasswordViewModelTest {
         assertThat(viewModel.result, notNullValue());
 
         verify(userRepository, never()).resetPassword(any());
-        viewModel.resetPassword("old password", "new password");
+        viewModel.resetPassword(createUserDTO());
         verify(userRepository, never()).resetPassword(any());
     }
 
     @Test
     public void sendResultToUI(){
+        UserDTO userDTO = createUserDTO();
         MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        when(userRepository.resetPassword(any())).thenReturn(result);
+        when(userRepository.resetPassword(userDTO)).thenReturn(result);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
         viewModel.result.observeForever(observer);
-        viewModel.resetPassword("old password", "new password");
+        viewModel.resetPassword(userDTO);
         verify(observer, never()).onChanged(any());
-        Event<Resource<Result>> resource = new Event<>(Resource.success(createResult()));
 
+        Event<Resource<Result>> resource = new Event<>(Resource.success(createResult()));
         result.setValue(resource);
         verify(observer).onChanged(resource);
     }
@@ -63,9 +66,11 @@ public class ResetPasswordViewModelTest {
     public void resetPassword(){
         viewModel.result.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(userRepository);
-        viewModel.resetPassword("old password", "new password");
+
+        UserDTO userDTO = createUserDTO();
+        viewModel.resetPassword(userDTO);
         verify(userRepository).getUserEmail();
-        verify(userRepository).resetPassword(any());
+        verify(userRepository).resetPassword(userDTO);
         verifyNoMoreInteractions(userRepository);
     }
 }

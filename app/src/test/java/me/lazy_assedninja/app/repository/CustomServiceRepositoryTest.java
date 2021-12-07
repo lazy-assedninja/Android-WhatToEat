@@ -47,9 +47,8 @@ public class CustomServiceRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.createReport(report)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.createReport(report);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.createReport(report).observeForever(observer);
         verify(service).createReport(report);
 
         verify(observer).onChanged(new Event<>(Resource.success(result)));

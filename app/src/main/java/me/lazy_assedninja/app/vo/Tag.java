@@ -1,23 +1,16 @@
 package me.lazy_assedninja.app.vo;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+public enum Tag {
+    HOME(1),
+    RECOMMEND(2);
 
-@Entity
-public class Tag {
+    private final int value;
 
-    @PrimaryKey
-    private int id;
-
-    public Tag(int id) {
-        this.id = id;
+    Tag(int value) {
+        this.value=value;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public  int getValue(){
+        return  value;
     }
 }

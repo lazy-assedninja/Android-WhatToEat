@@ -64,10 +64,10 @@ public class FavoriteRepositoryTest {
 
     @Test
     public void loadFavoriteFromNetwork() {
-        FavoriteDTO favoriteDTO = createFavoriteDTO();
         MutableLiveData<List<Store>> dbData = new MutableLiveData<>();
         when(favoriteDao.getFavorites(true)).thenReturn(dbData);
 
+        FavoriteDTO favoriteDTO = createFavoriteDTO();
         List<Store> list = new ArrayList<>();
         list.add(createStore(1, storeName));
         LiveData<ApiResponse<List<Store>>> call = successCall(list);
@@ -98,12 +98,9 @@ public class FavoriteRepositoryTest {
         MutableLiveData<List<Store>> dbData = new MutableLiveData<>();
         when(favoriteDao.getFavorites(true)).thenReturn(dbData);
 
-        LiveData<Resource<List<Store>>> data = repository.loadFavorites(favoriteDTO);
-        verify(favoriteDao).getFavorites(true);
-        verifyNoMoreInteractions(service);
-
         Observer<Resource<List<Store>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.loadFavorites(favoriteDTO).observeForever(observer);
+        verify(favoriteDao).getFavorites(true);
         verifyNoMoreInteractions(service);
         verify(observer).onChanged(Resource.loading(null));
 
@@ -122,9 +119,8 @@ public class FavoriteRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.addToFavorite(favorite)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.changeFavoriteStatus(favorite);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.changeFavoriteStatus(favorite).observeForever(observer);
         verify(service).addToFavorite(favorite);
         verify(favoriteDao).updateFavoriteStatus(favorite.getStoreID(), favorite.getStatus());
 
@@ -140,9 +136,8 @@ public class FavoriteRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.cancelFavorite(favorite)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.changeFavoriteStatus(favorite);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.changeFavoriteStatus(favorite).observeForever(observer);
         verify(service).cancelFavorite(favorite);
         verify(favoriteDao).updateFavoriteStatus(favorite.getStoreID(), favorite.getStatus());
 

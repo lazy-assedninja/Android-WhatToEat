@@ -25,13 +25,11 @@ public class Reservation {
     }
 
     @Ignore
-    public Reservation(String name, String phone, String amount, String time, int storeID, int userID) {
+    public Reservation(String name, String phone, String amount, String time) {
         this.name = name;
         this.phone = phone;
         this.amount = amount;
         this.time = time;
-        this.storeID = storeID;
-        this.userID = userID;
     }
 
     public int getId() {

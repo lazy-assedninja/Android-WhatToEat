@@ -8,11 +8,8 @@ public class Report {
     private Integer storeID;
     private int userID;
 
-    public Report(String content, String createTime, Integer storeID, int userID) {
+    public Report(String content) {
         this.content = content;
-        this.createTime = createTime;
-        this.storeID = storeID;
-        this.userID = userID;
     }
 
     public String getContent() {

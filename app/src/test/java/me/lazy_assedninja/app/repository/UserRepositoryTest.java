@@ -61,8 +61,8 @@ public class UserRepositoryTest {
     public void init() {
         WhatToEatDatabase db = mock(WhatToEatDatabase.class);
         when(db.userDao()).thenReturn(userDao);
-        repository = new UserRepository(context, new InstantExecutorUtil(),
-                encryptUtil, timeUtil, userDao, service);
+        repository = new UserRepository(context, new InstantExecutorUtil(), encryptUtil, timeUtil,
+                userDao, service);
 
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPreferences);
         when(sharedPreferences.edit()).thenReturn(sharedPreferencesEditor);
@@ -132,12 +132,9 @@ public class UserRepositoryTest {
         when(userDao.get()).thenReturn(dbData);
 
         UserDTO userDTO = createUserDTO();
-        LiveData<Resource<User>> data = repository.loadUser(userDTO);
-        verify(userDao).get();
-        verifyNoMoreInteractions(service);
-
         Observer<Resource<User>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.loadUser(userDTO).observeForever(observer);
+        verify(userDao).get();
         verifyNoMoreInteractions(service);
         verify(observer).onChanged(Resource.loading(null));
 
@@ -213,9 +210,8 @@ public class UserRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.register(user)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.register(user);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.register(user).observeForever(observer);
         verify(service).register(user);
 
         String KEY = "user_email";
@@ -233,9 +229,8 @@ public class UserRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.bindGoogleAccount(googleAccount)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.bindGoogleAccount(googleAccount);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.bindGoogleAccount(googleAccount).observeForever(observer);
         verify(service).bindGoogleAccount(googleAccount);
         verify(userDao).updateGoogleID(googleAccount.getGoogleID(), timeUtil.now());
 
@@ -250,9 +245,8 @@ public class UserRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.resetPassword(userDTO)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.resetPassword(userDTO);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.resetPassword(userDTO).observeForever(observer);
         verify(service).resetPassword(userDTO);
         verify(userDao).updatePassword(userDTO.getNewPassword(), timeUtil.now());
 
@@ -266,9 +260,8 @@ public class UserRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.sendVerificationCode(userDTO)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.sendVerificationCode(userDTO);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.sendVerificationCode(userDTO).observeForever(observer);
         verify(service).sendVerificationCode(userDTO);
 
         verify(observer).onChanged(new Event<>(Resource.success(result)));
@@ -282,9 +275,8 @@ public class UserRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.forgetPassword(userDTO)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.forgetPassword(userDTO);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.forgetPassword(userDTO).observeForever(observer);
         verify(service).forgetPassword(userDTO);
         verify(userDao).updatePassword(userDTO.getNewPassword(), timeUtil.now());
 

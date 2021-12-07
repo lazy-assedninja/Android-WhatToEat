@@ -19,6 +19,7 @@ import java.util.Calendar;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ReserveFragmentBinding;
+import me.lazy_assedninja.app.vo.Reservation;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -65,7 +66,7 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
             int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
             new DatePickerDialog(getActivity(),
-                    (DatePickerDialog.OnDateSetListener) (view, year, monthOfYear, dayOfMonth) -> {
+                    (view, year, monthOfYear, dayOfMonth) -> {
                         if (binding.tilDate.getEditText() == null) return;
                         String date = (monthOfYear + 1) + "-" + dayOfMonth;
                         binding.tilDate.getEditText().setText(date);
@@ -76,7 +77,7 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
             int mMinute = calendar.get(Calendar.MINUTE);
 
             new TimePickerDialog(getActivity(),
-                    (TimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute) -> {
+                    (view, hourOfDay, minute) -> {
                         if (binding.tilTime.getEditText() == null) return;
                         String time = hourOfDay + ":" + minute;
                         binding.tilTime.getEditText().setText(time);
@@ -112,7 +113,7 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
             } else if (time.isEmpty()) {
                 binding.tilTime.setError(getString(R.string.error_time_can_not_be_null));
             } else {
-                viewModel.reserve(name, phone, amount, date + " " + time);
+                viewModel.reserve(new Reservation(name, phone, amount, date + " " + time));
             }
         });
 

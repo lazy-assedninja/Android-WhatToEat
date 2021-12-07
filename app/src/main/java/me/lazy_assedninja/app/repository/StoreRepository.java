@@ -9,17 +9,11 @@ import javax.inject.Inject;
 
 import me.lazy_assedninja.app.api.ApiResponse;
 import me.lazy_assedninja.app.api.WhatToEatService;
-import me.lazy_assedninja.app.db.ReservationDao;
 import me.lazy_assedninja.app.db.StoreDao;
-import me.lazy_assedninja.app.db.TagDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.dto.StoreDTO;
-import me.lazy_assedninja.app.vo.Event;
-import me.lazy_assedninja.app.vo.Reservation;
 import me.lazy_assedninja.app.vo.Resource;
-import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
-import me.lazy_assedninja.app.vo.Tag;
 import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.library.util.NetworkUtil;
 
@@ -28,21 +22,16 @@ public class StoreRepository {
     private final ExecutorUtil executorUtil;
     private final NetworkUtil networkUtil;
     private final WhatToEatDatabase db;
-    private final TagDao tagDao;
     private final StoreDao storeDao;
-    private final ReservationDao reservationDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public StoreRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil,
-                           WhatToEatDatabase db, TagDao tagDao, StoreDao storeDao,
-                           ReservationDao reservationDao, WhatToEatService whatToEatService) {
+    public StoreRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil, WhatToEatDatabase db,
+                           StoreDao storeDao, WhatToEatService whatToEatService) {
         this.executorUtil = executorUtil;
         this.networkUtil = networkUtil;
         this.db = db;
-        this.tagDao = tagDao;
         this.storeDao = storeDao;
-        this.reservationDao = reservationDao;
         this.whatToEatService = whatToEatService;
     }
 
@@ -70,10 +59,7 @@ public class StoreRepository {
                 for (Store store : item) {
                     store.setTagID(tagID);
                 }
-                db.runInTransaction(() -> {
-                    tagDao.insert(new Tag(tagID));
-                    storeDao.insertAll(item);
-                });
+                db.runInTransaction(() -> storeDao.insertAll(item));
             }
         }.asLiveData();
     }
@@ -134,28 +120,5 @@ public class StoreRepository {
 
     public LiveData<Store> getStoreFromDb(String name) {
         return storeDao.get(name);
-    }
-
-    public void initTags() {
-        executorUtil.diskIO().execute(() -> {
-            if (tagDao.getTagSize() != 2) {
-                tagDao.insert(new Tag(2));
-            }
-        });
-    }
-
-    public LiveData<Event<Resource<Result>>> reserve(Reservation reservation) {
-        return new NetworkResource<Result>(executorUtil) {
-
-            @Override
-            protected LiveData<ApiResponse<Result>> createCall() {
-                return whatToEatService.createReservation(reservation);
-            }
-
-            @Override
-            protected void saveCallResult(Result item) {
-                reservationDao.insert(reservation);
-            }
-        }.asLiveData();
     }
 }

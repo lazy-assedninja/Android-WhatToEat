@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ForgetPasswordFragmentBinding;
+import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -63,7 +64,7 @@ public class ForgetPasswordFragment extends BaseFragment {
             if (email.isEmpty()) {
                 binding.tilEmail.setError(getString(R.string.error_email_can_not_be_null));
             } else {
-                viewModel.sendVerificationCode(email);
+                viewModel.sendVerificationCode(new UserDTO(email));
             }
         });
         binding.btConfirm.setOnClickListener(v -> {
@@ -86,7 +87,7 @@ public class ForgetPasswordFragment extends BaseFragment {
             } else if (newPassword.isEmpty()) {
                 binding.tilNewPassword.setError(getString(R.string.error_new_password_can_not_be_null));
             } else {
-                viewModel.forgetPassword(email, verificationCode, newPassword);
+                viewModel.forgetPassword(new UserDTO(email, verificationCode, newPassword));
             }
         });
 

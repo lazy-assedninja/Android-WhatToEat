@@ -4,6 +4,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import static me.lazy_assedninja.app.common.TestUtil.createHistory;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import org.junit.Before;
@@ -18,6 +20,7 @@ import java.util.List;
 import me.lazy_assedninja.app.db.HistoryDao;
 import me.lazy_assedninja.app.db.WhatToEatDatabase;
 import me.lazy_assedninja.app.util.InstantExecutorUtil;
+import me.lazy_assedninja.app.vo.History;
 
 @RunWith(JUnit4.class)
 public class HistoryRepositoryTest {
@@ -37,6 +40,10 @@ public class HistoryRepositoryTest {
 
     @Test
     public void addHistory() {
+        History history = createHistory(1);
+        repository.addToHistory(history);
+
+        verify(historyDao).insert(history);
     }
 
     @Test

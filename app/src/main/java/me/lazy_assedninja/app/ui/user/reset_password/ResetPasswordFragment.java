@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ResetPasswordFragmentBinding;
+import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -67,7 +68,7 @@ public class ResetPasswordFragment extends BaseFragment {
             } else if (newPassword.isEmpty()) {
                 binding.tilNewPassword.setError(getString(R.string.error_new_password_can_not_be_null));
             } else {
-                viewModel.resetPassword(oldPassword, newPassword);
+                viewModel.resetPassword(new UserDTO(oldPassword, newPassword));
             }
         });
 

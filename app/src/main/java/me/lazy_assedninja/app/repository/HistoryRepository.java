@@ -22,8 +22,8 @@ public class HistoryRepository {
         this.historyDao = historyDao;
     }
 
-    public void addHistory(int storeID) {
-        executorUtil.diskIO().execute(() -> historyDao.insert(new History(storeID)));
+    public void addToHistory(History history) {
+        executorUtil.diskIO().execute(() -> historyDao.insert(history));
     }
 
     public List<Integer> getHistoryIDs() {

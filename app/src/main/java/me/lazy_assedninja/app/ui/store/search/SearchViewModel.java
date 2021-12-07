@@ -51,9 +51,11 @@ public class SearchViewModel extends ViewModel {
         }
     });
 
-    public void setStoreRequest(String keyword) {
-        if (storeRequest.getValue() == null || !storeRequest.getValue().getKeyword().equals(keyword)) {
-            storeRequest.setValue(new StoreDTO(userRepository.getUserID(), keyword));
+    public void search(StoreDTO storeDTO) {
+        if (storeRequest.getValue() == null || !storeRequest.getValue().getKeyword().equals(
+                storeDTO.getKeyword())) {
+            storeDTO.setUserID(userRepository.getUserID());
+            storeRequest.setValue(storeDTO);
         }
     }
 
@@ -71,11 +73,13 @@ public class SearchViewModel extends ViewModel {
         }
     });
 
-    public void setFavoriteRequest(int storeID, boolean isFavorite) {
-        Favorite favorite = favoriteRequest.getValue();
-        if (favorite == null || favorite.getStoreID() != storeID ||
-                (favorite.getStoreID() == storeID && favorite.getStatus() == isFavorite)) {
-            favoriteRequest.setValue(new Favorite(userRepository.getUserID(), storeID, !isFavorite));
+    public void changeFavoriteStatus(Favorite favorite) {
+        Favorite request = favoriteRequest.getValue();
+        if (request == null || request.getStoreID() != favorite.getStoreID() ||
+                (request.getStoreID() == favorite.getStoreID() &&
+                        request.getStatus() == favorite.getStatus())) {
+            favorite.setUserID(userRepository.getUserID());
+            favoriteRequest.setValue(favorite);
         }
     }
 }

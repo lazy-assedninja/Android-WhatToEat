@@ -15,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.CreateCommentFragmentBinding;
+import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -66,7 +67,7 @@ public class CreateCommentFragment extends BaseBottomSheetDialogFragment {
             if (content.isEmpty()) {
                 binding.tilContent.setError(getString(R.string.error_content_can_not_be_null));
             } else {
-                viewModel.createComment(star, content);
+                viewModel.createComment(new Comment(star, content));
             }
         });
 

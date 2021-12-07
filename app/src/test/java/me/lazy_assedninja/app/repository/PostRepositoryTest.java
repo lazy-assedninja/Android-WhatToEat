@@ -94,12 +94,9 @@ public class PostRepositoryTest {
         MutableLiveData<List<Post>> dbData = new MutableLiveData<>();
         when(postDao.getPosts(postDTO.getStoreID())).thenReturn(dbData);
 
-        LiveData<Resource<List<Post>>> data = repository.loadPosts(postDTO);
-        verify(postDao).getPosts(postDTO.getStoreID());
-        verifyNoMoreInteractions(service);
-
         Observer<Resource<List<Post>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.loadPosts(postDTO).observeForever(observer);
+        verify(postDao).getPosts(postDTO.getStoreID());
         verifyNoMoreInteractions(service);
         verify(observer).onChanged(Resource.loading(null));
 

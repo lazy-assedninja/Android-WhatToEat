@@ -102,12 +102,9 @@ public class CommentRepositoryTest {
         MutableLiveData<List<Comment>> dbData = new MutableLiveData<>();
         when(commentDao.getComments(commentDTO.getStoreID())).thenReturn(dbData);
 
-        LiveData<Resource<List<Comment>>> data = repository.loadComments(commentDTO);
-        verify(commentDao).getComments(commentDTO.getStoreID());
-        verifyNoMoreInteractions(service);
-
         Observer<Resource<List<Comment>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.loadComments(commentDTO).observeForever(observer);
+        verify(commentDao).getComments(commentDTO.getStoreID());
         verifyNoMoreInteractions(service);
         verify(observer).onChanged(Resource.loading(null));
 
@@ -115,6 +112,7 @@ public class CommentRepositoryTest {
         list.add(TestUtil.createComment());
         dbData.postValue(list);
         verify(observer).onChanged(Resource.success(list));
+        verifyNoMoreInteractions(service);
     }
 
     @Test
@@ -133,9 +131,8 @@ public class CommentRepositoryTest {
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.createComment(comment)).thenReturn(call);
 
-        LiveData<Event<Resource<Result>>> data = repository.createComment(comment);
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.createComment(comment).observeForever(observer);
         verify(service).createComment(comment);
 
         comment.setId(commentID  + 1);

@@ -53,9 +53,9 @@ public class PostViewModel extends ViewModel {
         }
     });
 
-    public void requestPosts(int storeID) {
+    public void requestPost(PostDTO postDTO) {
         if (postRequest.getValue() == null) {
-            postRequest.setValue(new PostDTO(storeID));
+            postRequest.setValue(postDTO);
         }
     }
 }

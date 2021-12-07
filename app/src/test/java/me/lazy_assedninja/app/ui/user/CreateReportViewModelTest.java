@@ -20,10 +20,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import me.lazy_assedninja.app.common.TestUtil;
 import me.lazy_assedninja.app.repository.CustomServiceRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.user.create_report.CreateReportViewModel;
 import me.lazy_assedninja.app.vo.Event;
+import me.lazy_assedninja.app.vo.Report;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.library.util.TimeUtil;
@@ -47,30 +49,33 @@ public class CreateReportViewModelTest {
         assertThat(viewModel.result, notNullValue());
 
         verify(customServiceRepository, never()).createReport(any());
-        viewModel.createReport("content");
+        viewModel.createReport(TestUtil.createReport());
         verify(customServiceRepository, never()).createReport(any());
     }
 
     @Test
     public void sendResultToUI() {
+        Report report = TestUtil.createReport();
         MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        when(customServiceRepository.createReport(any())).thenReturn(result);
-        Observer<Event<Resource<Result>>> resultObserver = mock(Observer.class);
-        viewModel.result.observeForever(resultObserver);
-        viewModel.createReport("content");
-        verify(resultObserver, never()).onChanged(any());
-        Event<Resource<Result>> resultResource = new Event<>(Resource.success(createResult()));
+        when(customServiceRepository.createReport(report)).thenReturn(result);
+        Observer<Event<Resource<Result>>> observer = mock(Observer.class);
+        viewModel.result.observeForever(observer);
+        viewModel.createReport(report);
+        verify(observer, never()).onChanged(any());
 
-        result.setValue(resultResource);
-        verify(resultObserver).onChanged(resultResource);
+        Event<Resource<Result>> resource = new Event<>(Resource.success(createResult()));
+        result.setValue(resource);
+        verify(observer).onChanged(resource);
     }
 
     @Test
     public void createReport() {
         viewModel.result.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(customServiceRepository);
-        viewModel.createReport("content");
-        verify(customServiceRepository).createReport(any());
+
+        Report report = TestUtil.createReport();
+        viewModel.createReport(report);
+        verify(customServiceRepository).createReport(report);
         verifyNoMoreInteractions(customServiceRepository);
     }
 

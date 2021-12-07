@@ -24,7 +24,7 @@ public class MapInformationViewModelTest {
 
     @Test
     public void getStore() {
-        String name = "火樹銀花韓式燒烤";
+        String name = "store name";
         viewModel.getStore(name);
 
         verify(storeRepository).getStoreFromDb(name);

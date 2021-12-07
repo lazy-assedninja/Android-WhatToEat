@@ -48,6 +48,7 @@ import me.lazy_assedninja.app.databinding.ProfileFragmentBinding;
 import me.lazy_assedninja.app.ui.user.create_report.CreateReportFragment;
 import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsCallback;
 import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsFragment;
+import me.lazy_assedninja.app.vo.GoogleAccount;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -277,8 +278,9 @@ public class ProfileFragment extends BaseFragment {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             // Bind google account
-            viewModel.bindGoogleAccount(account.getId(), account.getEmail(), account.getDisplayName(),
-                    account.getPhotoUrl() == null ? "" : account.getPhotoUrl().toString());
+            viewModel.bindGoogleAccount(new GoogleAccount(account.getId(), account.getEmail(),
+                    account.getDisplayName(), account.getPhotoUrl() == null ? "" :
+                    account.getPhotoUrl().toString()));
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

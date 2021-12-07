@@ -16,6 +16,11 @@ public class UserDTO {
         this.email = email;
     }
 
+    public UserDTO(String oldPassword, String newPassword) {
+        this.oldPassword = oldPassword;
+        this.newPassword = newPassword;
+    }
+
     public UserDTO(String emailOrGoogleID, String password, boolean isGoogleLogin) {
         if (isGoogleLogin) {
             this.googleID = emailOrGoogleID;
@@ -26,13 +31,9 @@ public class UserDTO {
         this.isGoogleLogin = isGoogleLogin;
     }
 
-    public UserDTO(String email, String oldPasswordOrVerificationCode, String newPassword, boolean isReset) {
+    public UserDTO(String email, String verificationCode, String newPassword) {
         this.email = email;
-        if (isReset) {
-            this.oldPassword = oldPasswordOrVerificationCode;
-        } else {
-            this.verificationCode = oldPasswordOrVerificationCode;
-        }
+        this.verificationCode = verificationCode;
         this.newPassword = newPassword;
     }
 

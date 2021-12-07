@@ -9,6 +9,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import static me.lazy_assedninja.app.common.TestUtil.createStoreDTO;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -21,6 +23,7 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.lazy_assedninja.app.dto.StoreDTO;
 import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.store.map.MapViewModel;
@@ -43,31 +46,35 @@ public class MapViewModelTest {
         assertThat(viewModel.stores, notNullValue());
 
         verify(storeRepository, never()).loadAllStores(any());
-        viewModel.requestStore();
+        viewModel.requestStore(createStoreDTO());
         verify(storeRepository, never()).loadAllStores(any());
     }
 
     @Test
     public void sendResultToUI() {
+        StoreDTO storeDTO = createStoreDTO();
         MutableLiveData<Resource<List<Store>>> list = new MutableLiveData<>();
-        when(storeRepository.loadAllStores(any())).thenReturn(list);
-        Observer<Resource<List<Store>>> listObserver = mock(Observer.class);
-        viewModel.stores.observeForever(listObserver);
-        viewModel.requestStore();
-        verify(listObserver, never()).onChanged(any());
+        when(storeRepository.loadAllStores(storeDTO)).thenReturn(list);
+        Observer<Resource<List<Store>>> observer = mock(Observer.class);
+        viewModel.stores.observeForever(observer);
+        viewModel.requestStore(storeDTO);
+        verify(observer, never()).onChanged(any());
+
         List<Store> data = new ArrayList<>();
         Resource<List<Store>> resource = Resource.success(data);
-
         list.setValue(resource);
-        verify(listObserver).onChanged(resource);
+        verify(observer).onChanged(resource);
     }
 
     @Test
     public void loadStores() {
         viewModel.stores.observeForever(mock(Observer.class));
-        verifyNoMoreInteractions(storeRepository);
-        viewModel.requestStore();
-        verify(storeRepository).loadAllStores(any());
-        verifyNoMoreInteractions(storeRepository);
+        verifyNoMoreInteractions(userRepository, storeRepository);
+
+        StoreDTO storeDTO = createStoreDTO();
+        viewModel.requestStore(storeDTO);
+        verify(userRepository).getUserID();
+        verify(storeRepository).loadAllStores(storeDTO);
+        verifyNoMoreInteractions(userRepository, storeRepository);
     }
 }

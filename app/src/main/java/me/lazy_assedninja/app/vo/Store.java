@@ -5,11 +5,7 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(indices = {@Index("tagID"), @Index("isFavorite")},
-        foreignKeys = @ForeignKey(entity = Tag.class,
-                parentColumns = "id",
-                childColumns = "tagID",
-                onDelete = ForeignKey.CASCADE))
+@Entity
 public class Store {
 
     @PrimaryKey

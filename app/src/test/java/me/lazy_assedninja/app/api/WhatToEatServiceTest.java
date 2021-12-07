@@ -183,10 +183,9 @@ public class WhatToEatServiceTest {
         assertThat(request.getPath(), is("/Store/GetStoreList"));
 
         assertThat(list, notNullValue());
-        assertThat(list.size(), is(3));
+        assertThat(list.size(), is(2));
         assertThat(list.get(0).getName(), is("火樹銀花韓式燒烤"));
         assertThat(list.get(1).getName(), is("巧之味手工水餃 濟南店"));
-        assertThat(list.get(2).getName(), is("大嗑西式餐館"));
     }
 
     @Test
@@ -200,10 +199,9 @@ public class WhatToEatServiceTest {
         assertThat(request.getPath(), is("/Store/GetAllStores"));
 
         assertThat(list, notNullValue());
-        assertThat(list.size(), is(3));
+        assertThat(list.size(), is(2));
         assertThat(list.get(0).getName(), is("火樹銀花韓式燒烤"));
         assertThat(list.get(1).getName(), is("巧之味手工水餃 濟南店"));
-        assertThat(list.get(2).getName(), is("大嗑西式餐館"));
     }
 
     @Test
@@ -217,10 +215,9 @@ public class WhatToEatServiceTest {
         assertThat(request.getPath(), is("/Store/Search"));
 
         assertThat(list, notNullValue());
-        assertThat(list.size(), is(3));
+        assertThat(list.size(), is(2));
         assertThat(list.get(0).getName(), is("火樹銀花韓式燒烤"));
         assertThat(list.get(1).getName(), is("巧之味手工水餃 濟南店"));
-        assertThat(list.get(2).getName(), is("大嗑西式餐館"));
     }
 
     @Test
@@ -291,10 +288,9 @@ public class WhatToEatServiceTest {
         assertThat(request.getPath(), is("/Favorite/GetFavoriteList"));
 
         assertThat(list, notNullValue());
-        assertThat(list.size(), is(3));
+        assertThat(list.size(), is(2));
         assertThat(list.get(0).getName(), is("火樹銀花韓式燒烤"));
         assertThat(list.get(1).getName(), is("巧之味手工水餃 濟南店"));
-        assertThat(list.get(2).getName(), is("大嗑西式餐館"));
     }
 
     @Test
@@ -360,7 +356,7 @@ public class WhatToEatServiceTest {
     @Test
     public void cancelReservation() throws IOException, TimeoutException, InterruptedException {
         enqueueResponse("result.json");
-        LiveData<ApiResponse<Result>> apiResponse = service.cancelReservation(createReservationDTO());
+        LiveData<ApiResponse<Result>> apiResponse = service.cancelReservation(TestUtil.createReservation());
         Result result = ((ApiSuccessResponse<Result>) getOrAwaitValue(apiResponse))
                 .getBody();
 

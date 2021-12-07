@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import me.lazy_assedninja.app.repository.ReservationRepository;
 import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.util.AbsentLiveData;
@@ -20,16 +21,16 @@ import me.lazy_assedninja.app.vo.Result;
 public class ReserveViewModel extends ViewModel {
 
     private final UserRepository userRepository;
-    private StoreRepository storeRepository;
+    private ReservationRepository reservationRepository;
 
     private final MutableLiveData<Reservation> reserve = new MutableLiveData<>();
 
     private int id;
 
     @Inject
-    public ReserveViewModel(UserRepository userRepository, StoreRepository storeRepository) {
+    public ReserveViewModel(UserRepository userRepository, ReservationRepository reservationRepository) {
         this.userRepository = userRepository;
-        this.storeRepository = storeRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     public void setId(int id) {
@@ -40,11 +41,13 @@ public class ReserveViewModel extends ViewModel {
         if (reservation == null) {
             return AbsentLiveData.create();
         } else {
-            return storeRepository.reserve(reservation);
+            return reservationRepository.createOrCancelReservation(true, reservation);
         }
     });
 
-    public void reserve(String name, String phone, String amount, String time) {
-        reserve.setValue(new Reservation(name, phone, amount, time, id, userRepository.getUserID()));
+    public void reserve(Reservation reservation) {
+        reservation.setStoreID(id);
+        reservation.setUserID(userRepository.getUserID());
+        reserve.setValue(reservation);
     }
 }

@@ -5,6 +5,9 @@ public class FavoriteDTO {
     private int storeID;
     private int userID;
 
+    public FavoriteDTO() {
+    }
+
     public FavoriteDTO(int storeID) {
         this.storeID = storeID;
     }

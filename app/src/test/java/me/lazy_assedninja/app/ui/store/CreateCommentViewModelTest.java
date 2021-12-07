@@ -8,7 +8,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -20,9 +19,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import me.lazy_assedninja.app.common.TestUtil;
 import me.lazy_assedninja.app.repository.CommentRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.store.comment.create_comment.CreateCommentViewModel;
+import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.app.vo.Event;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
@@ -46,30 +47,35 @@ public class CreateCommentViewModelTest {
         assertThat(viewModel.result, notNullValue());
 
         verify(commentRepository, never()).createComment(any());
-        viewModel.createComment("star", "content");
+        viewModel.createComment(TestUtil.createComment());
         verify(commentRepository, never()).createComment(any());
     }
 
     @Test
     public void sendResultToUI() {
+        Comment comment = TestUtil.createComment();
         MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        when(commentRepository.createComment(any())).thenReturn(result);
-        Observer<Event<Resource<Result>>> resultObserver = mock(Observer.class);
-        viewModel.result.observeForever(resultObserver);
-        viewModel.createComment("star", "content");
-        verify(resultObserver, never()).onChanged(any());
-        Event<Resource<Result>> resultResource = new Event<>(Resource.success(createResult()));
+        when(commentRepository.createComment(comment)).thenReturn(result);
+        Observer<Event<Resource<Result>>> observer = mock(Observer.class);
+        viewModel.result.observeForever(observer);
+        viewModel.createComment(comment);
+        verify(observer, never()).onChanged(any());
 
-        result.setValue(resultResource);
-        verify(resultObserver).onChanged(resultResource);
+        Event<Resource<Result>> resource = new Event<>(Resource.success(createResult()));
+        result.setValue(resource);
+        verify(observer).onChanged(resource);
     }
 
     @Test
-    public void createComment(){
+    public void createComment() {
         viewModel.result.observeForever(mock(Observer.class));
-        verifyNoMoreInteractions(commentRepository);
-        viewModel.createComment("star", "content");
-        verify(commentRepository).createComment(any());
-        verifyNoMoreInteractions(commentRepository);
+        verifyNoMoreInteractions(userRepository, commentRepository);
+
+        Comment comment = TestUtil.createComment();
+        viewModel.createComment(comment);
+        verify(timeUtil).now();
+        verify(userRepository).getUserID();
+        verify(commentRepository).createComment(comment);
+        verifyNoMoreInteractions(userRepository, commentRepository);
     }
 }

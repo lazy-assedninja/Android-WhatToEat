@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity {
         initDrawer();
         initDrawerHeader();
         initBottomNavigation();
-        initData();
         initActivityResult();
     }
 
@@ -230,10 +229,6 @@ public class MainActivity extends BaseActivity {
             }
             return true;
         });
-    }
-
-    private void initData() {
-        viewModel.initTags();
     }
 
     private void initActivityResult() {

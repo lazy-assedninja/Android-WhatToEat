@@ -15,6 +15,7 @@ import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.util.AbsentLiveData;
 import me.lazy_assedninja.app.vo.Favorite;
+import me.lazy_assedninja.app.vo.History;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
@@ -68,18 +69,20 @@ public class StoreInformationViewModel extends ViewModel {
         }
     });
 
-    public void setFavoriteRequest() {
+    public void changeFavoriteStatus(Favorite favorite) {
         if (store.getValue() == null) return;
 
-        int storeID = store.getValue().getId();
+        favorite.setStoreID(store.getValue().getId());
+        favorite.setUserID(userRepository.getUserID());
         boolean isFavorite = store.getValue().isFavorite();
-        Favorite favorite = favoriteRequest.getValue();
-        if (favorite == null || favorite.getStatus() == isFavorite) {
-            favoriteRequest.setValue(new Favorite(userRepository.getUserID(), storeID, !isFavorite));
+        favorite.setStatus(!isFavorite);
+        Favorite request = favoriteRequest.getValue();
+        if (request == null || request.getStatus() == isFavorite) {
+            favoriteRequest.setValue(favorite);
         }
     }
 
-    public void addHistory(int storeID) {
-        historyRepository.addHistory(storeID);
+    public void addToHistory(History history) {
+        historyRepository.addToHistory(history);
     }
 }

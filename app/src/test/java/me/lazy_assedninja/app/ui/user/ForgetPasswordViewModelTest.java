@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
+import static me.lazy_assedninja.app.common.TestUtil.createUserDTO;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
@@ -19,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import me.lazy_assedninja.app.dto.UserDTO;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.user.forget_password.ForgetPasswordViewModel;
 import me.lazy_assedninja.app.vo.Event;
@@ -41,42 +43,42 @@ public class ForgetPasswordViewModelTest {
         assertThat(viewModel.sendVerificationResult, notNullValue());
 
         verify(userRepository, never()).sendVerificationCode(any());
-        viewModel.sendVerificationCode("email");
+        viewModel.sendVerificationCode(createUserDTO());
         verify(userRepository, never()).sendVerificationCode(any());
 
         // Forget password
         assertThat(viewModel.forgetPasswordResult, notNullValue());
 
         verify(userRepository, never()).forgetPassword(any());
-        viewModel.forgetPassword("email", "verification code",
-                "new password");
+        viewModel.forgetPassword(createUserDTO());
         verify(userRepository, never()).forgetPassword(any());
     }
 
     @Test
     public void sendResultToUI() {
         // Send verification code
+        UserDTO sendVerificationDTO = createUserDTO();
         MutableLiveData<Event<Resource<Result>>> sendVerificationResult = new MutableLiveData<>();
-        when(userRepository.sendVerificationCode(any())).thenReturn(sendVerificationResult);
+        when(userRepository.sendVerificationCode(sendVerificationDTO)).thenReturn(sendVerificationResult);
         Observer<Event<Resource<Result>>> sendVerificationObserver = mock(Observer.class);
         viewModel.sendVerificationResult.observeForever(sendVerificationObserver);
-        viewModel.sendVerificationCode("email");
+        viewModel.sendVerificationCode(sendVerificationDTO);
         verify(sendVerificationObserver, never()).onChanged(any());
-        Event<Resource<Result>> sendVerificationResource = new Event<>(Resource.success(createResult()));
 
+        Event<Resource<Result>> sendVerificationResource = new Event<>(Resource.success(createResult()));
         sendVerificationResult.setValue(sendVerificationResource);
         verify(sendVerificationObserver).onChanged(sendVerificationResource);
 
         // Forget password
+        UserDTO forgetPasswordDTO = createUserDTO();
         MutableLiveData<Event<Resource<Result>>> forgetPasswordResult = new MutableLiveData<>();
-        when(userRepository.forgetPassword(any())).thenReturn(forgetPasswordResult);
+        when(userRepository.forgetPassword(forgetPasswordDTO)).thenReturn(forgetPasswordResult);
         Observer<Event<Resource<Result>>> forgetPasswordObserver = mock(Observer.class);
         viewModel.forgetPasswordResult.observeForever(forgetPasswordObserver);
-        viewModel.forgetPassword("email", "verification code",
-                "new password");
+        viewModel.forgetPassword(forgetPasswordDTO);
         verify(forgetPasswordObserver, never()).onChanged(any());
-        Event<Resource<Result>> forgetPasswordResource = new Event<>(Resource.success(createResult()));
 
+        Event<Resource<Result>> forgetPasswordResource = new Event<>(Resource.success(createResult()));
         forgetPasswordResult.setValue(forgetPasswordResource);
         verify(forgetPasswordObserver).onChanged(forgetPasswordResource);
     }
@@ -85,8 +87,10 @@ public class ForgetPasswordViewModelTest {
     public void sendVerificationCode() {
         viewModel.sendVerificationResult.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(userRepository);
-        viewModel.sendVerificationCode("email");
-        verify(userRepository).sendVerificationCode(any());
+
+        UserDTO userDTO = createUserDTO();
+        viewModel.sendVerificationCode(userDTO);
+        verify(userRepository).sendVerificationCode(userDTO);
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -94,9 +98,10 @@ public class ForgetPasswordViewModelTest {
     public void forgetPassword() {
         viewModel.forgetPasswordResult.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(userRepository);
-        viewModel.forgetPassword("email", "verification code",
-                "new password");
-        verify(userRepository).forgetPassword(any());
+
+        UserDTO userDTO = createUserDTO();
+        viewModel.forgetPassword(userDTO);
+        verify(userRepository).forgetPassword(userDTO);
         verifyNoMoreInteractions(userRepository);
     }
 }

@@ -22,12 +22,9 @@ public class Comment {
     }
 
     @Ignore
-    public Comment(String star, String content, String createTime, int storeID, int userID) {
+    public Comment(String star, String content) {
         this.star = star;
         this.content = content;
-        this.createTime = createTime;
-        this.storeID = storeID;
-        this.userID = userID;
     }
 
     public int getId() {

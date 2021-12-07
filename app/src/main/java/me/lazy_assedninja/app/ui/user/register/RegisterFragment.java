@@ -18,6 +18,7 @@ import me.lazy_assedninja.app.databinding.RegisterFragmentBinding;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
+import me.lazy_assedninja.app.vo.User;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
@@ -79,7 +80,8 @@ public class RegisterFragment extends BaseFragment {
                 binding.tilPassword.setError(getString(R.string.error_passwords_are_not_the_same));
                 binding.tilConfirmPassword.setError(getString(R.string.error_passwords_are_not_the_same));
             } else {
-                viewModel.register(name, email, password);
+                viewModel.register(new User(email, password, name, email + ".jpg",
+                        "user"));
             }
         });
 

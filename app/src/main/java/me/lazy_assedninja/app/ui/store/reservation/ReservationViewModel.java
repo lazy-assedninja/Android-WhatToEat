@@ -42,9 +42,11 @@ public class ReservationViewModel extends ViewModel {
         }
     });
 
-    public void requestReservation() {
-        if (reservationRequest.getValue() == null || reservationRequest.getValue().getId() != userRepository.getUserID()) {
-            reservationRequest.setValue(new ReservationDTO("user", userRepository.getUserID()));
+    public void requestReservation(ReservationDTO reservationDTO) {
+        int userID = userRepository.getUserID();
+        if (reservationRequest.getValue() == null || reservationRequest.getValue().getId() != userID) {
+            reservationDTO.setId(userID);
+            reservationRequest.setValue(reservationDTO);
         }
     }
 
@@ -58,11 +60,11 @@ public class ReservationViewModel extends ViewModel {
         if (request == null) {
             return AbsentLiveData.create();
         } else {
-            return reservationRepository.addOrCancelReservation(false, request);
+            return reservationRepository.createOrCancelReservation(false, request);
         }
     });
 
-    public void setCancelRequest(Reservation reservation) {
+    public void cancelReservation(Reservation reservation) {
         if (cancelRequest.getValue() == null || cancelRequest.getValue().getId() != reservation.getId()) {
             cancelRequest.setValue(reservation);
         }

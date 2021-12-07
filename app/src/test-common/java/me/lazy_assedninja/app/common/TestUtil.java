@@ -36,15 +36,11 @@ public class TestUtil {
         return new GoogleAccount();
     }
 
-    public static Tag createTag(int id) {
-        return new Tag(id);
-    }
-
     public static Store createStore(int id, String name) {
         Store store = new Store();
         store.setId(id);
         store.setName(name);
-        store.setTagID(1);
+        store.setTagID(Tag.HOME.getValue());
         return store;
     }
 
@@ -52,13 +48,13 @@ public class TestUtil {
         Store store = new Store();
         store.setId(id);
         store.setName(name);
-        store.setTagID(1);
+        store.setTagID(Tag.HOME.getValue());
         store.setFavorite(isFavorite);
         return store;
     }
 
     public static Favorite createFavorite() {
-        return new Favorite(0, 0, false);
+        return new Favorite(0, false);
     }
 
     public static Promotion createPromotion(int id, String title) {
@@ -77,8 +73,7 @@ public class TestUtil {
     }
 
     public static Reservation createReservation(int id, String name) {
-        Reservation reservation = new Reservation(name, "", "", "", 0,
-                1);
+        Reservation reservation = new Reservation(name, "", "", "");
         reservation.setId(id);
         return reservation;
     }
@@ -104,7 +99,7 @@ public class TestUtil {
     }
 
     public static Report createReport() {
-        return new Report("", "", 0, 0);
+        return new Report("");
     }
 
     public static Result createResult() {
@@ -116,8 +111,8 @@ public class TestUtil {
     }
 
     public static MultipartBody.Part createFile(){
-        return MultipartBody.Part.createFormData("file", "file_name",
-                RequestBody.create("file_path", MediaType.parse("multipart/form-data")));
+        return MultipartBody.Part.createFormData("file", "file name",
+                RequestBody.create("file path", MediaType.parse("multipart/form-data")));
     }
 
     public static UserDTO createUserDTO() {
@@ -129,7 +124,7 @@ public class TestUtil {
     }
 
     public static StoreDTO createStoreDTO() {
-        return new StoreDTO(0);
+        return new StoreDTO();
     }
 
     public static CommentDTO createCommentDTO() {

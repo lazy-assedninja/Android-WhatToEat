@@ -29,6 +29,8 @@ import me.lazy_assedninja.app.ui.store.comment.CommentFragment;
 import me.lazy_assedninja.app.ui.store.post.PostFragment;
 import me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment;
 import me.lazy_assedninja.app.ui.user.create_report.CreateReportFragment;
+import me.lazy_assedninja.app.vo.Favorite;
+import me.lazy_assedninja.app.vo.History;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -54,7 +56,7 @@ public class StoreInformationFragment extends BaseFragment {
         );
 
         setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_image_transform));
-        binding.setImageRequestListener(new RequestListener<Drawable>() {
+        binding.setImageRequestListener(new RequestListener<>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 startPostponedEnterTransition();
@@ -86,7 +88,7 @@ public class StoreInformationFragment extends BaseFragment {
                 showToast(R.string.error_please_login_first);
                 return;
             }
-            viewModel.setFavoriteRequest();
+            viewModel.changeFavoriteStatus(new Favorite());
         });
         binding.ivComment.setOnClickListener(v -> {
             CommentFragment commentFragment = new CommentFragment();
@@ -136,9 +138,7 @@ public class StoreInformationFragment extends BaseFragment {
         int id = StoreInformationFragmentArgs.fromBundle(getArguments()).getStoreID();
         binding.setStore(viewModel.getStore(id));
         viewModel.setId(id);
-
-        // Add to history
-        viewModel.addHistory(id);
+        viewModel.addToHistory(new History(id));
 
         viewModel.result.observe(getViewLifecycleOwner(), event -> {
             Resource<Result> resultResource = event.getContentIfNotHandled();

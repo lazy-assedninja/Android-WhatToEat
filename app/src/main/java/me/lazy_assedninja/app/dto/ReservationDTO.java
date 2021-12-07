@@ -9,9 +9,8 @@ public class ReservationDTO {
         this.id = id;
     }
 
-    public ReservationDTO(String type, int id) {
+    public ReservationDTO(String type) {
         this.type = type;
-        this.id = id;
     }
 
     public String getType() {

@@ -9,21 +9,18 @@ import me.lazy_assedninja.app.vo.Post;
 import me.lazy_assedninja.app.vo.Promotion;
 import me.lazy_assedninja.app.vo.Reservation;
 import me.lazy_assedninja.app.vo.Store;
-import me.lazy_assedninja.app.vo.Tag;
 import me.lazy_assedninja.app.vo.User;
 
 /**
  * Database descriptions.
  */
 @Database(entities = {
-        User.class, Tag.class, Store.class, Comment.class, Post.class, Promotion.class, History.class,
+        User.class, Store.class, Comment.class, Post.class, Promotion.class, History.class,
         Reservation.class
 }, version = 1, exportSchema = false)
 public abstract class WhatToEatDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
-
-    public abstract TagDao tagDao();
 
     public abstract StoreDao storeDao();
 

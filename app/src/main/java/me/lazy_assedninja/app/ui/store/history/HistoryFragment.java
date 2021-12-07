@@ -24,6 +24,7 @@ import me.lazy_assedninja.app.databinding.HistoryFragmentBinding;
 import me.lazy_assedninja.app.databinding.StoreItemBinding;
 import me.lazy_assedninja.app.ui.store.StoreAdapter;
 import me.lazy_assedninja.app.ui.store.StoreCallback;
+import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -79,7 +80,8 @@ public class HistoryFragment extends BaseFragment {
                             showToast(R.string.error_please_login_first);
                             return;
                         }
-                        viewModel.setFavoriteRequest(storeID, isFavorite);
+
+                        viewModel.changeFavoriteStatus(new Favorite(storeID, isFavorite));
                     }
 
                     @Override

@@ -47,9 +47,11 @@ public class FavoriteViewModel extends ViewModel {
         }
     });
 
-    public void requestStore() {
-        if (storeRequest.getValue() == null || storeRequest.getValue().getUserID() != userRepository.getUserID()) {
-            storeRequest.setValue(new FavoriteDTO(userRepository.getUserID()));
+    public void requestStore(FavoriteDTO favoriteDTO) {
+        if (storeRequest.getValue() == null || storeRequest.getValue().getUserID() !=
+                userRepository.getUserID()) {
+            favoriteDTO.setUserID(userRepository.getUserID());
+            storeRequest.setValue(favoriteDTO);
         }
     }
 
@@ -67,11 +69,12 @@ public class FavoriteViewModel extends ViewModel {
         }
     });
 
-    public void setFavoriteRequest(int storeID, boolean isFavorite) {
-        Favorite favorite = favoriteRequest.getValue();
-        if (favorite == null || favorite.getStoreID() != storeID ||
-                (favorite.getStoreID() == storeID && favorite.getStatus() == isFavorite)) {
-            favoriteRequest.setValue(new Favorite(userRepository.getUserID(), storeID, !isFavorite));
+    public void changeFavoriteStatus(Favorite favorite) {
+        Favorite request = favoriteRequest.getValue();
+        if (request == null || request.getStoreID() != favorite.getStoreID() ||
+                (request.getStoreID() == favorite.getStoreID() && request.getStatus() == favorite.getStatus())) {
+            favorite.setUserID(userRepository.getUserID());
+            favoriteRequest.setValue(favorite);
         }
     }
 }

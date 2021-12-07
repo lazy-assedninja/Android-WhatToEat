@@ -9,6 +9,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static me.lazy_assedninja.app.common.TestUtil.createFavorite;
+import static me.lazy_assedninja.app.common.TestUtil.createHistory;
 import static me.lazy_assedninja.app.common.TestUtil.createResult;
 import static me.lazy_assedninja.app.common.TestUtil.createStore;
 
@@ -28,6 +30,8 @@ import me.lazy_assedninja.app.repository.StoreRepository;
 import me.lazy_assedninja.app.repository.UserRepository;
 import me.lazy_assedninja.app.ui.store.store_information.StoreInformationViewModel;
 import me.lazy_assedninja.app.vo.Event;
+import me.lazy_assedninja.app.vo.Favorite;
+import me.lazy_assedninja.app.vo.History;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Store;
@@ -47,11 +51,12 @@ public class StoreInformationViewModelTest {
             storeRepository, favoriteRepository, historyRepository);
 
     @Before
-    public void initStore() {
+    public void getStore() {
         int storeID = 1;
-        MutableLiveData<Store> dbData = new MutableLiveData<>();
-        dbData.setValue(createStore(storeID, "火樹銀花韓式燒烤"));
-        when(storeRepository.getStoreFromDb(storeID)).thenReturn(dbData);
+        MutableLiveData<Store> store = new MutableLiveData<>();
+        store.setValue(createStore(storeID, "store name"));
+        when(storeRepository.getStoreFromDb(storeID)).thenReturn(store);
+
         viewModel.getStore(storeID);
         verify(storeRepository).getStoreFromDb(storeID);
     }
@@ -61,31 +66,35 @@ public class StoreInformationViewModelTest {
         assertThat(viewModel.result, notNullValue());
 
         verify(favoriteRepository, never()).changeFavoriteStatus(any());
-        viewModel.setFavoriteRequest();
+        viewModel.changeFavoriteStatus(createFavorite());
         verify(favoriteRepository, never()).changeFavoriteStatus(any());
     }
 
     @Test
     public void sendResultToUI() {
+        Favorite favorite = createFavorite();
         MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
-        when(favoriteRepository.changeFavoriteStatus(any())).thenReturn(result);
-        Observer<Event<Resource<Result>>> resultObserver = mock(Observer.class);
-        viewModel.result.observeForever(resultObserver);
-        viewModel.setFavoriteRequest();
-        verify(resultObserver, never()).onChanged(any());
-        Event<Resource<Result>> resultResource = new Event<>(Resource.success(createResult()));
+        when(favoriteRepository.changeFavoriteStatus(favorite)).thenReturn(result);
+        Observer<Event<Resource<Result>>> observer = mock(Observer.class);
+        viewModel.result.observeForever(observer);
+        viewModel.changeFavoriteStatus(favorite);
+        verify(observer, never()).onChanged(any());
 
-        result.setValue(resultResource);
-        verify(resultObserver).onChanged(resultResource);
+        Event<Resource<Result>> resource = new Event<>(Resource.success(createResult()));
+        result.setValue(resource);
+        verify(observer).onChanged(resource);
     }
 
     @Test
     public void changeFavoriteStatus() {
         viewModel.result.observeForever(mock(Observer.class));
-        verifyNoMoreInteractions(favoriteRepository);
-        viewModel.setFavoriteRequest();
-        verify(favoriteRepository).changeFavoriteStatus(any());
-        verifyNoMoreInteractions(favoriteRepository);
+        verifyNoMoreInteractions(userRepository, favoriteRepository);
+
+        Favorite favorite = createFavorite();
+        viewModel.changeFavoriteStatus(favorite);
+        verify(userRepository).getUserID();
+        verify(favoriteRepository).changeFavoriteStatus(favorite);
+        verifyNoMoreInteractions(userRepository, favoriteRepository);
     }
 
     @Test
@@ -98,10 +107,10 @@ public class StoreInformationViewModelTest {
     }
 
     @Test
-    public void addHistory() {
-        int storeID = 1;
-        viewModel.addHistory(storeID);
+    public void addToHistory() {
+        History history = createHistory(1);
+        viewModel.addToHistory(history);
 
-        verify(historyRepository).addHistory(storeID);
+        verify(historyRepository).addToHistory(history);
     }
 }

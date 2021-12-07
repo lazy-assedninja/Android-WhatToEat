@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.PostFragmentBinding;
+import me.lazy_assedninja.app.dto.PostDTO;
 import me.lazy_assedninja.app.vo.Post;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 import me.lazy_assedninja.library.util.ExecutorUtil;
@@ -68,7 +69,7 @@ public class PostFragment extends BaseBottomSheetDialogFragment {
         int id = getArguments().getInt("store_id");
         viewModel.setId(id);
 
-        viewModel.requestPosts(id);
+        viewModel.requestPost(new PostDTO(id));
         viewModel.posts.observe(getViewLifecycleOwner(), listResource -> {
             List<Post> list = listResource.getData();
             if (list != null) {

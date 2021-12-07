@@ -43,8 +43,8 @@ public class LoginViewModel extends ViewModel {
         }
     });
 
-    public void login(String email, String password) {
-        login.setValue(new UserDTO(email, password, false));
+    public void login(UserDTO userDTO) {
+        login.setValue(userDTO);
     }
 
     public void googleLogin(String googleID) {

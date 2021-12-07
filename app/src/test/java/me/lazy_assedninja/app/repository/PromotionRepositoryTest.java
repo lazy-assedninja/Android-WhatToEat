@@ -88,12 +88,9 @@ public class PromotionRepositoryTest {
         MutableLiveData<List<Promotion>> dbData = new MutableLiveData<>();
         when(promotionDao.getPromotions()).thenReturn(dbData);
 
-        LiveData<Resource<List<Promotion>>> data = repository.loadPromotions();
-        verify(promotionDao).getPromotions();
-        verifyNoMoreInteractions(service);
-
         Observer<Resource<List<Promotion>>> observer = mock(Observer.class);
-        data.observeForever(observer);
+        repository.loadPromotions().observeForever(observer);
+        verify(promotionDao).getPromotions();
         verifyNoMoreInteractions(service);
         verify(observer).onChanged(Resource.loading(null));
 

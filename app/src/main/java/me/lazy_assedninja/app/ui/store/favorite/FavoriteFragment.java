@@ -22,8 +22,10 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.FavoriteFragmentBinding;
 import me.lazy_assedninja.app.databinding.StoreItemBinding;
+import me.lazy_assedninja.app.dto.FavoriteDTO;
 import me.lazy_assedninja.app.ui.store.StoreAdapter;
 import me.lazy_assedninja.app.ui.store.StoreCallback;
+import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -80,7 +82,7 @@ public class FavoriteFragment extends BaseFragment {
                             showToast(R.string.error_please_login_first);
                             return;
                         }
-                        viewModel.setFavoriteRequest(storeID, isFavorite);
+                        viewModel.changeFavoriteStatus(new Favorite(storeID, isFavorite));
                     }
 
                     @Override
@@ -110,7 +112,7 @@ public class FavoriteFragment extends BaseFragment {
     }
 
     private void initData() {
-        viewModel.requestStore();
+        viewModel.requestStore(new FavoriteDTO());
 
         viewModel.stores.observe(getViewLifecycleOwner(), listResource -> {
             binding.swipeRefreshLayout.setRefreshing(false);
