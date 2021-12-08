@@ -23,12 +23,12 @@
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:background="@color/white"
-            app:error="@{@drawable/icon}"
-            app:fallback="@{@drawable/icon}"
-            app:imageUrl="@{comment.userPicture}"
+            app:portraitError="@{@drawable/icon}"
+            app:portraitFallback="@{@drawable/icon}"
+            app:portraitPlaceholder="@{@drawable/icon}"
+            app:portraitUrl="@{comment.userPicture}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:placeholder="@{@drawable/icon}"
             app:shapeAppearance="@style/Widget.ShapeableImageView.RoundedCorner"
             tools:src="@drawable/icon" />
 
