@@ -78,7 +78,6 @@
     <string name="user_please_login">Please Login</string>
     <string name="user_name">Name</string>
     <string name="user_identity">IDENTITY:</string>
-    <string name="user_portrait_path">File/User/</string>
 
     <!-- Store -->
     <string name="default_value_star">0.0</string>

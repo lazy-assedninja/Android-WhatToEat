@@ -25,7 +25,7 @@
             android:background="@color/white"
             app:error="@{@drawable/icon}"
             app:fallback="@{@drawable/icon}"
-            app:imageUrl="@{@string/user_portrait_path + comment.userPicture}"
+            app:imageUrl="@{comment.userPicture}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:placeholder="@{@drawable/icon}"

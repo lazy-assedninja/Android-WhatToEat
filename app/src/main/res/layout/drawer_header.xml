@@ -29,7 +29,7 @@
             app:portraitFallback="@{@drawable/icon}"
             app:portraitSignature="@{user.updateTime}"
             app:portraitPlaceholder="@{@drawable/icon}"
-            app:portraitUrl="@{@string/user_portrait_path + user.headPortrait}"
+            app:portraitUrl="@{user.headPortrait}"
             app:layout_constraintBottom_toTopOf="@id/tv_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
