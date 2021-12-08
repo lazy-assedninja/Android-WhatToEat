@@ -22,13 +22,14 @@ import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.MapFragmentBinding;
 import me.lazy_assedninja.app.dto.StoreDTO;
 import me.lazy_assedninja.app.ui.store.map.map_information.MapInformationFragment;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
 public class MapFragment extends BaseFragment {
 
-    private MapFragmentBinding binding;
+    private AutoClearedValue<MapFragmentBinding> binding;
     private MapViewModel viewModel;
 
     private GoogleMap googleMap;
@@ -36,12 +37,13 @@ public class MapFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        MapFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.map_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -56,8 +58,8 @@ public class MapFragment extends BaseFragment {
     }
 
     private void initView() {
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setStores(viewModel.stores);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setStores(viewModel.stores);
     }
 
     @SuppressWarnings("MissingPermission")

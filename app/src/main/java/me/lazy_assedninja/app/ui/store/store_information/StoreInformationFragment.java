@@ -29,6 +29,7 @@ import me.lazy_assedninja.app.ui.store.comment.CommentFragment;
 import me.lazy_assedninja.app.ui.store.post.PostFragment;
 import me.lazy_assedninja.app.ui.store.reservation.reserve.ReserveFragment;
 import me.lazy_assedninja.app.ui.user.create_report.CreateReportFragment;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.History;
 import me.lazy_assedninja.app.vo.Resource;
@@ -39,7 +40,7 @@ import me.lazy_assedninja.library.ui.BaseFragment;
 @AndroidEntryPoint
 public class StoreInformationFragment extends BaseFragment {
 
-    private StoreInformationFragmentBinding binding;
+    private AutoClearedValue<StoreInformationFragmentBinding> binding;
     private StoreInformationViewModel viewModel;
 
     @Override
@@ -47,13 +48,14 @@ public class StoreInformationFragment extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         DataBindingComponent dataBindingComponent = (getActivity() != null) ?
                 EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
-        binding = DataBindingUtil.inflate(
+        StoreInformationFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.store_information_fragment,
                 container,
                 false,
                 dataBindingComponent
         );
+        this.binding = new AutoClearedValue<>(this, binding);
 
         setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_image_transform));
         binding.setImageRequestListener(new RequestListener<>() {
@@ -83,28 +85,28 @@ public class StoreInformationFragment extends BaseFragment {
     }
 
     private void initView() {
-        binding.floatingActionButton.setOnClickListener(v -> {
+        binding.get().floatingActionButton.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
                 showToast(R.string.error_please_login_first);
                 return;
             }
             viewModel.changeFavoriteStatus(new Favorite());
         });
-        binding.ivComment.setOnClickListener(v -> {
+        binding.get().ivComment.setOnClickListener(v -> {
             CommentFragment commentFragment = new CommentFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("store_id", viewModel.getId());
             commentFragment.setArguments(bundle);
             commentFragment.show(getParentFragmentManager(), "comment");
         });
-        binding.ivPost.setOnClickListener(v -> {
+        binding.get().ivPost.setOnClickListener(v -> {
             PostFragment postFragment = new PostFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("store_id", viewModel.getId());
             postFragment.setArguments(bundle);
             postFragment.show(getParentFragmentManager(), "post");
         });
-        binding.btReserve.setOnClickListener(v -> {
+        binding.get().btReserve.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
                 showToast(R.string.error_please_login_first);
                 return;
@@ -116,7 +118,7 @@ public class StoreInformationFragment extends BaseFragment {
             reserveFragment.setArguments(bundle);
             reserveFragment.show(getParentFragmentManager(), "reserve");
         });
-        binding.btAddReport.setOnClickListener(v -> {
+        binding.get().btAddReport.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
                 showToast(R.string.error_please_login_first);
                 return;
@@ -130,13 +132,13 @@ public class StoreInformationFragment extends BaseFragment {
             createReportFragment.show(getParentFragmentManager(), "create_report");
         });
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setResult(viewModel.result);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setResult(viewModel.result);
     }
 
     private void initData() {
         int id = StoreInformationFragmentArgs.fromBundle(getArguments()).getStoreID();
-        binding.setStore(viewModel.getStore(id));
+        binding.get().setStore(viewModel.getStore(id));
         viewModel.setId(id);
         viewModel.addToHistory(new History(id));
 

@@ -1,5 +1,7 @@
 package me.lazy_assedninja.app.ui.promotion;
 
+import static java.util.Collections.emptyList;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,32 +19,32 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.PromotionFragmentBinding;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.util.ExecutorUtil;
-
-import static java.util.Collections.emptyList;
 
 @AndroidEntryPoint
 public class PromotionFragment extends BaseFragment {
 
-    private PromotionFragmentBinding binding;
+    private AutoClearedValue<PromotionFragmentBinding> binding;
     private PromotionViewModel viewModel;
 
     @Inject
     public ExecutorUtil executorUtil;
 
     private NavController navController;
-    private PromotionAdapter adapter;
+    private AutoClearedValue<PromotionAdapter> adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        PromotionFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.promotion_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -57,13 +59,15 @@ public class PromotionFragment extends BaseFragment {
     }
 
     private void initView() {
-        adapter = new PromotionAdapter(executorUtil, (id) ->
-                navController.navigate(PromotionFragmentDirections.actionToPromotionInformationFragment(id))
+        PromotionAdapter adapter = new PromotionAdapter(executorUtil, (id) ->
+                navController.navigate(PromotionFragmentDirections
+                        .actionToPromotionInformationFragment(id))
         );
-        binding.rv.setAdapter(adapter);
+        this.adapter = new AutoClearedValue<>(this, adapter);
+        binding.get().rv.setAdapter(adapter);
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setPromotions(viewModel.promotions);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setPromotions(viewModel.promotions);
     }
 
     private void initData() {
@@ -71,9 +75,9 @@ public class PromotionFragment extends BaseFragment {
 
         viewModel.promotions.observe(getViewLifecycleOwner(), listResource -> {
             if (listResource.getData() != null) {
-                adapter.submitList(listResource.getData());
+                adapter.get().submitList(listResource.getData());
             } else {
-                adapter.submitList(emptyList());
+                adapter.get().submitList(emptyList());
             }
         });
     }

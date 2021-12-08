@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -26,14 +27,14 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.LoginFragmentBinding;
 import me.lazy_assedninja.app.dto.UserDTO;
-import me.lazy_assedninja.app.vo.Resource;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
 public class LoginFragment extends BaseFragment {
 
-    private LoginFragmentBinding binding;
+    private AutoClearedValue<LoginFragmentBinding> binding;
     private LoginViewModel viewModel;
 
     private NavController navController;
@@ -45,12 +46,13 @@ public class LoginFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        LoginFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.login_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -67,32 +69,34 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void initView() {
-        binding.btForgetPassword.setOnClickListener(v ->
+        binding.get().btForgetPassword.setOnClickListener(v ->
                 navController.navigate(R.id.action_to_forget_password_fragment));
-        binding.btLogin.setOnClickListener(v -> {
+        binding.get().btLogin.setOnClickListener(v -> {
             dismissKeyboard(v);
-            if (binding.tilEmail.getEditText() == null || binding.tilPassword.getEditText() == null)
+            EditText etEmail = binding.get().tilEmail.getEditText();
+            EditText etPassword = binding.get().tilPassword.getEditText();
+            if (etEmail == null || etPassword == null)
                 return;
 
             // Clear errors
-            binding.tilEmail.setError(null);
-            binding.tilPassword.setError(null);
+            binding.get().tilEmail.setError(null);
+            binding.get().tilPassword.setError(null);
 
-            String email = binding.tilEmail.getEditText().getText().toString();
-            String password = binding.tilPassword.getEditText().getText().toString();
+            String email = etEmail.getText().toString();
+            String password = etPassword.getText().toString();
             if (email.isEmpty()) {
-                binding.tilEmail.setError(getString(R.string.error_email_can_not_be_null));
+                binding.get().tilEmail.setError(getString(R.string.error_email_can_not_be_null));
             } else if (password.isEmpty()) {
-                binding.tilPassword.setError(getString(R.string.error_password_can_not_be_null));
+                binding.get().tilPassword.setError(getString(R.string.error_password_can_not_be_null));
             } else {
                 viewModel.login(new UserDTO(email, password, false));
             }
         });
-        binding.btGoogleLogin.setOnClickListener(v ->
+        binding.get().btGoogleLogin.setOnClickListener(v ->
                 googleSignIn.launch(googleSignInClient.getSignInIntent()));
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setUser(viewModel.user);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setUser(viewModel.user);
     }
 
     private void initGoogleSignIn() {
@@ -118,8 +122,9 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void initData() {
-        if (!viewModel.getUserEmail().isEmpty() && binding.tilEmail.getEditText() != null)
-            binding.tilEmail.getEditText().setText(viewModel.getUserEmail());
+        EditText etEmail = binding.get().tilEmail.getEditText();
+        if (!viewModel.getUserEmail().isEmpty() && etEmail != null)
+            etEmail.setText(viewModel.getUserEmail());
 
         viewModel.user.observe(getViewLifecycleOwner(), userResource -> {
             if (userResource.getStatus().equals(Status.SUCCESS)) {

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import java.util.Calendar;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ReserveFragmentBinding;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Reservation;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
@@ -28,7 +30,7 @@ import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 @AndroidEntryPoint
 public class ReserveFragment extends BaseBottomSheetDialogFragment {
 
-    private ReserveFragmentBinding binding;
+    private AutoClearedValue<ReserveFragmentBinding> binding;
     private ReserveViewModel viewModel;
 
     @Override
@@ -40,12 +42,13 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        ReserveFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.reserve_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -60,65 +63,70 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
 
     private void initView() {
         Calendar calendar = Calendar.getInstance();
-        binding.btDateChoose.setOnClickListener(v -> {
+        binding.get().btDateChoose.setOnClickListener(v -> {
             int mYear = calendar.get(Calendar.YEAR);
             int mMonth = calendar.get(Calendar.MONTH);
             int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
             new DatePickerDialog(getActivity(),
                     (view, year, monthOfYear, dayOfMonth) -> {
-                        if (binding.tilDate.getEditText() == null) return;
+                        EditText editText = binding.get().tilDate.getEditText();
+                        if (editText == null) return;
                         String date = (monthOfYear + 1) + "-" + dayOfMonth;
-                        binding.tilDate.getEditText().setText(date);
+                        editText.setText(date);
                     }, mYear, mMonth, mDay).show();
         });
-        binding.btTimeChoose.setOnClickListener(v -> {
+        binding.get().btTimeChoose.setOnClickListener(v -> {
             int mHour = calendar.get(Calendar.HOUR_OF_DAY);
             int mMinute = calendar.get(Calendar.MINUTE);
 
             new TimePickerDialog(getActivity(),
                     (view, hourOfDay, minute) -> {
-                        if (binding.tilTime.getEditText() == null) return;
+                        EditText editText = binding.get().tilTime.getEditText();
+                        if (editText == null) return;
                         String time = hourOfDay + ":" + minute;
-                        binding.tilTime.getEditText().setText(time);
+                        editText.setText(time);
                     }, mHour, mMinute, false).show();
         });
-        binding.btReserve.setOnClickListener(v -> {
+        binding.get().btReserve.setOnClickListener(v -> {
             dismissKeyboard(v);
-            if (binding.tilName.getEditText() == null || binding.tilPhone.getEditText() == null ||
-                    binding.tilAmount.getEditText() == null || binding.tilDate.getEditText() == null ||
-                    binding.tilTime.getEditText() == null)
-                return;
+            EditText etName = binding.get().tilName.getEditText();
+            EditText etPhone = binding.get().tilPhone.getEditText();
+            EditText etAmount = binding.get().tilAmount.getEditText();
+            EditText etDate = binding.get().tilDate.getEditText();
+            EditText etTime = binding.get().tilTime.getEditText();
+            if (etName == null || etPhone == null || etAmount == null || etDate == null ||
+                    etTime == null) return;
 
             // Clear errors
-            binding.tilName.setError(null);
-            binding.tilPhone.setError(null);
-            binding.tilAmount.setError(null);
-            binding.tilDate.setError(null);
-            binding.tilTime.setError(null);
+            binding.get().tilName.setError(null);
+            binding.get().tilPhone.setError(null);
+            binding.get().tilAmount.setError(null);
+            binding.get().tilDate.setError(null);
+            binding.get().tilTime.setError(null);
 
-            String name = binding.tilName.getEditText().getText().toString();
-            String phone = binding.tilPhone.getEditText().getText().toString();
-            String amount = binding.tilAmount.getEditText().getText().toString();
-            String date = binding.tilDate.getEditText().getText().toString();
-            String time = binding.tilTime.getEditText().getText().toString();
+            String name = etName.getText().toString();
+            String phone = etPhone.toString();
+            String amount = etAmount.toString();
+            String date = etDate.toString();
+            String time = etTime.toString();
             if (name.isEmpty()) {
-                binding.tilName.setError(getString(R.string.error_name_can_not_be_null));
+                binding.get().tilName.setError(getString(R.string.error_name_can_not_be_null));
             } else if (phone.isEmpty()) {
-                binding.tilPhone.setError(getString(R.string.error_phone_can_not_be_null));
+                binding.get().tilPhone.setError(getString(R.string.error_phone_can_not_be_null));
             } else if (amount.isEmpty()) {
-                binding.tilAmount.setError(getString(R.string.error_amount_can_not_be_null));
+                binding.get().tilAmount.setError(getString(R.string.error_amount_can_not_be_null));
             } else if (date.isEmpty()) {
-                binding.tilDate.setError(getString(R.string.error_date_can_not_be_null));
+                binding.get().tilDate.setError(getString(R.string.error_date_can_not_be_null));
             } else if (time.isEmpty()) {
-                binding.tilTime.setError(getString(R.string.error_time_can_not_be_null));
+                binding.get().tilTime.setError(getString(R.string.error_time_can_not_be_null));
             } else {
                 viewModel.reserve(new Reservation(name, phone, amount, date + " " + time));
             }
         });
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setResult(viewModel.result);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setResult(viewModel.result);
     }
 
     private void initData() {

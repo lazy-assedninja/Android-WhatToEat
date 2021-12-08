@@ -5,6 +5,7 @@ public class DependenciesVersion {
 
     // AndroidX
     public static final String APP_COMPAT = "1.3.1";
+    public static final String LIFECYCLE = "2.4.0";
     public static final String CONSTRAINT_LAYOUT = "2.1.0";
     public static final String NAVIGATION = "2.3.5";
     public static final String ROOM = "2.3.0";

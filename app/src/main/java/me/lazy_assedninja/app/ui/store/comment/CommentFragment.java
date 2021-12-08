@@ -24,6 +24,7 @@ import me.lazy_assedninja.app.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.app.databinding.CommentFragmentBinding;
 import me.lazy_assedninja.app.dto.CommentDTO;
 import me.lazy_assedninja.app.ui.store.comment.create_comment.CreateCommentFragment;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Comment;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 import me.lazy_assedninja.library.util.ExecutorUtil;
@@ -31,23 +32,24 @@ import me.lazy_assedninja.library.util.ExecutorUtil;
 @AndroidEntryPoint
 public class CommentFragment extends BaseBottomSheetDialogFragment {
 
-    private CommentFragmentBinding binding;
+    private AutoClearedValue<CommentFragmentBinding> binding;
     private CommentViewModel viewModel;
 
     @Inject
     public ExecutorUtil executorUtil;
 
-    private CommentAdapter adapter;
+    private AutoClearedValue<CommentAdapter> adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        CommentFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.comment_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -63,9 +65,10 @@ public class CommentFragment extends BaseBottomSheetDialogFragment {
     private void initView() {
         DataBindingComponent dataBindingComponent = (getActivity() != null) ?
                 EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
-        adapter = new CommentAdapter(executorUtil, dataBindingComponent);
-        binding.rv.setAdapter(adapter);
-        binding.btCreateComment.setOnClickListener(v -> {
+        CommentAdapter adapter = new CommentAdapter(executorUtil, dataBindingComponent);
+        this.adapter = new AutoClearedValue<>(this, adapter);
+        binding.get().rv.setAdapter(adapter);
+        binding.get().btCreateComment.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
                 showToast(R.string.error_please_login_first);
                 return;
@@ -78,8 +81,8 @@ public class CommentFragment extends BaseBottomSheetDialogFragment {
             createCommentFragment.show(getParentFragmentManager(), "add_comment");
         });
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setComments(viewModel.comments);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setComments(viewModel.comments);
     }
 
     private void initData() {
@@ -91,11 +94,11 @@ public class CommentFragment extends BaseBottomSheetDialogFragment {
         viewModel.comments.observe(getViewLifecycleOwner(), listResource -> {
             List<Comment> list = listResource.getData();
             if (list != null) {
-                adapter.submitList(list);
-                binding.setSize(list.size());
+                adapter.get().submitList(list);
+                binding.get().setSize(list.size());
             } else {
-                adapter.submitList(emptyList());
-                binding.setSize(0);
+                adapter.get().submitList(emptyList());
+                binding.get().setSize(0);
             }
         });
     }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.ForgetPasswordFragmentBinding;
 import me.lazy_assedninja.app.dto.UserDTO;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
 import me.lazy_assedninja.app.vo.Status;
@@ -24,7 +26,7 @@ import me.lazy_assedninja.library.ui.BaseFragment;
 @AndroidEntryPoint
 public class ForgetPasswordFragment extends BaseFragment {
 
-    private ForgetPasswordFragmentBinding binding;
+    private AutoClearedValue<ForgetPasswordFragmentBinding> binding;
     private ForgetPasswordViewModel viewModel;
 
     private NavController navController;
@@ -32,7 +34,7 @@ public class ForgetPasswordFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        ForgetPasswordFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.forget_password_fragment,
                 container,
@@ -52,48 +54,50 @@ public class ForgetPasswordFragment extends BaseFragment {
     }
 
     private void initView() {
-        binding.btSend.setOnClickListener(v -> {
+        binding.get().btSend.setOnClickListener(v -> {
             dismissKeyboard(v);
-            if (binding.tilEmail.getEditText() == null || binding.tilVerificationCode.getEditText() == null ||
-                    binding.tilNewPassword.getEditText() == null) return;
+            EditText etEmail = binding.get().tilEmail.getEditText();
+            if (etEmail == null) return;
 
             // Clear errors
-            binding.tilEmail.setError(null);
+            binding.get().tilEmail.setError(null);
 
-            String email = binding.tilEmail.getEditText().getText().toString();
+            String email = etEmail.getText().toString();
             if (email.isEmpty()) {
-                binding.tilEmail.setError(getString(R.string.error_email_can_not_be_null));
+                binding.get().tilEmail.setError(getString(R.string.error_email_can_not_be_null));
             } else {
                 viewModel.sendVerificationCode(new UserDTO(email));
             }
         });
-        binding.btConfirm.setOnClickListener(v -> {
+        binding.get().btConfirm.setOnClickListener(v -> {
             dismissKeyboard(v);
-            if (binding.tilEmail.getEditText() == null || binding.tilVerificationCode.getEditText() == null ||
-                    binding.tilNewPassword.getEditText() == null) return;
+            EditText etEmail = binding.get().tilEmail.getEditText();
+            EditText etVerificationCode = binding.get().tilVerificationCode.getEditText();
+            EditText etNewPassword = binding.get().tilNewPassword.getEditText();
+            if (etEmail == null || etVerificationCode == null || etNewPassword == null) return;
 
             // Clear errors
-            binding.tilEmail.setError(null);
-            binding.tilVerificationCode.setError(null);
-            binding.tilNewPassword.setError(null);
+            binding.get().tilEmail.setError(null);
+            binding.get().tilVerificationCode.setError(null);
+            binding.get().tilNewPassword.setError(null);
 
-            String email = binding.tilEmail.getEditText().getText().toString();
-            String verificationCode = binding.tilVerificationCode.getEditText().getText().toString();
-            String newPassword = binding.tilNewPassword.getEditText().getText().toString();
+            String email = etEmail.getText().toString();
+            String verificationCode = etVerificationCode.getText().toString();
+            String newPassword = etNewPassword.getText().toString();
             if (email.isEmpty()) {
-                binding.tilEmail.setError(getString(R.string.error_email_can_not_be_null));
+                binding.get().tilEmail.setError(getString(R.string.error_email_can_not_be_null));
             } else if (verificationCode.isEmpty()) {
-                binding.tilVerificationCode.setError(getString(R.string.error_verification_code_can_not_be_null));
+                binding.get().tilVerificationCode.setError(getString(R.string.error_verification_code_can_not_be_null));
             } else if (newPassword.isEmpty()) {
-                binding.tilNewPassword.setError(getString(R.string.error_new_password_can_not_be_null));
+                binding.get().tilNewPassword.setError(getString(R.string.error_new_password_can_not_be_null));
             } else {
                 viewModel.forgetPassword(new UserDTO(email, verificationCode, newPassword));
             }
         });
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setSendVerificationResult(viewModel.sendVerificationResult);
-        binding.setForgetPasswordResult(viewModel.forgetPasswordResult);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setSendVerificationResult(viewModel.sendVerificationResult);
+        binding.get().setForgetPasswordResult(viewModel.forgetPasswordResult);
     }
 
     private void initData() {

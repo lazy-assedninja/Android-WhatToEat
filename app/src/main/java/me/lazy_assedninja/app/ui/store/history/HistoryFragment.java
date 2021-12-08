@@ -24,6 +24,7 @@ import me.lazy_assedninja.app.databinding.HistoryFragmentBinding;
 import me.lazy_assedninja.app.databinding.StoreItemBinding;
 import me.lazy_assedninja.app.ui.store.StoreAdapter;
 import me.lazy_assedninja.app.ui.store.StoreCallback;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
@@ -36,24 +37,25 @@ import static java.util.Collections.emptyList;
 @AndroidEntryPoint
 public class HistoryFragment extends BaseFragment {
 
-    private HistoryFragmentBinding binding;
+    private AutoClearedValue<HistoryFragmentBinding> binding;
     private HistoryViewModel viewModel;
 
     @Inject
     public ExecutorUtil executorUtil;
 
     private NavController navController;
-    private StoreAdapter adapter;
+    private AutoClearedValue<StoreAdapter> adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        HistoryFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.history_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -70,7 +72,7 @@ public class HistoryFragment extends BaseFragment {
     private void initView() {
         DataBindingComponent dataBindingComponent = (getActivity() != null) ?
                 EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
-        adapter = new StoreAdapter(
+        StoreAdapter adapter = new StoreAdapter(
                 executorUtil,
                 dataBindingComponent,
                 new StoreCallback() {
@@ -94,21 +96,18 @@ public class HistoryFragment extends BaseFragment {
                                 .actionToStoreInformationFragment(storeID), extras);
                     }
                 });
-        binding.rv.setAdapter(adapter);
+        this.adapter = new AutoClearedValue<>(this, adapter);
+        binding.get().rv.setAdapter(adapter);
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setResult(viewModel.result);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setResult(viewModel.result);
     }
 
     private void initData() {
         viewModel.requestHistory();
 
         viewModel.stores.observe(getViewLifecycleOwner(), listResource -> {
-            if (listResource != null) {
-                adapter.submitList(listResource);
-            } else {
-                adapter.submitList(emptyList());
-            }
+            adapter.get().submitList(listResource != null ? listResource : emptyList());
         });
         viewModel.result.observe(getViewLifecycleOwner(), event -> {
             Resource<Result> resultResource = event.getContentIfNotHandled();

@@ -84,6 +84,7 @@ dependencies {
 
     // Components
     implementation AndroidX.APP_COMPAT
+    implementation AndroidX.LIFECYCLE_COMMON
     implementation AndroidX.CONSTRAINT_LAYOUT
     implementation AndroidX.SWIPE_REFRESH_LAYOUT
     implementation Google.MATERIAL

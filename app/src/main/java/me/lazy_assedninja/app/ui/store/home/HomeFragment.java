@@ -25,6 +25,7 @@ import me.lazy_assedninja.app.databinding.StoreItemBinding;
 import me.lazy_assedninja.app.dto.StoreDTO;
 import me.lazy_assedninja.app.ui.store.StoreAdapter;
 import me.lazy_assedninja.app.ui.store.StoreCallback;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Favorite;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
@@ -38,24 +39,25 @@ import static java.util.Collections.emptyList;
 @AndroidEntryPoint
 public class HomeFragment extends BaseFragment {
 
-    private HomeFragmentBinding binding;
+    private AutoClearedValue<HomeFragmentBinding> binding;
     private HomeViewModel viewModel;
 
     @Inject
     public ExecutorUtil executorUtil;
 
     private NavController navController;
-    private StoreAdapter adapter;
+    private AutoClearedValue<StoreAdapter> adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        HomeFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.home_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -73,7 +75,7 @@ public class HomeFragment extends BaseFragment {
     private void initView() {
         DataBindingComponent dataBindingComponent = (getActivity() != null) ?
                 EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
-        adapter = new StoreAdapter(
+        StoreAdapter adapter = new StoreAdapter(
                 executorUtil,
                 dataBindingComponent,
                 new StoreCallback() {
@@ -97,31 +99,32 @@ public class HomeFragment extends BaseFragment {
                                 .actionToStoreInformationFragment(storeID), extras);
                     }
                 });
-        binding.rv.setAdapter(adapter);
+        this.adapter = new AutoClearedValue<>(this, adapter);
+        binding.get().rv.setAdapter(adapter);
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setStores(viewModel.stores);
-        binding.setResult(viewModel.result);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setStores(viewModel.stores);
+        binding.get().setResult(viewModel.result);
     }
 
     private void initSwipeRefreshLayout() {
-        binding.swipeRefreshLayout.setColorSchemeResources(
+        binding.get().swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_red_light,
                 android.R.color.holo_blue_light,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light);
-        binding.swipeRefreshLayout.setOnRefreshListener(() -> viewModel.refresh());
+        binding.get().swipeRefreshLayout.setOnRefreshListener(() -> viewModel.refresh());
     }
 
     private void initData() {
         viewModel.requestStore(new StoreDTO(Tag.HOME.getValue()));
 
         viewModel.stores.observe(getViewLifecycleOwner(), listResource -> {
-            binding.swipeRefreshLayout.setRefreshing(false);
+            binding.get().swipeRefreshLayout.setRefreshing(false);
             if (listResource.getData() != null) {
-                adapter.submitList(listResource.getData());
+                adapter.get().submitList(listResource.getData());
             } else {
-                adapter.submitList(emptyList());
+                adapter.get().submitList(emptyList());
             }
         });
         viewModel.result.observe(getViewLifecycleOwner(), event -> {

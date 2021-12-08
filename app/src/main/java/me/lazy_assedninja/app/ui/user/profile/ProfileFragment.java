@@ -48,6 +48,7 @@ import me.lazy_assedninja.app.databinding.ProfileFragmentBinding;
 import me.lazy_assedninja.app.ui.user.create_report.CreateReportFragment;
 import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsCallback;
 import me.lazy_assedninja.app.ui.user.profile.head_portrait.PortraitOptionsFragment;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.GoogleAccount;
 import me.lazy_assedninja.app.vo.Resource;
 import me.lazy_assedninja.app.vo.Result;
@@ -65,7 +66,7 @@ public class ProfileFragment extends BaseFragment {
             Manifest.permission.CAMERA
     };
 
-    private ProfileFragmentBinding binding;
+    private AutoClearedValue<ProfileFragmentBinding> binding;
     private ProfileViewModel viewModel;
 
     @Inject
@@ -89,13 +90,14 @@ public class ProfileFragment extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         DataBindingComponent dataBindingComponent = (getActivity() != null) ?
                 EntryPoints.get(getActivity().getApplicationContext(), ImageDataBindingComponent.class) : null;
-        binding = DataBindingUtil.inflate(
+        ProfileFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.profile_fragment,
                 container,
                 false,
                 dataBindingComponent
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -114,7 +116,7 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void initView() {
-        binding.ivHeadPortrait.setOnClickListener(v -> {
+        binding.get().ivHeadPortrait.setOnClickListener(v -> {
             PortraitOptionsFragment portraitOptionsFragment = new PortraitOptionsFragment(
                     new PortraitOptionsCallback() {
                         @Override
@@ -135,15 +137,15 @@ public class ProfileFragment extends BaseFragment {
             );
             portraitOptionsFragment.show(getParentFragmentManager(), "portrait_options");
         });
-        binding.btBindGoogle.setOnClickListener(v ->
+        binding.get().btBindGoogle.setOnClickListener(v ->
                 googleSignIn.launch(googleSignInClient.getSignInIntent()));
-        binding.btResetPassword.setOnClickListener(v ->
+        binding.get().btResetPassword.setOnClickListener(v ->
                 navController.navigate(R.id.action_to_reset_password_fragment));
-        binding.btLogout.setOnClickListener(v -> {
+        binding.get().btLogout.setOnClickListener(v -> {
             viewModel.logout();
             navController.navigate(R.id.action_to_home_fragment);
         });
-        binding.btReport.setOnClickListener(v -> {
+        binding.get().btReport.setOnClickListener(v -> {
             CreateReportFragment createReportFragment = new CreateReportFragment();
             Bundle bundle = new Bundle();
             bundle.putBoolean("is_store", false);
@@ -151,10 +153,10 @@ public class ProfileFragment extends BaseFragment {
             createReportFragment.show(getParentFragmentManager(), "create_report");
         });
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setUser(viewModel.getUser());
-        binding.setBindGoogleResult(viewModel.bindGoogleResult);
-        binding.setUploadResult(viewModel.uploadResult);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setUser(viewModel.getUser());
+        binding.get().setBindGoogleResult(viewModel.bindGoogleResult);
+        binding.get().setUploadResult(viewModel.uploadResult);
     }
 
     private void initGoogleSignIn() {

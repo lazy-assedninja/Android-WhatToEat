@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.PostFragmentBinding;
 import me.lazy_assedninja.app.dto.PostDTO;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Post;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 import me.lazy_assedninja.library.util.ExecutorUtil;
@@ -27,23 +28,24 @@ import me.lazy_assedninja.library.util.ExecutorUtil;
 @AndroidEntryPoint
 public class PostFragment extends BaseBottomSheetDialogFragment {
 
-    private PostFragmentBinding binding;
+    private AutoClearedValue<PostFragmentBinding> binding;
     private PostViewModel viewModel;
 
     @Inject
     public ExecutorUtil executorUtil;
 
-    private PostAdapter adapter;
+    private AutoClearedValue<PostAdapter> adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        PostFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.post_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -57,11 +59,12 @@ public class PostFragment extends BaseBottomSheetDialogFragment {
     }
 
     private void initView() {
-        adapter = new PostAdapter(executorUtil);
-        binding.rv.setAdapter(adapter);
+        PostAdapter adapter = new PostAdapter(executorUtil);
+        this.adapter = new AutoClearedValue<>(this, adapter);
+        binding.get().rv.setAdapter(adapter);
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setPosts(viewModel.posts);
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setPosts(viewModel.posts);
     }
 
     private void initData() {
@@ -73,11 +76,11 @@ public class PostFragment extends BaseBottomSheetDialogFragment {
         viewModel.posts.observe(getViewLifecycleOwner(), listResource -> {
             List<Post> list = listResource.getData();
             if (list != null) {
-                adapter.submitList(list);
-                binding.setSize(list.size());
+                adapter.get().submitList(list);
+                binding.get().setSize(list.size());
             } else {
-                adapter.submitList(emptyList());
-                binding.setSize(0);
+                adapter.get().submitList(emptyList());
+                binding.get().setSize(0);
             }
         });
     }

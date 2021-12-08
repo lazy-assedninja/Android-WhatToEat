@@ -19,13 +19,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.MapInformationFragmentBinding;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.app.vo.Store;
 import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 
 @AndroidEntryPoint
 public class MapInformationFragment extends BaseBottomSheetDialogFragment {
 
-    private MapInformationFragmentBinding binding;
+    private AutoClearedValue<MapInformationFragmentBinding> binding;
     private MapInformationViewModel viewModel;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -39,12 +40,13 @@ public class MapInformationFragment extends BaseBottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        MapInformationFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.map_information_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -60,7 +62,7 @@ public class MapInformationFragment extends BaseBottomSheetDialogFragment {
 
     @SuppressWarnings("MissingPermission")
     private void initView() {
-        binding.btNavigation.setOnClickListener(v -> {
+        binding.get().btNavigation.setOnClickListener(v -> {
             if (getActivity() == null) return;
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(getActivity(), location -> {
@@ -78,21 +80,21 @@ public class MapInformationFragment extends BaseBottomSheetDialogFragment {
                     });
 
         });
-        binding.btCall.setOnClickListener(v -> {
+        binding.get().btCall.setOnClickListener(v -> {
             Store store = viewModel.getStore();
             if (!store.getPhone().isEmpty()) {
                 showToast(getString(R.string.toast_call) + store.getPhone());
             }
         });
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
     }
 
     private void initData() {
         if (getArguments() == null) return;
         String storeName = getArguments().getString("store_name");
         viewModel.getStore(storeName).observe(getViewLifecycleOwner(), store -> {
-            binding.setStore(store);
+            binding.get().setStore(store);
             viewModel.setStore(store);
         });
     }

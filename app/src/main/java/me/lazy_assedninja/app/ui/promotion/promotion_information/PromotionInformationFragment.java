@@ -13,23 +13,25 @@ import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 import me.lazy_assedninja.app.R;
 import me.lazy_assedninja.app.databinding.PromotionInformationFragmentBinding;
+import me.lazy_assedninja.app.util.AutoClearedValue;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
 public class PromotionInformationFragment extends BaseFragment {
 
-    private PromotionInformationFragmentBinding binding;
+    private AutoClearedValue<PromotionInformationFragmentBinding> binding;
     private PromotionInformationViewModel viewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        PromotionInformationFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.promotion_information_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -43,11 +45,11 @@ public class PromotionInformationFragment extends BaseFragment {
     }
 
     private void initView() {
-        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.get().setLifecycleOwner(getViewLifecycleOwner());
     }
 
     private void initData() {
         int id = PromotionInformationFragmentArgs.fromBundle(getArguments()).getPromotionID();
-        binding.setPromotion(viewModel.get(id));
+        binding.get().setPromotion(viewModel.get(id));
     }
 }

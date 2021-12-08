@@ -5,6 +5,8 @@ public class AndroidX {
 
     public static final String APP_COMPAT = "androidx.appcompat:appcompat:"
             + DependenciesVersion.APP_COMPAT;
+    public static final String LIFECYCLE_COMMON = "androidx.lifecycle:lifecycle-common:"
+            + DependenciesVersion.LIFECYCLE;
     public static final String CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:"
             + DependenciesVersion.CONSTRAINT_LAYOUT;
     public static final String NAVIGATION_UI = "androidx.navigation:navigation-ui:"
