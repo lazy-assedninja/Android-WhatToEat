@@ -69,8 +69,7 @@ public class FavoriteRepository {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
-                return (favorite.getStatus()) ?
-                        whatToEatService.addToFavorite(favorite) :
+                return (favorite.getStatus()) ? whatToEatService.addToFavorite(favorite) :
                         whatToEatService.cancelFavorite(favorite);
             }
 

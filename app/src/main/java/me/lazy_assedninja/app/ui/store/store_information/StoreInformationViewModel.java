@@ -74,10 +74,10 @@ public class StoreInformationViewModel extends ViewModel {
 
         favorite.setStoreID(store.getValue().getId());
         favorite.setUserID(userRepository.getUserID());
-        boolean isFavorite = store.getValue().isFavorite();
-        favorite.setStatus(!isFavorite);
         Favorite request = favoriteRequest.getValue();
+        boolean isFavorite = store.getValue().isFavorite();
         if (request == null || request.getStatus() == isFavorite) {
+            favorite.setStatus(!isFavorite);
             favoriteRequest.setValue(favorite);
         }
     }

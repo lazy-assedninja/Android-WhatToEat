@@ -84,7 +84,8 @@ public class FavoriteFragment extends BaseFragment {
                             showToast(R.string.error_please_login_first);
                             return;
                         }
-                        viewModel.changeFavoriteStatus(new Favorite(storeID, isFavorite));
+
+                        viewModel.changeFavoriteStatus(new Favorite(storeID, !isFavorite));
                     }
 
                     @Override

@@ -1,5 +1,7 @@
 package me.lazy_assedninja.app.ui.store.home;
 
+import static java.util.Collections.emptyList;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +35,6 @@ import me.lazy_assedninja.app.vo.Status;
 import me.lazy_assedninja.app.vo.Tag;
 import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.library.util.ExecutorUtil;
-
-import static java.util.Collections.emptyList;
 
 @AndroidEntryPoint
 public class HomeFragment extends BaseFragment {
@@ -86,7 +86,7 @@ public class HomeFragment extends BaseFragment {
                             return;
                         }
 
-                        viewModel.changeFavoriteStatus(new Favorite(storeID, isFavorite));
+                        viewModel.changeFavoriteStatus(new Favorite(storeID, !isFavorite));
                     }
 
                     @Override

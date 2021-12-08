@@ -72,7 +72,7 @@ public class HistoryViewModel extends ViewModel {
         Favorite request = favoriteRequest.getValue();
         if (request == null || request.getStoreID() != favorite.getStoreID() ||
                 (request.getStoreID() == favorite.getStoreID() &&
-                        request.getStatus() == favorite.getStatus())) {
+                        request.getStatus() != favorite.getStatus())) {
             favorite.setUserID(userRepository.getUserID());
             favoriteRequest.setValue(favorite);
         }

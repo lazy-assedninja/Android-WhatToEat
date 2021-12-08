@@ -130,10 +130,6 @@ public class Store {
         isFavorite = favorite;
     }
 
-    public void changeFavoriteStatus() {
-        isFavorite = !isFavorite;
-    }
-
     public int getTagID() {
         return tagID;
     }

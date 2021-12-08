@@ -93,7 +93,7 @@ public class SearchFragment extends BaseFragment {
                             return;
                         }
 
-                        viewModel.changeFavoriteStatus(new Favorite(storeID, isFavorite));
+                        viewModel.changeFavoriteStatus(new Favorite(storeID, !isFavorite));
                     }
 
                     @Override
