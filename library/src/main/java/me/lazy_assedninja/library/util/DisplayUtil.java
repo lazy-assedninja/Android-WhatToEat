@@ -1,9 +1,11 @@
 package me.lazy_assedninja.library.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Insets;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
@@ -17,6 +19,16 @@ public class DisplayUtil {
 
     public DisplayUtil(Context context) {
         this.context = context;
+    }
+
+    public static int dpToPx(float dp, Context context) {
+        return dpToPx(dp, context.getResources());
+    }
+
+    public static int dpToPx(float dp, Resources resources) {
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                resources.getDisplayMetrics());
+        return (int) px;
     }
 
     public int getScreenHeightPix() {

@@ -27,7 +27,6 @@ public class DependenciesVersion {
     public static final String GLIDE = "4.12.0";
     public static final String OK_HTTP = "4.9.0";
     public static final String RETROFIT = "2.9.0";
-    public static final String TICKET_VIEW = "1.1.2";
     public static final String JODA = "2.10.9.1";
     public static final String JUNIT = "4.13.1";
     public static final String MOCKITO = "2.25.0";

@@ -11,10 +11,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.databinding.PromotionInformationFragmentBinding;
 import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
-import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
 public class PromotionInformationFragment extends BaseFragment {

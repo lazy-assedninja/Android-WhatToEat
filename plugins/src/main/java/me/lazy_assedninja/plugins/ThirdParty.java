@@ -13,8 +13,6 @@ public class ThirdParty {
             + DependenciesVersion.RETROFIT;
     public static final String RETROFIT_GSON = "com.squareup.retrofit2:converter-gson:"
             + DependenciesVersion.RETROFIT;
-    public static final String TICKET_VIEW = "com.vipulasri:ticketview:"
-            +DependenciesVersion.TICKET_VIEW;
     public static final String JODA = "net.danlew:android.joda:"
             + DependenciesVersion.JODA;
 

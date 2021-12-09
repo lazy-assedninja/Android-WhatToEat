@@ -19,7 +19,7 @@ public class PromotionAdapter extends BaseListAdapter<Promotion, PromotionItemBi
 
     protected PromotionAdapter(ExecutorUtil executorUtil,
                                PromotionCallback promotionCallback) {
-        super(executorUtil, new DiffUtil.ItemCallback<Promotion>() {
+        super(executorUtil, new DiffUtil.ItemCallback<>() {
             @Override
             public boolean areItemsTheSame(@NonNull Promotion oldItem, @NonNull Promotion newItem) {
                 return oldItem.getId() == newItem.getId();
@@ -46,6 +46,6 @@ public class PromotionAdapter extends BaseListAdapter<Promotion, PromotionItemBi
     @Override
     protected void bind(PromotionItemBinding binding, Promotion item) {
         binding.setPromotion(item);
-        binding.getRoot().setOnClickListener(v -> promotionCallback.onClick(item.getStoreID()));
+        binding.getRoot().setOnClickListener(v -> promotionCallback.onClick(item.getId()));
     }
 }

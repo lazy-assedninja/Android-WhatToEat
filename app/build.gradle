@@ -63,7 +63,6 @@ android {
     }
 
     buildFeatures {
-        //noinspection DataBindingWithoutKapt
         dataBinding true
     }
 
@@ -93,7 +92,6 @@ dependencies {
     implementation AndroidX.CONSTRAINT_LAYOUT
     implementation AndroidX.SWIPE_REFRESH_LAYOUT
     implementation Google.MATERIAL
-    implementation ThirdParty.TICKET_VIEW
 
     // Hilt
     implementation Google.DAGGER_HILT
