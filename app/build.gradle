@@ -24,7 +24,7 @@ android {
             }
         }
 
-        testInstrumentationRunner "me.lazy_assedninja.app.util.WhatToEatTestRunner"
+        testInstrumentationRunner "me.lazy_assedninja.what_to_eat.util.WhatToEatTestRunner"
     }
 
     buildTypes {
