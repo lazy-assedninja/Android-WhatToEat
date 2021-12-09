@@ -21,7 +21,7 @@ public class DependenciesVersion {
     public static final String PLAY_SERVICE_AUTH = "19.2.0";
     public static final String PLAY_SERVICE_LOCATION = "18.0.0";
     public static final String PLAY_SERVICE_MAP = "17.0.1";
-    public static final String DAGGER_HILT = "2.40.1";
+    public static final String DAGGER_HILT = "2.40.5";
 
     // Third Party
     public static final String GLIDE = "4.12.0";
