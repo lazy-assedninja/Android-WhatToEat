@@ -7,7 +7,7 @@
 
         <variable
             name="post"
-            type="me.lazy_assedninja.app.vo.Post" />
+            type="me.lazy_assedninja.what_to_eat.vo.Post" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

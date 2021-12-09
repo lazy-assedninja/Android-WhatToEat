@@ -7,7 +7,7 @@
 
         <variable
             name="reservation"
-            type="me.lazy_assedninja.app.vo.Reservation" />
+            type="me.lazy_assedninja.what_to_eat.vo.Reservation" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

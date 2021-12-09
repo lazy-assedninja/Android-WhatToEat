@@ -2,9 +2,9 @@ import me.lazy_assedninja.plugins.*
 
 plugins {
     id 'com.android.application'
-    id 'androidx.navigation.safeargs'
-    id 'dagger.hilt.android.plugin'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -28,6 +28,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            testCoverageEnabled = true
+        }
         release {
             // Enables code shrinking, obfuscation, and optimization for only
             // your project's release build type.
@@ -68,10 +71,12 @@ android {
         enableAggregatingTask = true
     }
 
-    testOptions{
-        unitTests.all {
-            testLogging {
-                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+    testOptions {
+        unitTests {
+            all {
+                testLogging {
+                    events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+                }
             }
         }
     }

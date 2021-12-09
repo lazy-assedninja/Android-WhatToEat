@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.home.HomeFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.store.home.HomeFragment"
         android:label="@string/navigation_home_fragment"
         tools:layout="@layout/home_fragment">
 
@@ -94,7 +94,7 @@
 
     <fragment
         android:id="@+id/recommend_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.recommend.RecommendFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.store.recommend.RecommendFragment"
         android:label="@string/navigation_recommend_fragment"
         tools:layout="@layout/recommend_fragment">
 
@@ -173,7 +173,7 @@
 
     <fragment
         android:id="@+id/store_information_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.store_information.StoreInformationFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.store.store_information.StoreInformationFragment"
         android:label="@string/navigation_store_information_fragment"
         tools:layout="@layout/store_information_fragment">
 
@@ -184,7 +184,7 @@
 
     <fragment
         android:id="@+id/profile_fragment"
-        android:name="me.lazy_assedninja.app.ui.user.profile.ProfileFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.user.profile.ProfileFragment"
         android:label="@string/navigation_profile_fragment"
         tools:layout="@layout/profile_fragment">
 
@@ -263,7 +263,7 @@
 
     <fragment
         android:id="@+id/login_fragment"
-        android:name="me.lazy_assedninja.app.ui.user.login.LoginFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.user.login.LoginFragment"
         android:label="@string/navigation_login_fragment"
         tools:layout="@layout/login_fragment">
 
@@ -286,25 +286,25 @@
 
     <fragment
         android:id="@+id/register_fragment"
-        android:name="me.lazy_assedninja.app.ui.user.register.RegisterFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.user.register.RegisterFragment"
         android:label="@string/navigation_register_fragment"
         tools:layout="@layout/register_fragment" />
 
     <fragment
         android:id="@+id/forget_password_fragment"
-        android:name="me.lazy_assedninja.app.ui.user.forget_password.ForgetPasswordFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.user.forget_password.ForgetPasswordFragment"
         android:label="@string/navigation_forget_password_fragment"
         tools:layout="@layout/forget_password_fragment" />
 
     <fragment
         android:id="@+id/reset_password_fragment"
-        android:name="me.lazy_assedninja.app.ui.user.reset_password.ResetPasswordFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.user.reset_password.ResetPasswordFragment"
         android:label="@string/navigation_reset_password_fragment"
         tools:layout="@layout/reset_password_fragment" />
 
     <fragment
         android:id="@+id/search_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.search.SearchFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.store.search.SearchFragment"
         android:label="@string/navigation_search_fragment"
         tools:layout="@layout/search_fragment">
 
@@ -319,13 +319,13 @@
 
     <fragment
         android:id="@+id/map_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.map.MapFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.store.map.MapFragment"
         android:label="@string/navigation_map_fragment"
         tools:layout="@layout/map_fragment" />
 
     <fragment
         android:id="@+id/promotion_fragment"
-        android:name="me.lazy_assedninja.app.ui.promotion.PromotionFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.promotion.PromotionFragment"
         android:label="@string/navigation_promotion_fragment"
         tools:layout="@layout/promotion_fragment">
 
@@ -340,7 +340,7 @@
 
     <fragment
         android:id="@+id/promotion_information_fragment"
-        android:name="me.lazy_assedninja.app.ui.promotion.promotion_information.PromotionInformationFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.promotion.promotion_information.PromotionInformationFragment"
         android:label="@string/navigation_promotion_information_fragment"
         tools:layout="@layout/promotion_information_fragment">
 
@@ -351,7 +351,7 @@
 
     <fragment
         android:id="@+id/favorite_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.favorite.FavoriteFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.store.favorite.FavoriteFragment"
         android:label="@string/navigation_favorite_fragment"
         tools:layout="@layout/favorite_fragment">
 
@@ -366,7 +366,7 @@
 
     <fragment
         android:id="@+id/history_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.history.HistoryFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.store.history.HistoryFragment"
         android:label="@string/navigation_history_fragment"
         tools:layout="@layout/history_fragment">
 
@@ -381,7 +381,7 @@
 
     <fragment
         android:id="@+id/reservation_fragment"
-        android:name="me.lazy_assedninja.app.ui.store.reservation.ReservationFragment"
+        android:name="me.lazy_assedninja.what_to_eat.ui.store.reservation.ReservationFragment"
         android:label="@string/navigation_reservation_fragment"
         tools:layout="@layout/reservation_fragment">
 

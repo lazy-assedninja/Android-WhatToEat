@@ -7,7 +7,7 @@
 
         <variable
             name="comment"
-            type="me.lazy_assedninja.app.vo.Comment" />
+            type="me.lazy_assedninja.what_to_eat.vo.Comment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
