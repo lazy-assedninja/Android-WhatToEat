@@ -106,10 +106,10 @@ public class ReserveFragment extends BaseBottomSheetDialogFragment {
             binding.get().tilTime.setError(null);
 
             String name = etName.getText().toString();
-            String phone = etPhone.toString();
-            String amount = etAmount.toString();
-            String date = etDate.toString();
-            String time = etTime.toString();
+            String phone = etPhone.getText().toString();
+            String amount = etAmount.getText().toString();
+            String date = etDate.getText().toString();
+            String time = etTime.getText().toString();
             if (name.isEmpty()) {
                 binding.get().tilName.setError(getString(R.string.error_name_can_not_be_null));
             } else if (phone.isEmpty()) {
