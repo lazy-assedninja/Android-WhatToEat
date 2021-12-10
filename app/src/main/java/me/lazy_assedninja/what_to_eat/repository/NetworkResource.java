@@ -50,7 +50,7 @@ public abstract class NetworkResource<T> {
             } else if (response instanceof ApiErrorResponse) {
                 onFetchFailed();
                 resource = Resource.error(
-                        ((ApiErrorResponse<Result>) response).getErrorMessage(), null);
+                        ((ApiErrorResponse<T>) response).getErrorMessage(), null);
             } else {
                 resource = Resource.error("Unknown error.", null);
             }
