@@ -28,7 +28,6 @@ import me.lazy_assedninja.what_to_eat.repository.FavoriteRepository;
 import me.lazy_assedninja.what_to_eat.repository.HistoryRepository;
 import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.ui.store.history.HistoryViewModel;
-import me.lazy_assedninja.what_to_eat.util.InstantExecutorUtil;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
@@ -45,8 +44,8 @@ public class HistoryViewModelTest {
     private final UserRepository userRepository = mock(UserRepository.class);
     private final FavoriteRepository favoriteRepository = mock(FavoriteRepository.class);
     private final HistoryRepository historyRepository = mock(HistoryRepository.class);
-    private final HistoryViewModel viewModel = new HistoryViewModel(new InstantExecutorUtil(),
-            userRepository, favoriteRepository, historyRepository);
+    private final HistoryViewModel viewModel = new HistoryViewModel(userRepository,
+            favoriteRepository, historyRepository);
 
     @Test
     public void testNull() {
@@ -54,7 +53,7 @@ public class HistoryViewModelTest {
         assertThat(viewModel.stores, notNullValue());
 
         verify(historyRepository, never()).loadHistories(any());
-        viewModel.requestHistory();
+        viewModel.requestHistory(new ArrayList<>());
         verify(historyRepository, never()).loadHistories(any());
 
         // Change favorite status
@@ -68,11 +67,12 @@ public class HistoryViewModelTest {
     @Test
     public void sendResultToUI() {
         // Load stores
+        List<Integer> ids = new ArrayList<>();
         MutableLiveData<List<Store>> list = new MutableLiveData<>();
-        when(historyRepository.loadHistories(new ArrayList<>())).thenReturn(list);
+        when(historyRepository.loadHistories(ids)).thenReturn(list);
         Observer<List<Store>> listObserver = mock(Observer.class);
         viewModel.stores.observeForever(listObserver);
-        viewModel.requestHistory();
+        viewModel.requestHistory(ids);
         verify(listObserver, never()).onChanged(any());
 
         List<Store> listData = new ArrayList<>();
@@ -99,9 +99,7 @@ public class HistoryViewModelTest {
         verifyNoMoreInteractions(historyRepository);
 
         List<Integer> ids = new ArrayList<>();
-        when(historyRepository.getHistoryIDs()).thenReturn(ids);
-        viewModel.requestHistory();
-        verify(historyRepository).getHistoryIDs();
+        viewModel.requestHistory(ids);
         verify(historyRepository).loadHistories(ids);
         verifyNoMoreInteractions(historyRepository);
     }
@@ -125,5 +123,12 @@ public class HistoryViewModelTest {
         boolean isLoggedIn = viewModel.isLoggedIn();
         verify(userRepository).getUserID();
         assertThat(isLoggedIn, is(true));
+    }
+
+    @Test
+    public void getHistoryIDs() {
+        viewModel.getHistoryIDs();
+
+        verify(historyRepository).getHistoryIDs();
     }
 }

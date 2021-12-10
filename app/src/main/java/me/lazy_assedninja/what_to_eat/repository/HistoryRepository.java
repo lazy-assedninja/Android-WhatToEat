@@ -26,7 +26,7 @@ public class HistoryRepository {
         executorUtil.diskIO().execute(() -> historyDao.insert(history));
     }
 
-    public List<Integer> getHistoryIDs() {
+    public LiveData<List<Integer>> getHistoryIDs() {
         return historyDao.getHistoryIDs();
     }
 

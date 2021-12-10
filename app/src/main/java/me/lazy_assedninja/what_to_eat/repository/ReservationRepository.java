@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.NetworkUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.ReservationDao;
@@ -16,8 +18,6 @@ import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Reservation;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
-import me.lazy_assedninja.library.util.ExecutorUtil;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
 public class ReservationRepository {
 
@@ -78,11 +78,7 @@ public class ReservationRepository {
 
             @Override
             protected void saveCallResult(Result item) {
-                if (isCreate) {
-                    reservationDao.insert(reservation);
-                } else {
-                    reservationDao.delete(reservation);
-                }
+                if (!isCreate) reservationDao.delete(reservation);
             }
         }.asLiveData();
     }

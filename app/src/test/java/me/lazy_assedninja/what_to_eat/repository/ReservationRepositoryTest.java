@@ -117,7 +117,6 @@ public class ReservationRepositoryTest {
         Observer<Event<Resource<Result>>> observer = mock(Observer.class);
         repository.createOrCancelReservation(true, reservation).observeForever(observer);
         verify(service).createReservation(reservation);
-        verify(reservationDao).insert(reservation);
 
         verify(observer).onChanged(new Event<>(Resource.success(result)));
     }

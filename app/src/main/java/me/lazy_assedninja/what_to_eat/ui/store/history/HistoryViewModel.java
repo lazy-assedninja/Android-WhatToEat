@@ -10,21 +10,19 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.repository.FavoriteRepository;
 import me.lazy_assedninja.what_to_eat.repository.HistoryRepository;
 import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.util.AbsentLiveData;
+import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Store;
-import me.lazy_assedninja.library.util.ExecutorUtil;
 
 @HiltViewModel
 public class HistoryViewModel extends ViewModel {
 
-    private final ExecutorUtil executorUtil;
     private final UserRepository userRepository;
     private FavoriteRepository favoriteRepository;
     private HistoryRepository historyRepository;
@@ -33,9 +31,8 @@ public class HistoryViewModel extends ViewModel {
     private final MutableLiveData<Favorite> favoriteRequest = new MutableLiveData<>();
 
     @Inject
-    public HistoryViewModel(ExecutorUtil executorUtil, UserRepository userRepository,
-                            FavoriteRepository favoriteRepository, HistoryRepository historyRepository) {
-        this.executorUtil = executorUtil;
+    public HistoryViewModel(UserRepository userRepository, FavoriteRepository favoriteRepository,
+                            HistoryRepository historyRepository) {
         this.userRepository = userRepository;
         this.favoriteRepository = favoriteRepository;
         this.historyRepository = historyRepository;
@@ -53,11 +50,12 @@ public class HistoryViewModel extends ViewModel {
         }
     });
 
-    public void requestHistory() {
-        if (storeRequest.getValue() == null) {
-            executorUtil.diskIO().execute(() ->
-                    storeRequest.postValue(historyRepository.getHistoryIDs()));
-        }
+    public void requestHistory(List<Integer> ids) {
+        storeRequest.setValue(ids);
+    }
+
+    public LiveData<List<Integer>> getHistoryIDs() {
+        return historyRepository.getHistoryIDs();
     }
 
     public LiveData<Event<Resource<Result>>> result = Transformations.switchMap(favoriteRequest, favorite -> {

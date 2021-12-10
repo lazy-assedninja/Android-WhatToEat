@@ -21,7 +21,7 @@ public interface HistoryDao {
     void insert(History history);
 
     @Query("SELECT storeID FROM history")
-    List<Integer> getHistoryIDs();
+    LiveData<List<Integer>> getHistoryIDs();
 
     @Query("SELECT * FROM store WHERE id IN (:ids)")
     LiveData<List<Store>> getHistoryStores(List<Integer> ids);

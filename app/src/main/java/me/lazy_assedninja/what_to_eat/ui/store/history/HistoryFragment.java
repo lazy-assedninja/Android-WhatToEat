@@ -104,11 +104,9 @@ public class HistoryFragment extends BaseFragment {
     }
 
     private void initData() {
-        viewModel.requestHistory();
-
-        viewModel.stores.observe(getViewLifecycleOwner(), listResource -> {
-            adapter.get().submitList(listResource != null ? listResource : emptyList());
-        });
+        viewModel.getHistoryIDs().observe(getViewLifecycleOwner(), ids -> viewModel.requestHistory(ids));
+        viewModel.stores.observe(getViewLifecycleOwner(), listResource ->
+                adapter.get().submitList(listResource != null ? listResource : emptyList()));
         viewModel.result.observe(getViewLifecycleOwner(), event -> {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
