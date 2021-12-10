@@ -72,6 +72,10 @@ android {
 
     lintOptions {
         abortOnError false
+        checkAllWarnings true
+        disable 'InvalidPackage', 'MediaCapabilities', 'DuplicateStrings', 'IconLocation',
+                'LambdaLast', 'SyntheticAccessor', 'UnknownNullness'
+        htmlOutput file("reports/lint-results-debug.html")
     }
 
     testOptions {

@@ -77,7 +77,7 @@ public class NetworkResourceTest {
         Ninja networkResult = createNinja();
         handleSaveCallResult = saved::set;
         handleCreateCall = () -> createCall(Response.success(networkResult));
-        networkResource = new NetworkResource<>(executorUtil) {
+        networkResource = new NetworkResource<Ninja>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Ninja>> createCall() {
@@ -105,7 +105,7 @@ public class NetworkResourceTest {
         ResponseBody body = ResponseBody.create("Error.",
                 MediaType.parse("application/txt"));
         handleCreateCall = () -> createCall(Response.error(500, body));
-        networkResource = new NetworkResource<>(executorUtil) {
+        networkResource = new NetworkResource<Ninja>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Ninja>> createCall() {

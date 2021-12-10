@@ -74,7 +74,7 @@ public class NetworkBoundResourceTest {
     public void init() {
         ExecutorUtil executorUtil = (useRealExecutors) ? countingExecutorUtil.getExecutorUtil() :
                 new InstantExecutorUtil();
-        networkBoundResource = new NetworkBoundResource<>(executorUtil) {
+        networkBoundResource = new NetworkBoundResource<Ninja, Ninja>(executorUtil) {
 
             @Override
             protected LiveData<Ninja> loadFromDb() {

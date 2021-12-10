@@ -20,7 +20,7 @@ public class LiveDataTestUtil {
     public static <T> T getOrAwaitValue(LiveData<T> liveData) throws TimeoutException, InterruptedException {
         List<T> data = new ArrayList<>();
         CountDownLatch latch = new CountDownLatch(1);
-        Observer<T> observer = new Observer<>() {
+        Observer<T> observer = new Observer<T>() {
             @Override
             public void onChanged(T t) {
                 data.add(t);

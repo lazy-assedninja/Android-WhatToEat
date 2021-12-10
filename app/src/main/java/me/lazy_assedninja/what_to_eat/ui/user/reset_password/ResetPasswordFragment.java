@@ -68,7 +68,7 @@ public class ResetPasswordFragment extends BaseFragment {
             String oldPassword = etOldPassword.getText().toString();
             String newPassword = etNewPassword.getText().toString();
             if (oldPassword.isEmpty()) {
-                binding.get().tilOldPassword.setError(getString(R.string.error_password_can_not_be_null));
+                binding.get().tilOldPassword.setError(getString(R.string.error_old_password_can_not_be_null));
             } else if (newPassword.isEmpty()) {
                 binding.get().tilNewPassword.setError(getString(R.string.error_new_password_can_not_be_null));
             } else {

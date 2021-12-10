@@ -6,15 +6,10 @@
     <string name="navigation_home_fragment">Home</string>
     <string name="navigation_recommend_fragment">Recommend</string>
     <string name="navigation_store_information_fragment">Store Information</string>
-    <string name="navigation_comment_fragment">Comment</string>
-    <string name="navigation_post_fragment">Post</string>
-    <string name="navigation_reserve_fragment">Reserve</string>
-    <string name="navigation_add_report_fragment">Add Report</string>
     <string name="navigation_profile_fragment">Profile</string>
     <string name="navigation_register_fragment">Register</string>
     <string name="navigation_forget_password_fragment">Forget Password</string>
     <string name="navigation_reset_password_fragment">Reset Password</string>
-    <string name="navigation_report_fragment">Report</string>
     <string name="navigation_login_fragment">Login</string>
     <string name="navigation_search_fragment">Search</string>
     <string name="navigation_map_fragment">Map</string>
@@ -30,20 +25,14 @@
     <string name="bottom_navigation_profile">Profile</string>
 
     <!-- Navigation Drawer -->
-    <string name="navigation_drawer_open">Open</string>
-    <string name="navigation_drawer_close">Close</string>
     <string name="navigation_drawer_map">Map</string>
     <string name="navigation_drawer_promotion">Promotion</string>
     <string name="navigation_drawer_favorite">Favorite</string>
     <string name="navigation_drawer_history">History</string>
     <string name="navigation_drawer_reservation">Reservation</string>
 
-    <!-- Navigation Header Layout -->
-    <string name="navigation_header_name">Name</string>
-
     <!-- Toolbar -->
     <string name="toolbar_search">Search</string>
-    <string name="toolbar_map">Map</string>
     <string name="toolbar_register">Register</string>
     <string name="toolbar_clear_history">Clear History</string>
 
@@ -89,8 +78,7 @@
     
     <!-- Map -->
     <string name="bt_navigation">Navigation</string>
-    <string name="bt_call">Call</string>
-    <string name="toast_call">Calling to: </string>
+    <string name="toast_call">Calling to:&#160;</string>
     <string name="tv_00">0.0</string>
 
     <!-- Comment -->
@@ -140,6 +128,5 @@
     <string name="error_time_can_not_be_null">Time can\'t be empty.</string>
     <string name="error_content_can_not_be_null">Content can\'t be empty.</string>
     <string name="error_passwords_are_not_the_same">Password are not the same.</string>
-    <string name="error_data_empty">Data empty.</string>
     <string name="error_please_login_first">Please login first.</string>
 </resources>
