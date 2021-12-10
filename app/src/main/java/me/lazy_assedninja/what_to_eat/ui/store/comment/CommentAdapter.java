@@ -19,7 +19,7 @@ public class CommentAdapter extends BaseListAdapter<Comment, CommentItemBinding>
     private final DataBindingComponent dataBindingComponent;
 
     protected CommentAdapter(ExecutorUtil executorUtil, DataBindingComponent dataBindingComponent) {
-        super(executorUtil, new DiffUtil.ItemCallback<>() {
+        super(executorUtil, new DiffUtil.ItemCallback<Comment>() {
             @Override
             public boolean areItemsTheSame(@NonNull Comment oldItem, @NonNull Comment newItem) {
                 return oldItem.getId() == newItem.getId();

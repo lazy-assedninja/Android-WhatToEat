@@ -58,7 +58,7 @@ public class StoreInformationFragment extends BaseFragment {
         this.binding = new AutoClearedValue<>(this, binding);
 
         setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_image_transform));
-        binding.setImageRequestListener(new RequestListener<>() {
+        binding.setImageRequestListener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 startPostponedEnterTransition();

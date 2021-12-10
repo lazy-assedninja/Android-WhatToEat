@@ -33,14 +33,14 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiRespon
     @NonNull
     @Override
     public LiveData<ApiResponse<R>> adapt(@NonNull Call<R> call) {
-        return new LiveData<>() {
+        return new LiveData<ApiResponse<R>>() {
             private final AtomicBoolean started = new AtomicBoolean(false);
 
             @Override
             protected void onActive() {
                 super.onActive();
                 if (started.compareAndSet(false, true)) {
-                    call.enqueue(new Callback<>() {
+                    call.enqueue(new Callback<R>() {
                         @Override
                         public void onResponse(@NonNull Call<R> call, @NonNull Response<R> response) {
                             postValue(ApiResponse.create(response));

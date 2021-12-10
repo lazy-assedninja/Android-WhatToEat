@@ -7,11 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 
+import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.databinding.PromotionItemBinding;
 import me.lazy_assedninja.what_to_eat.ui.base.BaseListAdapter;
 import me.lazy_assedninja.what_to_eat.vo.Promotion;
-import me.lazy_assedninja.library.util.ExecutorUtil;
 
 public class PromotionAdapter extends BaseListAdapter<Promotion, PromotionItemBinding> {
 
@@ -19,7 +19,7 @@ public class PromotionAdapter extends BaseListAdapter<Promotion, PromotionItemBi
 
     protected PromotionAdapter(ExecutorUtil executorUtil,
                                PromotionCallback promotionCallback) {
-        super(executorUtil, new DiffUtil.ItemCallback<>() {
+        super(executorUtil, new DiffUtil.ItemCallback<Promotion>() {
             @Override
             public boolean areItemsTheSame(@NonNull Promotion oldItem, @NonNull Promotion newItem) {
                 return oldItem.getId() == newItem.getId();
