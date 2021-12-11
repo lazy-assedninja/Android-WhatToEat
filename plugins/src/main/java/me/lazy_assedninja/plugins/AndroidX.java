@@ -3,6 +3,7 @@ package me.lazy_assedninja.plugins;
 
 public class AndroidX {
 
+    public static final String CORE = "androidx.core:core:" + DependenciesVersion.CORE;
     public static final String APP_COMPAT = "androidx.appcompat:appcompat:"
             + DependenciesVersion.APP_COMPAT;
     public static final String LIFECYCLE_COMMON = "androidx.lifecycle:lifecycle-common:"

@@ -4,6 +4,7 @@ package me.lazy_assedninja.plugins;
 public class DependenciesVersion {
 
     // AndroidX
+    public static final String CORE = "1.1.0";
     public static final String APP_COMPAT = "1.3.1";
     public static final String LIFECYCLE = "2.4.0";
     public static final String CONSTRAINT_LAYOUT = "2.1.0";

@@ -309,11 +309,7 @@
 
         <action
             android:id="@+id/action_to_store_information_fragment"
-            app:destination="@id/store_information_fragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:destination="@id/store_information_fragment" />
     </fragment>
 
     <fragment
@@ -356,11 +352,7 @@
 
         <action
             android:id="@+id/action_to_store_information_fragment"
-            app:destination="@id/store_information_fragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:destination="@id/store_information_fragment" />
     </fragment>
 
     <fragment
@@ -371,11 +363,7 @@
 
         <action
             android:id="@+id/action_to_store_information_fragment"
-            app:destination="@id/store_information_fragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:destination="@id/store_information_fragment" />
     </fragment>
 
     <fragment

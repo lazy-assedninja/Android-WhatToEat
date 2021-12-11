@@ -70,7 +70,7 @@ android {
     lintOptions {
         abortOnError false
         checkAllWarnings true
-        disable 'InvalidPackage', 'MediaCapabilities', 'DuplicateStrings', 'IconLocation',
+        disable 'MediaCapabilities', 'DuplicateStrings', 'IconLocation',
                 'LambdaLast', 'SyntheticAccessor', 'UnknownNullness'
         htmlOutput file("reports/lint-results-debug.html")
     }
@@ -92,6 +92,7 @@ dependencies {
     implementation project(path: ':library')
 
     // Components
+    implementation AndroidX.CORE
     implementation AndroidX.APP_COMPAT
     implementation AndroidX.LIFECYCLE_COMMON
     implementation AndroidX.CONSTRAINT_LAYOUT

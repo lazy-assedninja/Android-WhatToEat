@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.OneShotPreDrawListener;
 import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
+import androidx.transition.TransitionInflater;
 
 import javax.inject.Inject;
 
@@ -56,6 +58,8 @@ public class HistoryFragment extends BaseFragment {
                 false
         );
         this.binding = new AutoClearedValue<>(this, binding);
+
+        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_image_transform));
         return binding.getRoot();
     }
 
@@ -98,6 +102,8 @@ public class HistoryFragment extends BaseFragment {
                 });
         this.adapter = new AutoClearedValue<>(this, adapter);
         binding.get().rv.setAdapter(adapter);
+        postponeEnterTransition();
+        OneShotPreDrawListener.add(binding.get().rv, this::startPostponedEnterTransition);
 
         binding.get().setLifecycleOwner(getViewLifecycleOwner());
         binding.get().setResult(viewModel.result);
