@@ -18,5 +18,8 @@ public interface FavoriteDao {
     LiveData<List<Store>> getFavorites(boolean isFavorite);
 
     @Query("UPDATE store SET isFavorite = :status WHERE id = :storeID")
-    void updateFavoriteStatus(int storeID, boolean status);
+    Integer updateFavoriteStatus(int storeID, boolean status);
+
+    @Query("UPDATE store SET isFavorite = :status, updateTime = :updateTime WHERE id = :storeID")
+    Integer updateFavoriteStatusAndTime(int storeID, boolean status, String updateTime);
 }

@@ -43,9 +43,9 @@ public class ReservationViewModel extends ViewModel {
     });
 
     public void requestReservation(ReservationDTO reservationDTO) {
-        int userID = userRepository.getUserID();
-        if (reservationRequest.getValue() == null || reservationRequest.getValue().getId() != userID) {
-            reservationDTO.setId(userID);
+        if (reservationRequest.getValue() == null || reservationRequest.getValue().getId() !=
+                userRepository.getUserID()) {
+            reservationDTO.setId(userRepository.getUserID());
             reservationRequest.setValue(reservationDTO);
         }
     }
@@ -65,8 +65,6 @@ public class ReservationViewModel extends ViewModel {
     });
 
     public void cancelReservation(Reservation reservation) {
-        if (cancelRequest.getValue() == null || cancelRequest.getValue().getId() != reservation.getId()) {
-            cancelRequest.setValue(reservation);
-        }
+        cancelRequest.setValue(reservation);
     }
 }

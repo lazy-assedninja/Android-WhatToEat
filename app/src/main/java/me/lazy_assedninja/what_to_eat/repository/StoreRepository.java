@@ -20,17 +20,13 @@ import me.lazy_assedninja.library.util.NetworkUtil;
 public class StoreRepository {
 
     private final ExecutorUtil executorUtil;
-    private final NetworkUtil networkUtil;
-    private final WhatToEatDatabase db;
     private final StoreDao storeDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public StoreRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil, WhatToEatDatabase db,
-                           StoreDao storeDao, WhatToEatService whatToEatService) {
+    public StoreRepository(ExecutorUtil executorUtil, StoreDao storeDao,
+                           WhatToEatService whatToEatService) {
         this.executorUtil = executorUtil;
-        this.networkUtil = networkUtil;
-        this.db = db;
         this.storeDao = storeDao;
         this.whatToEatService = whatToEatService;
     }
@@ -45,7 +41,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty() || networkUtil.isConnected();
+                return data == null || data.isEmpty();
             }
 
             @Override
@@ -55,11 +51,7 @@ public class StoreRepository {
 
             @Override
             protected void saveCallResult(List<Store> item) {
-                int tagID = storeDTO.getTagID();
-                for (Store store : item) {
-                    store.setTagID(tagID);
-                }
-                db.runInTransaction(() -> storeDao.insertAll(item));
+                storeDao.insertAll(item);
             }
         }.asLiveData();
     }
@@ -74,7 +66,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty() || networkUtil.isConnected();
+                return data == null || data.isEmpty();
             }
 
             @Override
@@ -99,7 +91,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty() || networkUtil.isConnected();
+                return data == null || data.isEmpty();
             }
 
             @Override

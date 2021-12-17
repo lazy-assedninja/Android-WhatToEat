@@ -15,9 +15,11 @@
 
         <import type="java.util.List" />
 
-        <import type="me.lazy_assedninja.what_to_eat.vo.Result" />
-
         <import type="me.lazy_assedninja.what_to_eat.vo.Store" />
+
+        <import type="me.lazy_assedninja.what_to_eat.vo.RequestResult" />
+
+        <import type="me.lazy_assedninja.what_to_eat.vo.Favorite" />
 
         <variable
             name="stores"
@@ -25,7 +27,7 @@
 
         <variable
             name="result"
-            type="LiveData&lt;Event&lt;Resource&lt;Result>>>" />
+            type="LiveData&lt;Event&lt;Resource&lt;RequestResult&lt;Favorite>>>>" />
     </data>
 
     <FrameLayout

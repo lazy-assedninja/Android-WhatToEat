@@ -157,10 +157,12 @@ public class MainActivity extends BaseActivity {
                                 destinationID == R.id.search_fragment);
 
                 // Register menu item
-                binding.toolbar.getMenu().findItem(R.id.action_to_register_fragment).setVisible(destinationID == R.id.login_fragment);
+                binding.toolbar.getMenu().findItem(R.id.action_to_register_fragment)
+                        .setVisible(destinationID == R.id.login_fragment);
 
                 // Clear History menu item
-                binding.toolbar.getMenu().findItem(R.id.action_clear_history).setVisible(destinationID == R.id.history_fragment);
+                binding.toolbar.getMenu().findItem(R.id.action_clear_history)
+                        .setVisible(destinationID == R.id.history_fragment);
             });
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration
                     .Builder(R.id.home_fragment, R.id.recommend_fragment, R.id.profile_fragment)

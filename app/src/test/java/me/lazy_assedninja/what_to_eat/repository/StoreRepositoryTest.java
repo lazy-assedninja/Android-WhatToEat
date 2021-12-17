@@ -1,7 +1,5 @@
 package me.lazy_assedninja.what_to_eat.repository;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -33,7 +31,6 @@ import me.lazy_assedninja.what_to_eat.util.InstantExecutorUtil;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 import me.lazy_assedninja.what_to_eat.vo.Tag;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
 @SuppressWarnings("unchecked")
 @RunWith(JUnit4.class)
@@ -43,7 +40,6 @@ public class StoreRepositoryTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private StoreRepository repository;
-    private final NetworkUtil networkUtil = mock(NetworkUtil.class);
     private final StoreDao storeDao = mock(StoreDao.class);
     private final WhatToEatService service = mock(WhatToEatService.class);
 
@@ -53,9 +49,7 @@ public class StoreRepositoryTest {
     public void init() {
         WhatToEatDatabase db = mock(WhatToEatDatabase.class);
         when(db.storeDao()).thenReturn(storeDao);
-        doCallRealMethod().when(db).runInTransaction((Runnable) any());
-        repository = new StoreRepository(new InstantExecutorUtil(), networkUtil, db, storeDao,
-                service);
+        repository = new StoreRepository(new InstantExecutorUtil(), storeDao, service);
     }
 
     @Test

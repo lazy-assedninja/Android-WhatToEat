@@ -36,8 +36,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             if (shouldFetch(data)) {
                 fetchFromNetwork(dbSource);
             } else {
-                result.addSource(dbSource, newData ->
-                        setValue(Resource.success(newData)));
+                result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
             }
         });
     }
@@ -46,8 +45,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
         LiveData<ApiResponse<RequestType>> apiResponse = createCall();
 
         // We re-attach dbSource as a new source, it will dispatch its latest value quickly.
-        result.addSource(dbSource, newData ->
-                setValue(Resource.loading(newData)));
+        result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
         result.addSource(apiResponse, response -> {
             result.removeSource(apiResponse);
             result.removeSource(dbSource);
@@ -69,7 +67,8 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             } else if (response instanceof ApiErrorResponse) {
                 onFetchFailed();
                 result.addSource(dbSource, newData ->
-                        setValue(Resource.error(((ApiErrorResponse<RequestType>) response).getErrorMessage(), newData)));
+                        setValue(Resource.error(((ApiErrorResponse<RequestType>) response)
+                                .getErrorMessage(), newData)));
             }
         });
     }

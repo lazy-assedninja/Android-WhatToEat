@@ -16,8 +16,8 @@ import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.util.AbsentLiveData;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
+import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 
 @HiltViewModel
@@ -61,21 +61,17 @@ public class FavoriteViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Event<Resource<Result>>> result = Transformations.switchMap(favoriteRequest, favorite -> {
-        if (favorite == null) {
-            return AbsentLiveData.create();
-        } else {
-            return favoriteRepository.changeFavoriteStatus(favorite);
-        }
-    });
+    public LiveData<Event<Resource<RequestResult<Favorite>>>> result =
+            Transformations.switchMap(favoriteRequest, favorite -> {
+                if (favorite == null) {
+                    return AbsentLiveData.create();
+                } else {
+                    return favoriteRepository.changeFavoriteStatus(favorite);
+                }
+            });
 
     public void changeFavoriteStatus(Favorite favorite) {
-        Favorite request = favoriteRequest.getValue();
-        if (request == null || request.getStoreID() != favorite.getStoreID() ||
-                (request.getStoreID() == favorite.getStoreID() &&
-                        request.getStatus() != favorite.getStatus())) {
-            favorite.setUserID(userRepository.getUserID());
-            favoriteRequest.setValue(favorite);
-        }
+        favorite.setUserID(userRepository.getUserID());
+        favoriteRequest.setValue(favorite);
     }
 }

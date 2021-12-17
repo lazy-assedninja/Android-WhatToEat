@@ -11,7 +11,6 @@ import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.ApiSuccessResponse;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.library.util.ExecutorUtil;
 
 /**

@@ -5,26 +5,13 @@
 
     <data>
 
-        <import type="androidx.lifecycle.LiveData" />
-
-        <import type="me.lazy_assedninja.what_to_eat.vo.Status" />
-
-        <import type="me.lazy_assedninja.what_to_eat.vo.Resource" />
-
-        <import type="java.util.List" />
-
-        <import type="me.lazy_assedninja.what_to_eat.vo.Favorite" />
-
         <variable
             name="store"
             type="me.lazy_assedninja.what_to_eat.vo.Store" />
-
-        <variable
-            name="resource"
-            type="LiveData&lt;Resource&lt;List&lt;Favorite>>>" />
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
@@ -32,7 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:padding="12dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_picture"
@@ -94,67 +81,14 @@
                 app:layout_constraintTop_toTopOf="@id/tv_star"
                 app:srcCompat="@drawable/ic_star" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:gravity="center_vertical"
-                app:layout_constraintBottom_toBottomOf="@id/tv_star"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_star"
-                tools:text="距離" />
-
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_distance"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:padding="4dp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_distance"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toStartOf="@id/tv_distance"
-                app:layout_constraintTop_toTopOf="@id/tv_distance"
-                app:srcCompat="@drawable/ic_map_red" />
-
-            <View
-                android:id="@+id/v_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/gray_light"
-                app:layout_constraintTop_toBottomOf="@id/tv_star" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bt_favorite"
-                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:enabled="@{resource.status != Status.LOADING}"
-                android:text="@string/bt_favorite"
-                android:textColor="@color/black"
-                app:icon="@{store.isFavorite? @drawable/ic_heart_checked : @drawable/ic_heart_unchecked}"
-                app:iconGravity="textStart"
-                app:iconPadding="8dp"
-                app:iconTint="@color/red"
-                app:layout_constraintEnd_toStartOf="@id/bt_store_information"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/v_divider" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bt_store_information"
-                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/bt_store_information"
-                android:textColor="@color/black"
-                app:icon="@drawable/ic_information"
-                app:iconGravity="textStart"
-                app:iconPadding="8dp"
-                app:iconTint="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/bt_favorite"
-                app:layout_constraintTop_toBottomOf="@id/v_divider" />
+                android:id="@+id/iv_favorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@{store.isFavorite? @drawable/ic_heart_checked : @drawable/ic_heart_unchecked}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

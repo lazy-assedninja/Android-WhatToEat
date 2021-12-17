@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.TimeUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.FavoriteDao;
@@ -14,26 +16,23 @@ import me.lazy_assedninja.what_to_eat.db.StoreDao;
 import me.lazy_assedninja.what_to_eat.dto.FavoriteDTO;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
+import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Store;
-import me.lazy_assedninja.library.util.ExecutorUtil;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
 public class FavoriteRepository {
 
     private final ExecutorUtil executorUtil;
-    private final NetworkUtil networkUtil;
+    private final TimeUtil timeUtil;
     private final StoreDao storeDao;
     private final FavoriteDao favoriteDao;
     private final WhatToEatService whatToEatService;
 
     @Inject
-    public FavoriteRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil,
-                              StoreDao storeDao, FavoriteDao favoriteDao,
-                              WhatToEatService whatToEatService) {
+    public FavoriteRepository(ExecutorUtil executorUtil, TimeUtil timeUtil, StoreDao storeDao,
+                              FavoriteDao favoriteDao, WhatToEatService whatToEatService) {
         this.executorUtil = executorUtil;
-        this.networkUtil = networkUtil;
+        this.timeUtil = timeUtil;
         this.storeDao = storeDao;
         this.favoriteDao = favoriteDao;
         this.whatToEatService = whatToEatService;
@@ -49,7 +48,7 @@ public class FavoriteRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty() || networkUtil.isConnected();
+                return data == null || data.isEmpty();
             }
 
             @Override
@@ -64,18 +63,21 @@ public class FavoriteRepository {
         }.asLiveData();
     }
 
-    public LiveData<Event<Resource<Result>>> changeFavoriteStatus(Favorite favorite) {
-        return new NetworkResource<Result>(executorUtil) {
+    public LiveData<Event<Resource<RequestResult<Favorite>>>> changeFavoriteStatus(Favorite favorite) {
+        return new NetworkResultWithRequest<Favorite, Object>(executorUtil, favorite) {
 
             @Override
-            protected LiveData<ApiResponse<Result>> createCall() {
+            protected LiveData<ApiResponse<RequestResult<Favorite>>> createCall() {
                 return (favorite.getStatus()) ? whatToEatService.addToFavorite(favorite) :
                         whatToEatService.cancelFavorite(favorite);
             }
 
             @Override
-            protected void saveCallResult(Result item) {
-                favoriteDao.updateFavoriteStatus(favorite.getStoreID(), favorite.getStatus());
+            protected Integer saveCallResult(RequestResult<Favorite> item) {
+                return (favorite.isNeedUpdate()) ?
+                        favoriteDao.updateFavoriteStatusAndTime(favorite.getStoreID(),
+                                favorite.getStatus(), timeUtil.now()) :
+                        favoriteDao.updateFavoriteStatus(favorite.getStoreID(), favorite.getStatus());
             }
         }.asLiveData();
     }

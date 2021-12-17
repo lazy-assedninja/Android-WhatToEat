@@ -9,12 +9,34 @@ public class Favorite {
 
     private boolean status;
 
+    private int position;
+    private boolean needUpdate;
+
     public Favorite() {
     }
 
     public Favorite(int storeID, boolean status) {
         this.storeID = storeID;
         this.status = status;
+    }
+
+    public Favorite(int storeID, boolean status, int position) {
+        this.storeID = storeID;
+        this.status = status;
+        this.position = position;
+    }
+
+    public Favorite(int storeID, boolean status, int position, boolean needUpdate) {
+        this.storeID = storeID;
+        this.status = status;
+        this.position = position;
+        this.needUpdate = needUpdate;
+    }
+
+    public void setInformation(int userID, int storeID, boolean needUpdate){
+        this.userID = userID;
+        this.storeID = storeID;
+        this.needUpdate = needUpdate;
     }
 
     public int getId() {
@@ -47,5 +69,21 @@ public class Favorite {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public void setNeedUpdate(boolean needUpdate) {
+        this.needUpdate = needUpdate;
+    }
+
+    public boolean isNeedUpdate() {
+        return needUpdate;
     }
 }

@@ -15,7 +15,9 @@
 
         <import type="me.lazy_assedninja.what_to_eat.vo.Store" />
 
-        <import type="me.lazy_assedninja.what_to_eat.vo.Result" />
+        <import type="me.lazy_assedninja.what_to_eat.vo.RequestResult" />
+
+        <import type="me.lazy_assedninja.what_to_eat.vo.Favorite" />
 
         <import type="android.graphics.drawable.Drawable" />
 
@@ -25,11 +27,7 @@
 
         <variable
             name="result"
-            type="LiveData&lt;Event&lt;Resource&lt;Result>>>" />
-
-        <variable
-            name="fragment"
-            type="me.lazy_assedninja.what_to_eat.ui.store.store_information.StoreInformationFragment" />
+            type="LiveData&lt;Event&lt;Resource&lt;RequestResult&lt;Favorite>>>>" />
 
         <variable
             name="imageRequestListener"
@@ -82,6 +80,7 @@
             android:layout_marginEnd="30dp"
             android:contentDescription="@string/bt_favorite"
             android:src="@{store.isFavorite ? @drawable/ic_heart_checked : @drawable/ic_heart_unchecked}"
+            android:clickable="@{result.peekContent().status != Status.LOADING}"
             app:backgroundTint="@color/white"
             app:layout_anchor="@id/app_bar_layout"
             app:layout_anchorGravity="bottom|end"

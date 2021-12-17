@@ -8,16 +8,16 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.repository.FavoriteRepository;
 import me.lazy_assedninja.what_to_eat.repository.HistoryRepository;
 import me.lazy_assedninja.what_to_eat.repository.StoreRepository;
 import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.util.AbsentLiveData;
+import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
 import me.lazy_assedninja.what_to_eat.vo.History;
+import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 
 @HiltViewModel
@@ -31,6 +31,7 @@ public class StoreInformationViewModel extends ViewModel {
     private final MutableLiveData<Favorite> favoriteRequest = new MutableLiveData<>();
 
     private int id;
+    private boolean needUpdate;
     public LiveData<Store> store;
 
     @Inject
@@ -54,6 +55,10 @@ public class StoreInformationViewModel extends ViewModel {
         this.id = id;
     }
 
+    public void setNeedUpdate(boolean needUpdate) {
+        this.needUpdate = needUpdate;
+    }
+
     public LiveData<Store> getStore(int id) {
         if (store == null) {
             store = storeRepository.getStoreFromDb(id);
@@ -61,19 +66,21 @@ public class StoreInformationViewModel extends ViewModel {
         return store;
     }
 
-    public LiveData<Event<Resource<Result>>> result = Transformations.switchMap(favoriteRequest, favorite -> {
-        if (favorite == null) {
-            return AbsentLiveData.create();
-        } else {
-            return favoriteRepository.changeFavoriteStatus(favorite);
-        }
-    });
+    public LiveData<Event<Resource<RequestResult<Favorite>>>> result =
+            Transformations.switchMap(favoriteRequest, favorite -> {
+                if (favorite == null) {
+                    return AbsentLiveData.create();
+                } else {
+                    return favoriteRepository.changeFavoriteStatus(favorite);
+                }
+            });
 
     public void changeFavoriteStatus(Favorite favorite) {
         if (store.getValue() == null) return;
 
-        favorite.setStoreID(store.getValue().getId());
         favorite.setUserID(userRepository.getUserID());
+        favorite.setStoreID(store.getValue().getId());
+        favorite.setInformation(userRepository.getUserID(), id, needUpdate);
         Favorite request = favoriteRequest.getValue();
         boolean isFavorite = store.getValue().isFavorite();
         if (request == null || request.getStatus() == isFavorite) {

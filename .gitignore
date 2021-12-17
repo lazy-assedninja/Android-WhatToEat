@@ -1,14 +1,14 @@
-# System
+# Mac OS
 .DS_Store
 
 # JetBrains IDE
 .idea/
 
-# Gradle files
-.gradle/
+# Gradle
 build/
+.gradle/
 
-# Local configuration file (sdk path, etc, serect keys)
+# Local configuration file (SDK path, etc, serect keys)
 local.properties
 
 # Keystore files

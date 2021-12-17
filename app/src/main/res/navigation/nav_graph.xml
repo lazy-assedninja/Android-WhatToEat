@@ -179,6 +179,14 @@
         <argument
             android:name="storeID"
             app:argType="integer" />
+
+        <argument
+            android:name="position"
+            app:argType="integer" />
+
+        <argument
+            android:name="needUpdate"
+            app:argType="boolean" />
     </fragment>
 
     <fragment

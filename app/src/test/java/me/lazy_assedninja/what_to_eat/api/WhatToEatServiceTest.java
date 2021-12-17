@@ -33,8 +33,10 @@ import java.util.concurrent.TimeoutException;
 import me.lazy_assedninja.what_to_eat.common.TestUtil;
 import me.lazy_assedninja.what_to_eat.util.LiveDataCallAdapterFactory;
 import me.lazy_assedninja.what_to_eat.vo.Comment;
+import me.lazy_assedninja.what_to_eat.vo.Favorite;
 import me.lazy_assedninja.what_to_eat.vo.Post;
 import me.lazy_assedninja.what_to_eat.vo.Promotion;
+import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Reservation;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Store;
@@ -267,8 +269,10 @@ public class WhatToEatServiceTest {
     @Test
     public void addToFavorite() throws IOException, TimeoutException, InterruptedException {
         enqueueResponse("result.json");
-        LiveData<ApiResponse<Result>> apiResponse = service.addToFavorite(createFavorite());
-        Result result = ((ApiSuccessResponse<Result>) getOrAwaitValue(apiResponse)).getBody();
+        LiveData<ApiResponse<RequestResult<Favorite>>> apiResponse =
+                service.addToFavorite(createFavorite());
+        RequestResult<Favorite> result =
+                ((ApiSuccessResponse<RequestResult<Favorite>>) getOrAwaitValue(apiResponse)).getBody();
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getPath(), is("/Favorite/AddToFavorite"));
@@ -296,8 +300,10 @@ public class WhatToEatServiceTest {
     @Test
     public void cancelFavorite() throws IOException, TimeoutException, InterruptedException {
         enqueueResponse("result.json");
-        LiveData<ApiResponse<Result>> apiResponse = service.cancelFavorite(createFavorite());
-        Result result = ((ApiSuccessResponse<Result>) getOrAwaitValue(apiResponse)).getBody();
+        LiveData<ApiResponse<RequestResult<Favorite>>> apiResponse =
+                service.cancelFavorite(createFavorite());
+        RequestResult<Favorite> result =
+                ((ApiSuccessResponse<RequestResult<Favorite>>) getOrAwaitValue(apiResponse)).getBody();
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getPath(), is("/Favorite/CancelFavorite"));

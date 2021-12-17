@@ -13,6 +13,7 @@ import me.lazy_assedninja.what_to_eat.vo.History;
 import me.lazy_assedninja.what_to_eat.vo.Post;
 import me.lazy_assedninja.what_to_eat.vo.Promotion;
 import me.lazy_assedninja.what_to_eat.vo.Report;
+import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Reservation;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Store;
@@ -104,6 +105,10 @@ public class TestUtil {
 
     public static Result createResult() {
         return new Result();
+    }
+
+    public static <T> RequestResult<T> createRequestResult(T request){
+        return new RequestResult<>("", request);
     }
 
     public static Ninja createNinja() {

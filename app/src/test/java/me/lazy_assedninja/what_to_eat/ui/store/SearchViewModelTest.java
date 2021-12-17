@@ -10,9 +10,8 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
 import static me.lazy_assedninja.what_to_eat.common.TestUtil.createFavorite;
-import static me.lazy_assedninja.what_to_eat.common.TestUtil.createResult;
+import static me.lazy_assedninja.what_to_eat.common.TestUtil.createRequestResult;
 import static me.lazy_assedninja.what_to_eat.common.TestUtil.createStoreDTO;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -34,8 +33,8 @@ import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.ui.store.search.SearchViewModel;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
+import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 
 @SuppressWarnings("unchecked")
@@ -86,14 +85,15 @@ public class SearchViewModelTest {
 
         // Change favorite status
         Favorite favorite = createFavorite();
-        MutableLiveData<Event<Resource<Result>>> result = new MutableLiveData<>();
+        MutableLiveData<Event<Resource<RequestResult<Favorite>>>> result = new MutableLiveData<>();
         when(favoriteRepository.changeFavoriteStatus(favorite)).thenReturn(result);
-        Observer<Event<Resource<Result>>> resultObserver = mock(Observer.class);
+        Observer<Event<Resource<RequestResult<Favorite>>>> resultObserver = mock(Observer.class);
         viewModel.result.observeForever(resultObserver);
         viewModel.changeFavoriteStatus(favorite);
-
         verify(resultObserver, never()).onChanged(any());
-        Event<Resource<Result>> resultResource = new Event<>(Resource.success(createResult()));
+
+        Event<Resource<RequestResult<Favorite>>> resultResource =
+                new Event<>(Resource.success(createRequestResult(createFavorite())));
         result.setValue(resultResource);
         verify(resultObserver).onChanged(resultResource);
     }

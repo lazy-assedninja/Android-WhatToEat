@@ -17,7 +17,7 @@
 
         <item
             android:id="@+id/favorite_fragment"
-            android:icon="@drawable/ic_favorite"
+            android:icon="@drawable/ic_heart_unchecked"
             android:title="@string/navigation_drawer_favorite" />
 
         <item

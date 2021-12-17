@@ -10,7 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.transition.TransitionInflater;
 
 import com.bumptech.glide.load.DataSource;
@@ -32,16 +35,22 @@ import me.lazy_assedninja.what_to_eat.ui.user.create_report.CreateReportFragment
 import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
 import me.lazy_assedninja.what_to_eat.vo.History;
+import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
 public class StoreInformationFragment extends BaseFragment {
 
+    private static final String ARGUMENT_POSITION = "position";
+    private static final String ARGUMENT_IS_CHANGE = "is_change";
+
     private AutoClearedValue<StoreInformationFragmentBinding> binding;
     private StoreInformationViewModel viewModel;
+    private SavedStateHandle savedStateHandle;
+
+    private int changeTime = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -79,6 +88,10 @@ public class StoreInformationFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(StoreInformationViewModel.class);
+        NavController navController = Navigation.findNavController(view);
+        if (navController.getPreviousBackStackEntry() != null) {
+            savedStateHandle = navController.getPreviousBackStackEntry().getSavedStateHandle();
+        }
 
         initView();
         initData();
@@ -138,15 +151,22 @@ public class StoreInformationFragment extends BaseFragment {
 
     private void initData() {
         int id = StoreInformationFragmentArgs.fromBundle(getArguments()).getStoreID();
+        int position = StoreInformationFragmentArgs.fromBundle(getArguments()).getPosition();
+        boolean needUpdate = StoreInformationFragmentArgs.fromBundle(getArguments()).getNeedUpdate();
         binding.get().setStore(viewModel.getStore(id));
         viewModel.setId(id);
+        viewModel.setNeedUpdate(needUpdate);
         viewModel.addToHistory(new History(id));
+        savedStateHandle.set(ARGUMENT_POSITION, position);
+        savedStateHandle.set(ARGUMENT_IS_CHANGE, false);
 
         viewModel.result.observe(getViewLifecycleOwner(), event -> {
-            Resource<Result> resultResource = event.getContentIfNotHandled();
+            Resource<RequestResult<Favorite>> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
             if (resultResource.getStatus().equals(Status.SUCCESS)) {
+                changeTime++;
+                savedStateHandle.set(ARGUMENT_IS_CHANGE, changeTime % 2 != 0);
                 showToast(resultResource.getData().getResult());
             } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());

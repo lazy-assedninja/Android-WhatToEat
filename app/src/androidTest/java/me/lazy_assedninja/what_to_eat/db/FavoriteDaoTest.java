@@ -54,4 +54,13 @@ public class FavoriteDaoTest extends DbTest {
         Store data = getOrAwaitValue(storeDao.get(1));
         assertThat(data.isFavorite(), is(false));
     }
+
+    @Test
+    public void updateFavoriteStatusAndTimeAndGet() throws TimeoutException, InterruptedException {
+        favoriteDao.updateFavoriteStatusAndTime(1, false, "update time");
+
+        Store data = getOrAwaitValue(storeDao.get(1));
+        assertThat(data.isFavorite(), is(false));
+        assertThat(data.getUpdateTime(), is("update time"));
+    }
 }
