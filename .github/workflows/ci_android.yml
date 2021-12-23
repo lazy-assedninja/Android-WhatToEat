@@ -14,7 +14,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  gradle_vaildation:
+  gradle_validation:
     name: Validate Gradle Wrapper
 
     # The type of runner that the job will run on
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # Identifies "gradle_validation" jobs that must complete successfully before this job will run.
-    needs: gradle_vaildation
+    needs: gradle_validation
 
     steps:
 
@@ -50,8 +50,13 @@ jobs:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
         run: echo "URL=\"$URL\"" >> local.properties && echo "MAPS_API_KEY=\"$MAPS_API_KEY\"" >> local.properties
 
-      - name: Set Up google-service.json
-        run: cd app && echo "${{ secrets.GS_INFO }}" >> google-services.json
+      - name: Create google-services.json
+        id: write_json
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileName: 'google-services.json'
+          fileDir: 'app/'
+          encodedString: ${{ secrets.GS_INFO }}
 
       - name: Assemble Debug APK
         run: ./gradlew assembleDebug --full-stacktrace
@@ -78,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # Identifies "gradle_validation" jobs that must complete successfully before this job will run.
-    needs: gradle_vaildation
+    needs: gradle_validation
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -93,8 +98,13 @@ jobs:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
         run: echo "URL=$URL" >> local.properties && echo "MAPS_API_KEY=$MAPS_API_KEY" >> local.properties
 
-      - name: Set Up google-service.json
-        run: cd app && echo "${{ secrets.GS_INFO }}" >> google-services.json
+      - name: Create google-services.json
+        id: write_json
+        uses: timheuer/base64-to-file@v1.1
+        with:
+          fileName: 'google-services.json'
+          fileDir: 'app/'
+          encodedString: ${{ secrets.GS_INFO }}
 
       - name: Run Unit Tests
         run: ./gradlew test --full-stacktrace
