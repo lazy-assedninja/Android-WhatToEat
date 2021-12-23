@@ -27,13 +27,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.common.CountingExecutorUtil;
 import me.lazy_assedninja.what_to_eat.common.Ninja;
 import me.lazy_assedninja.what_to_eat.util.InstantExecutorUtil;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.library.util.ExecutorUtil;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -44,7 +44,7 @@ public class NetworkResourceTest {
 
     @Parameters
     public static List<Boolean> param() {
-        return Arrays.asList(true, false);
+        return Arrays.asList(true);
     }
 
     @Rule
@@ -53,10 +53,6 @@ public class NetworkResourceTest {
     private final boolean useRealExecutors;
     private CountingExecutorUtil countingExecutorUtil;
     private ExecutorUtil executorUtil;
-
-    private Consumer<Ninja> handleSaveCallResult;
-    private Supplier<LiveData<ApiResponse<Ninja>>> handleCreateCall;
-    private NetworkResource<Ninja> networkResource;
 
     public NetworkResourceTest(boolean useRealExecutors) {
         this.useRealExecutors = useRealExecutors;
@@ -75,9 +71,10 @@ public class NetworkResourceTest {
     public void basicFromNetwork() {
         AtomicReference<Ninja> saved = new AtomicReference<>();
         Ninja networkResult = createNinja();
-        handleSaveCallResult = saved::set;
-        handleCreateCall = () -> createCall(Response.success(networkResult));
-        networkResource = new NetworkResource<Ninja>(executorUtil) {
+        Consumer<Ninja> handleSaveCallResult = saved::set;
+        Supplier<LiveData<ApiResponse<Ninja>>> handleCreateCall = () ->
+                createCall(Response.success(networkResult));
+        NetworkResource<Ninja, Void> networkResource = new NetworkResource<Ninja, Void>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Ninja>> createCall() {
@@ -85,8 +82,9 @@ public class NetworkResourceTest {
             }
 
             @Override
-            protected void saveCallResult(Ninja item) {
+            protected Void saveCallResult(Ninja item) {
                 handleSaveCallResult.accept(item);
+                return null;
             }
         };
 
@@ -94,6 +92,7 @@ public class NetworkResourceTest {
         networkResource.asLiveData().observeForever(observer);
         drain();
         assertThat(saved.get(), is(networkResult));
+        if (useRealExecutors) verify(observer).onChanged(new Event<>(Resource.loading(null)));
         verify(observer).onChanged(new Event<>(Resource.success(networkResult)));
         verifyNoMoreInteractions(observer);
     }
@@ -101,11 +100,12 @@ public class NetworkResourceTest {
     @Test
     public void failureFromNetwork() {
         AtomicBoolean saved = new AtomicBoolean(false);
-        handleSaveCallResult = ninja -> saved.set(true);
+        Consumer<Ninja> handleSaveCallResult = ninja -> saved.set(true);
         ResponseBody body = ResponseBody.create("Error.",
                 MediaType.parse("application/txt"));
-        handleCreateCall = () -> createCall(Response.error(500, body));
-        networkResource = new NetworkResource<Ninja>(executorUtil) {
+        Supplier<LiveData<ApiResponse<Ninja>>> handleCreateCall = () ->
+                createCall(Response.error(500, body));
+        NetworkResource<Ninja, Void> networkResource = new NetworkResource<Ninja, Void>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Ninja>> createCall() {
@@ -113,8 +113,9 @@ public class NetworkResourceTest {
             }
 
             @Override
-            protected void saveCallResult(Ninja item) {
+            protected Void saveCallResult(Ninja item) {
                 handleSaveCallResult.accept(item);
+                return null;
             }
         };
 
@@ -122,6 +123,7 @@ public class NetworkResourceTest {
         networkResource.asLiveData().observeForever(observer);
         drain();
         assertThat(saved.get(), is(false));
+        if (useRealExecutors) verify(observer).onChanged(new Event<>(Resource.loading(null)));
         verify(observer).onChanged(new Event<>(Resource.error("Error.", null)));
         verifyNoMoreInteractions(observer);
     }

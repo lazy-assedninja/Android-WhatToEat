@@ -63,6 +63,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:gravity="end"
+                    android:ellipsize="end"
                     app:layout_constraintBottom_toTopOf="@id/tv_time"
                     app:layout_constraintEnd_toStartOf="@id/iv_phone"
                     app:layout_constraintStart_toStartOf="@id/guideline"

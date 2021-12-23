@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import me.lazy_assedninja.library.ui.BaseFragment;
+import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.databinding.ReservationFragmentBinding;
 import me.lazy_assedninja.what_to_eat.dto.ReservationDTO;
@@ -22,17 +24,15 @@ import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Status;
-import me.lazy_assedninja.library.ui.BaseFragment;
-import me.lazy_assedninja.library.util.ExecutorUtil;
 
 @AndroidEntryPoint
 public class ReservationFragment extends BaseFragment {
 
-    private AutoClearedValue<ReservationFragmentBinding> binding;
-    private ReservationViewModel viewModel;
-
     @Inject
     public ExecutorUtil executorUtil;
+
+    private AutoClearedValue<ReservationFragmentBinding> binding;
+    private ReservationViewModel viewModel;
 
     private AutoClearedValue<ReservationAdapter> adapter;
 
@@ -94,7 +94,7 @@ public class ReservationFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Status.SUCCESS)) {
+            if (resultResource.getData() != null && resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
             } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());

@@ -7,15 +7,18 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import me.lazy_assedninja.library.util.ExecutorUtil;
+import me.lazy_assedninja.library.util.NetworkUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.PromotionDao;
 import me.lazy_assedninja.what_to_eat.db.WhatToEatDatabase;
 import me.lazy_assedninja.what_to_eat.vo.Promotion;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.library.util.ExecutorUtil;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
+/**
+ * Repository that handles Promotion objects.
+ */
 public class PromotionRepository {
 
     private final ExecutorUtil executorUtil;

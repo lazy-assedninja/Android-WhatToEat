@@ -6,6 +6,7 @@ import me.lazy_assedninja.library.BuildConfig;
 
 @SuppressWarnings("unused")
 public class LogUtil {
+
     private static final boolean isDebug = BuildConfig.DEBUG;
 
     @Inject

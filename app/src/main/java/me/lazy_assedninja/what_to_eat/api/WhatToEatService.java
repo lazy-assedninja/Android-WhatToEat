@@ -18,7 +18,6 @@ import me.lazy_assedninja.what_to_eat.vo.Promotion;
 import me.lazy_assedninja.what_to_eat.vo.Report;
 import me.lazy_assedninja.what_to_eat.vo.Reservation;
 import me.lazy_assedninja.what_to_eat.vo.Result;
-import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 import me.lazy_assedninja.what_to_eat.vo.User;
 import okhttp3.MultipartBody;
@@ -83,13 +82,13 @@ public interface WhatToEatService {
      * Favorite
      */
     @POST("Favorite/AddToFavorite")
-    LiveData<ApiResponse<RequestResult<Favorite>>> addToFavorite(@Body Favorite favorite);
+    LiveData<ApiResponse<Favorite>> addToFavorite(@Body Favorite favorite);
 
     @POST("Favorite/GetFavoriteList")
     LiveData<ApiResponse<List<Store>>> getFavoriteList(@Body FavoriteDTO favoriteDTO);
 
     @POST("Favorite/CancelFavorite")
-    LiveData<ApiResponse<RequestResult<Favorite>>> cancelFavorite(@Body Favorite favorite);
+    LiveData<ApiResponse<Favorite>> cancelFavorite(@Body Favorite favorite);
 
     /**
      * Promotion

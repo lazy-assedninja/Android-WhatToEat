@@ -50,8 +50,10 @@ public class AppModule {
                 .client(new OkHttpClient()
                         .newBuilder()
                         .connectTimeout(30, TimeUnit.SECONDS)
-                        .addInterceptor(new HttpLoggingInterceptor()
-                                .setLevel(HttpLoggingInterceptor.Level.BODY))
+                        .addInterceptor(
+                                new HttpLoggingInterceptor()
+                                .setLevel(HttpLoggingInterceptor.Level.BODY)
+                        )
                         .build())
                 .build()
                 .create(WhatToEatService.class);

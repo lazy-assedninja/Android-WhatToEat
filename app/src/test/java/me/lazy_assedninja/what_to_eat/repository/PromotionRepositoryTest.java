@@ -23,6 +23,7 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.lazy_assedninja.library.util.NetworkUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.PromotionDao;
@@ -30,7 +31,6 @@ import me.lazy_assedninja.what_to_eat.db.WhatToEatDatabase;
 import me.lazy_assedninja.what_to_eat.util.InstantExecutorUtil;
 import me.lazy_assedninja.what_to_eat.vo.Promotion;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
 @SuppressWarnings("unchecked")
 @RunWith(JUnit4.class)
@@ -43,6 +43,9 @@ public class PromotionRepositoryTest {
     private final NetworkUtil networkUtil = mock(NetworkUtil.class);
     private final PromotionDao promotionDao = mock(PromotionDao.class);
     private final WhatToEatService service = mock(WhatToEatService.class);
+
+    private final int promotionID = 1;
+    private final String promotionTitle = "promotion title";
 
     @Before
     public void init() {
@@ -59,7 +62,7 @@ public class PromotionRepositoryTest {
         when(promotionDao.getPromotions()).thenReturn(dbData);
 
         List<Promotion> list = new ArrayList<>();
-        list.add(createPromotion(1, "promotion title"));
+        list.add(createPromotion(promotionID, promotionTitle));
         LiveData<ApiResponse<List<Promotion>>> call = successCall(list);
         when(service.getPromotionList()).thenReturn(call);
 
@@ -95,16 +98,15 @@ public class PromotionRepositoryTest {
         verify(observer).onChanged(Resource.loading(null));
 
         List<Promotion> list = new ArrayList<>();
-        list.add(createPromotion(1, "promotion title"));
+        list.add(createPromotion(promotionID, promotionTitle));
         dbData.postValue(list);
         verify(observer).onChanged(Resource.success(list));
     }
 
     @Test
     public void getPromotionFromDb() {
-        int id = 1;
-        repository.getPromotionFromDb(id);
+        repository.getPromotionFromDb(promotionID);
 
-        verify(promotionDao).get(id);
+        verify(promotionDao).get(promotionID);
     }
 }

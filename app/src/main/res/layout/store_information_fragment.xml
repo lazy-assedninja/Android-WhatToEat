@@ -15,8 +15,6 @@
 
         <import type="me.lazy_assedninja.what_to_eat.vo.Store" />
 
-        <import type="me.lazy_assedninja.what_to_eat.vo.RequestResult" />
-
         <import type="me.lazy_assedninja.what_to_eat.vo.Favorite" />
 
         <import type="android.graphics.drawable.Drawable" />
@@ -27,7 +25,7 @@
 
         <variable
             name="result"
-            type="LiveData&lt;Event&lt;Resource&lt;RequestResult&lt;Favorite>>>>" />
+            type="LiveData&lt;Event&lt;Resource&lt;Favorite>>>" />
 
         <variable
             name="imageRequestListener"
@@ -264,7 +262,7 @@
                     app:rippleColor="@color/primary_color" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bt_add_report"
+                    android:id="@+id/bt_create_report"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"

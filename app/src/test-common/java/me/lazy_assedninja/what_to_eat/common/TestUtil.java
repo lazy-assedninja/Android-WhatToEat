@@ -13,7 +13,6 @@ import me.lazy_assedninja.what_to_eat.vo.History;
 import me.lazy_assedninja.what_to_eat.vo.Post;
 import me.lazy_assedninja.what_to_eat.vo.Promotion;
 import me.lazy_assedninja.what_to_eat.vo.Report;
-import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Reservation;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Store;
@@ -107,17 +106,13 @@ public class TestUtil {
         return new Result();
     }
 
-    public static <T> RequestResult<T> createRequestResult(T request){
-        return new RequestResult<>("", request);
-    }
-
     public static Ninja createNinja() {
         return new Ninja();
     }
 
     public static MultipartBody.Part createFile(){
-        return MultipartBody.Part.createFormData("file", "file name",
-                RequestBody.create("file path", MediaType.parse("multipart/form-data")));
+        return MultipartBody.Part.createFormData("file", "file name", RequestBody
+                .create("file path", MediaType.parse("multipart/form-data")));
     }
 
     public static UserDTO createUserDTO() {
@@ -132,8 +127,8 @@ public class TestUtil {
         return new StoreDTO();
     }
 
-    public static CommentDTO createCommentDTO() {
-        return new CommentDTO(0);
+    public static CommentDTO createCommentDTO(int storeID) {
+        return new CommentDTO(storeID);
     }
 
     public static PostDTO createPostDTO() {

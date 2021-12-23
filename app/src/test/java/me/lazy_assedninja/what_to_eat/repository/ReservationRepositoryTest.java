@@ -35,7 +35,6 @@ import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Reservation;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
 @SuppressWarnings("unchecked")
 @RunWith(JUnit4.class)
@@ -45,7 +44,6 @@ public class ReservationRepositoryTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private ReservationRepository repository;
-    private final NetworkUtil networkUtil = mock(NetworkUtil.class);
     private final ReservationDao reservationDao = mock(ReservationDao.class);
     private final WhatToEatService service = mock(WhatToEatService.class);
 
@@ -54,8 +52,7 @@ public class ReservationRepositoryTest {
         WhatToEatDatabase db = mock(WhatToEatDatabase.class);
         when(db.reservationDao()).thenReturn(reservationDao);
         doCallRealMethod().when(db).runInTransaction((Runnable) any());
-        repository = new ReservationRepository(new InstantExecutorUtil(),
-                networkUtil, db, reservationDao, service);
+        repository = new ReservationRepository(new InstantExecutorUtil(), db, reservationDao, service);
     }
 
     @Test
@@ -86,24 +83,6 @@ public class ReservationRepositoryTest {
         verify(reservationDao).insertAll(list);
 
         updateDbData.postValue(list);
-        verify(observer).onChanged(Resource.success(list));
-    }
-
-    @Test
-    public void loadReservationsFromDb() {
-        ReservationDTO reservationDTO = createReservationDTO();
-        MutableLiveData<List<Reservation>> dbData = new MutableLiveData<>();
-        when(reservationDao.getReservations()).thenReturn(dbData);
-
-        Observer<Resource<List<Reservation>>> observer = mock(Observer.class);
-        repository.loadReservations(reservationDTO).observeForever(observer);
-        verify(reservationDao).getReservations();
-        verifyNoMoreInteractions(service);
-        verify(observer).onChanged(Resource.loading(null));
-
-        List<Reservation> list = new ArrayList<>();
-        list.add(TestUtil.createReservation(1, "reservation name"));
-        dbData.postValue(list);
         verify(observer).onChanged(Resource.success(list));
     }
 

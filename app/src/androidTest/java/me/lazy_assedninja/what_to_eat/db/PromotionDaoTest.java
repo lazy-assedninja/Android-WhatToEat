@@ -28,6 +28,7 @@ public class PromotionDaoTest extends DbTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private PromotionDao promotionDao;
+    private final int promotionID = 1;
     private final String title = "Lazy-assed Ninja";
 
     @Before
@@ -35,7 +36,7 @@ public class PromotionDaoTest extends DbTest {
         promotionDao = db.promotionDao();
 
         List<Promotion> list = new ArrayList<>();
-        list.add(createPromotion(1, title));
+        list.add(createPromotion(promotionID, title));
         promotionDao.insertAll(list);
     }
 
@@ -56,10 +57,10 @@ public class PromotionDaoTest extends DbTest {
             InterruptedException {
         String newTitle = "new Lazy-assed Ninja";
         List<Promotion> list = new ArrayList<>();
-        list.add(createPromotion(1, newTitle));
+        list.add(createPromotion(promotionID, newTitle));
         promotionDao.insertAll(list);
 
-        Promotion data = getOrAwaitValue(promotionDao.get(1));
+        Promotion data = getOrAwaitValue(promotionDao.get(promotionID));
         assertThat(data.getTitle(), is(newTitle));
     }
 

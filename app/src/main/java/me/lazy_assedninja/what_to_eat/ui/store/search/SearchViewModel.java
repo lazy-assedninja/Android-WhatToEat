@@ -1,5 +1,7 @@
 package me.lazy_assedninja.what_to_eat.ui.store.search;
 
+import static java.util.Collections.emptyList;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -17,7 +19,6 @@ import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.util.AbsentLiveData;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
-import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 
@@ -30,6 +31,8 @@ public class SearchViewModel extends ViewModel {
 
     private final MutableLiveData<StoreDTO> storeRequest = new MutableLiveData<>();
     private final MutableLiveData<Favorite> favoriteRequest = new MutableLiveData<>();
+
+    private List<Store> list = emptyList();
 
     @Inject
     public SearchViewModel(UserRepository userRepository, StoreRepository storeRepository,
@@ -65,7 +68,18 @@ public class SearchViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Event<Resource<RequestResult<Favorite>>>> result =
+    public void setList(List<Store> list) {
+        this.list = list;
+    }
+
+    public int getStorePosition(int id) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId() == id) return i;
+        }
+        return -1;
+    }
+
+    public LiveData<Event<Resource<Favorite>>> result =
             Transformations.switchMap(favoriteRequest, favorite -> {
                 if (favorite == null) {
                     return AbsentLiveData.create();

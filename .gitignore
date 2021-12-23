@@ -8,6 +8,9 @@
 build/
 .gradle/
 
+# Google Service
+google-services.json
+
 # Local configuration file (SDK path, etc, serect keys)
 local.properties
 

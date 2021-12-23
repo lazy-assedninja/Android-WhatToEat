@@ -11,6 +11,9 @@ import me.lazy_assedninja.what_to_eat.vo.History;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 import me.lazy_assedninja.library.util.ExecutorUtil;
 
+/**
+ * Repository that handles History related objects.
+ */
 public class HistoryRepository {
 
     private final ExecutorUtil executorUtil;

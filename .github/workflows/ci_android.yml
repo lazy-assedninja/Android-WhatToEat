@@ -35,7 +35,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Identifies "gradle_vaildation" jobs that must complete successfully before this job will run.
+    # Identifies "gradle_validation" jobs that must complete successfully before this job will run.
     needs: gradle_vaildation
 
     steps:
@@ -44,11 +44,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set Up Secret
+      - name: Set Up Secret Keys
         env:
           URL: ${{ secrets.URL }}
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
         run: echo "URL=\"$URL\"" >> local.properties && echo "MAPS_API_KEY=\"$MAPS_API_KEY\"" >> local.properties
+
+      - name: Set Up google-service.json
+        run: cd app && echo "${{ secrets.GS_INFO }}" >> google-services.json
 
       - name: Assemble Debug APK
         run: ./gradlew assembleDebug --full-stacktrace
@@ -74,7 +77,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Identifies "gradle_vaildation" jobs that must complete successfully before this job will run.
+    # Identifies "gradle_validation" jobs that must complete successfully before this job will run.
     needs: gradle_vaildation
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -84,11 +87,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set Up Secret
+      - name: Set Up Secret Keys
         env:
           URL: ${{ secrets.URL }}
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
         run: echo "URL=$URL" >> local.properties && echo "MAPS_API_KEY=$MAPS_API_KEY" >> local.properties
+
+      - name: Set Up google-service.json
+        run: cd app && echo "${{ secrets.GS_INFO }}" >> google-services.json
 
       - name: Run Unit Tests
         run: ./gradlew test --full-stacktrace

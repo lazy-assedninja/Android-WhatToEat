@@ -8,9 +8,9 @@ public class Favorite {
     private int storeID;
 
     private boolean status;
+    private String result;
 
-    private int position;
-    private boolean needUpdate;
+    private boolean needUpdateTime;
 
     public Favorite() {
     }
@@ -20,23 +20,16 @@ public class Favorite {
         this.status = status;
     }
 
-    public Favorite(int storeID, boolean status, int position) {
+    public Favorite(int storeID, boolean status, boolean needUpdateTime) {
         this.storeID = storeID;
         this.status = status;
-        this.position = position;
+        this.needUpdateTime = needUpdateTime;
     }
 
-    public Favorite(int storeID, boolean status, int position, boolean needUpdate) {
-        this.storeID = storeID;
-        this.status = status;
-        this.position = position;
-        this.needUpdate = needUpdate;
-    }
-
-    public void setInformation(int userID, int storeID, boolean needUpdate){
+    public void setInformation(int userID, int storeID, boolean needUpdateTime){
         this.userID = userID;
         this.storeID = storeID;
-        this.needUpdate = needUpdate;
+        this.needUpdateTime = needUpdateTime;
     }
 
     public int getId() {
@@ -71,19 +64,19 @@ public class Favorite {
         this.status = status;
     }
 
-    public int getPosition() {
-        return position;
+    public String getResult() {
+        return result;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public void setNeedUpdate(boolean needUpdate) {
-        this.needUpdate = needUpdate;
+    public void setNeedUpdateTime(boolean needUpdateTime) {
+        this.needUpdateTime = needUpdateTime;
     }
 
-    public boolean isNeedUpdate() {
-        return needUpdate;
+    public boolean isNeedUpdateTime() {
+        return needUpdateTime;
     }
 }

@@ -4,35 +4,38 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import me.lazy_assedninja.library.util.ExecutorUtil;
-import me.lazy_assedninja.library.util.NetworkUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.ReservationDao;
 import me.lazy_assedninja.what_to_eat.db.WhatToEatDatabase;
 import me.lazy_assedninja.what_to_eat.dto.ReservationDTO;
+import me.lazy_assedninja.what_to_eat.util.RateLimiter;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Reservation;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 
-public class ReservationRepository {
+/**
+ * Repository that handles Reservation objects.
+ */
+public class  ReservationRepository {
 
     private final ExecutorUtil executorUtil;
-    private final NetworkUtil networkUtil;
     private final WhatToEatDatabase db;
     private final ReservationDao reservationDao;
     private final WhatToEatService whatToEatService;
 
+    private final RateLimiter<ReservationDTO> rateLimiter = new RateLimiter<>(10, TimeUnit.MINUTES);
+
     @Inject
-    public ReservationRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil,
-                                 WhatToEatDatabase db, ReservationDao reservationDao,
-                                 WhatToEatService whatToEatService) {
+    public ReservationRepository(ExecutorUtil executorUtil, WhatToEatDatabase db,
+                                 ReservationDao reservationDao, WhatToEatService whatToEatService) {
         this.executorUtil = executorUtil;
-        this.networkUtil = networkUtil;
         this.db = db;
         this.reservationDao = reservationDao;
         this.whatToEatService = whatToEatService;
@@ -48,7 +51,7 @@ public class ReservationRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Reservation> data) {
-                return data == null || data.isEmpty() || networkUtil.isConnected();
+                return data == null || data.isEmpty() || rateLimiter.shouldFetch(reservationDTO);
             }
 
             @Override
@@ -63,12 +66,17 @@ public class ReservationRepository {
                     reservationDao.insertAll(item);
                 });
             }
+
+            @Override
+            protected void onFetchFailed() {
+                rateLimiter.reset(reservationDTO);
+            }
         }.asLiveData();
     }
 
     public LiveData<Event<Resource<Result>>> createOrCancelReservation(boolean isCreate,
                                                                        Reservation reservation) {
-        return new NetworkResource<Result>(executorUtil) {
+        return new NetworkResource<Result, Void>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
@@ -77,8 +85,9 @@ public class ReservationRepository {
             }
 
             @Override
-            protected void saveCallResult(Result item) {
+            protected Void saveCallResult(Result item) {
                 if (!isCreate) reservationDao.delete(reservation);
+                return null;
             }
         }.asLiveData();
     }

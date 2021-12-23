@@ -32,11 +32,11 @@ import me.lazy_assedninja.library.util.ExecutorUtil;
 @AndroidEntryPoint
 public class CommentFragment extends BaseBottomSheetDialogFragment {
 
-    private AutoClearedValue<CommentFragmentBinding> binding;
-    private CommentViewModel viewModel;
-
     @Inject
     public ExecutorUtil executorUtil;
+
+    private AutoClearedValue<CommentFragmentBinding> binding;
+    private CommentViewModel viewModel;
 
     private AutoClearedValue<CommentAdapter> adapter;
 
@@ -78,7 +78,7 @@ public class CommentFragment extends BaseBottomSheetDialogFragment {
             Bundle bundle = new Bundle();
             bundle.putInt("store_id", viewModel.getId());
             createCommentFragment.setArguments(bundle);
-            createCommentFragment.show(getParentFragmentManager(), "add_comment");
+            createCommentFragment.show(getParentFragmentManager(), "create_comment");
         });
 
         binding.get().setLifecycleOwner(getViewLifecycleOwner());

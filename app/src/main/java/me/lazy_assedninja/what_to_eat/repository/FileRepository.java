@@ -14,6 +14,9 @@ import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.library.util.TimeUtil;
 import okhttp3.MultipartBody;
 
+/**
+ * Repository that handles File related objects.
+ */
 public class FileRepository {
 
     private final ExecutorUtil executorUtil;
@@ -31,7 +34,7 @@ public class FileRepository {
     }
 
     public LiveData<Event<Resource<Result>>> upload(MultipartBody.Part file) {
-        return new NetworkResource<Result>(executorUtil) {
+        return new NetworkResource<Result, Integer>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
@@ -39,8 +42,8 @@ public class FileRepository {
             }
 
             @Override
-            protected void saveCallResult(Result item) {
-                userDao.updateFile(timeUtil.now());
+            protected Integer saveCallResult(Result item) {
+                return userDao.updateFile(timeUtil.now());
             }
         }.asLiveData();
     }

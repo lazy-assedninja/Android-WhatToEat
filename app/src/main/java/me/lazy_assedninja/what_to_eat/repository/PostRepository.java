@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -11,26 +12,29 @@ import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.PostDao;
 import me.lazy_assedninja.what_to_eat.db.WhatToEatDatabase;
+import me.lazy_assedninja.what_to_eat.dto.FavoriteDTO;
 import me.lazy_assedninja.what_to_eat.dto.PostDTO;
+import me.lazy_assedninja.what_to_eat.util.RateLimiter;
 import me.lazy_assedninja.what_to_eat.vo.Post;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.library.util.NetworkUtil;
 
+/**
+ * Repository that handles Post objects.
+ */
 public class PostRepository {
 
     private final ExecutorUtil executorUtil;
-    private final NetworkUtil networkUtil;
-    private final WhatToEatDatabase db;
     private final PostDao postDao;
     private final WhatToEatService whatToEatService;
 
+    private final RateLimiter<PostDTO> rateLimiter = new RateLimiter<>(10, TimeUnit.MINUTES);
+
     @Inject
-    public PostRepository(ExecutorUtil executorUtil, NetworkUtil networkUtil,
-                          WhatToEatDatabase db, PostDao postDao, WhatToEatService whatToEatService) {
+    public PostRepository(ExecutorUtil executorUtil, PostDao postDao,
+                          WhatToEatService whatToEatService) {
         this.executorUtil = executorUtil;
-        this.networkUtil = networkUtil;
-        this.db = db;
         this.postDao = postDao;
         this.whatToEatService = whatToEatService;
     }
@@ -45,7 +49,7 @@ public class PostRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Post> data) {
-                return data == null || data.isEmpty() || networkUtil.isConnected();
+                return data == null || data.isEmpty() || rateLimiter.shouldFetch(postDTO);
             }
 
             @Override
@@ -55,10 +59,12 @@ public class PostRepository {
 
             @Override
             protected void saveCallResult(List<Post> item) {
-                db.runInTransaction(() -> {
-                    postDao.deleteByStoreID(postDTO.getStoreID());
-                    postDao.insertAll(item);
-                });
+                postDao.insertAll(item);
+            }
+
+            @Override
+            protected void onFetchFailed() {
+                rateLimiter.reset(postDTO);
             }
         }.asLiveData();
     }

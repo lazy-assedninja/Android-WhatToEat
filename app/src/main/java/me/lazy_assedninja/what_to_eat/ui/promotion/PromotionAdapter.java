@@ -17,8 +17,7 @@ public class PromotionAdapter extends BaseListAdapter<Promotion, PromotionItemBi
 
     private final PromotionCallback promotionCallback;
 
-    protected PromotionAdapter(ExecutorUtil executorUtil,
-                               PromotionCallback promotionCallback) {
+    protected PromotionAdapter(ExecutorUtil executorUtil, PromotionCallback promotionCallback) {
         super(executorUtil, new DiffUtil.ItemCallback<Promotion>() {
             @Override
             public boolean areItemsTheSame(@NonNull Promotion oldItem, @NonNull Promotion newItem) {

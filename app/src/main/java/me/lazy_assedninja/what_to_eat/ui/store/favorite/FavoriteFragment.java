@@ -38,7 +38,6 @@ import me.lazy_assedninja.what_to_eat.ui.store.StoreAdapter;
 import me.lazy_assedninja.what_to_eat.ui.store.StoreCallback;
 import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
-import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Status;
 import me.lazy_assedninja.what_to_eat.vo.Store;
@@ -48,11 +47,11 @@ public class FavoriteFragment extends BaseFragment {
 
     private static final String ARGUMENT_IS_CHANGE = "is_change";
 
-    private AutoClearedValue<FavoriteFragmentBinding> binding;
-    private FavoriteViewModel viewModel;
-
     @Inject
     public ExecutorUtil executorUtil;
+
+    private AutoClearedValue<FavoriteFragmentBinding> binding;
+    private FavoriteViewModel viewModel;
 
     private NavController navController;
     private AutoClearedValue<StoreAdapter> adapter;
@@ -105,13 +104,13 @@ public class FavoriteFragment extends BaseFragment {
         StoreAdapter adapter = new StoreAdapter(executorUtil, dataBindingComponent,
                 new StoreCallback() {
                     @Override
-                    public void onFavoriteClick(int storeID, int position, boolean isFavorite) {
+                    public void onFavoriteClick(int storeID, boolean isFavorite) {
                         if (viewModel.isLoggedIn()) {
                             showToast(R.string.error_please_login_first);
                             return;
                         }
 
-                        viewModel.changeFavoriteStatus(new Favorite(storeID, !isFavorite, position,
+                        viewModel.changeFavoriteStatus(new Favorite(storeID, !isFavorite,
                                 true));
                     }
 
@@ -121,9 +120,8 @@ public class FavoriteFragment extends BaseFragment {
                         FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
                                 .addSharedElement(binding.ivPicture, String.valueOf(storeID))
                                 .build();
-                        navController.navigate(FavoriteFragmentDirections
-                                        .actionToStoreInformationFragment(storeID, position, true),
-                                extras);
+                        navController.navigate(FavoriteFragmentDirections.actionToStoreInformationFragment(
+                                        storeID, position, true), extras);
                     }
                 }, false);
         this.adapter = new AutoClearedValue<>(this, adapter);
@@ -161,7 +159,7 @@ public class FavoriteFragment extends BaseFragment {
             }
         });
         viewModel.result.observe(getViewLifecycleOwner(), event -> {
-            Resource<RequestResult<Favorite>> resultResource = event.getContentIfNotHandled();
+            Resource<Favorite> resultResource = event.getContentIfNotHandled();
             if (resultResource == null || resultResource.getData() == null) return;
 
             if (resultResource.getStatus().equals(Status.SUCCESS)) {

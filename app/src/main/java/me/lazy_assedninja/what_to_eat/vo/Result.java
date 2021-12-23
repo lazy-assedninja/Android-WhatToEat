@@ -4,6 +4,13 @@ public class Result {
 
     private String result;
 
+    public Result() {
+    }
+
+    public Result(String result) {
+        this.result = result;
+    }
+
     public String getResult() {
         return result;
     }

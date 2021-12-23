@@ -8,7 +8,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
 import static me.lazy_assedninja.what_to_eat.common.TestUtil.createResult;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -20,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import me.lazy_assedninja.library.util.TimeUtil;
 import me.lazy_assedninja.what_to_eat.common.TestUtil;
 import me.lazy_assedninja.what_to_eat.repository.CustomServiceRepository;
 import me.lazy_assedninja.what_to_eat.repository.UserRepository;
@@ -28,7 +28,6 @@ import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Report;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
-import me.lazy_assedninja.library.util.TimeUtil;
 
 @SuppressWarnings("unchecked")
 @RunWith(JUnit4.class)

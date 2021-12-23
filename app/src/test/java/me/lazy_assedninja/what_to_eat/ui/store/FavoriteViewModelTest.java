@@ -12,7 +12,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static me.lazy_assedninja.what_to_eat.common.TestUtil.createFavorite;
 import static me.lazy_assedninja.what_to_eat.common.TestUtil.createFavoriteDTO;
-import static me.lazy_assedninja.what_to_eat.common.TestUtil.createRequestResult;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
@@ -32,7 +31,6 @@ import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.ui.store.favorite.FavoriteViewModel;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
-import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 
@@ -83,15 +81,14 @@ public class FavoriteViewModelTest {
 
         // Change favorite status
         Favorite favorite = createFavorite();
-        MutableLiveData<Event<Resource<RequestResult<Favorite>>>> result = new MutableLiveData<>();
+        MutableLiveData<Event<Resource<Favorite>>> result = new MutableLiveData<>();
         when(favoriteRepository.changeFavoriteStatus(favorite)).thenReturn(result);
-        Observer<Event<Resource<RequestResult<Favorite>>>> resultObserver = mock(Observer.class);
+        Observer<Event<Resource<Favorite>>> resultObserver = mock(Observer.class);
         viewModel.result.observeForever(resultObserver);
         viewModel.changeFavoriteStatus(favorite);
         verify(resultObserver, never()).onChanged(any());
 
-        Event<Resource<RequestResult<Favorite>>> resultResource =
-                new Event<>(Resource.success(createRequestResult(createFavorite())));
+        Event<Resource<Favorite>> resultResource = new Event<>(Resource.success(createFavorite()));
         result.setValue(resultResource);
         verify(resultObserver).onChanged(resultResource);
     }

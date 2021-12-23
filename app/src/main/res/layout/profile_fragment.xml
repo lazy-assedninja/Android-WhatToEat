@@ -136,8 +136,6 @@
                             android:id="@+id/activity_profile_tv_role"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center"
                             android:gravity="center"
                             android:text="@{user.role}"
                             android:textColor="@color/black"

@@ -68,7 +68,7 @@ public class StoreAdapter extends ListAdapter<Store, BaseViewHolder<StoreItemBin
         binding.setStore(item);
         binding.ivFavorite.setEnabled(true);
         binding.ivFavorite.setOnClickListener(v -> {
-            storeCallback.onFavoriteClick(item.getId(), position, item.isFavorite());
+            storeCallback.onFavoriteClick(item.getId(), item.isFavorite());
             binding.ivFavorite.setEnabled(false);
         });
         binding.item.setOnClickListener(v -> storeCallback.onInformationClick(binding, position));

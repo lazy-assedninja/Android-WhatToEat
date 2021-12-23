@@ -11,13 +11,14 @@ import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.databinding.PortraitOptionsFragmentBinding;
-import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
+import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
 
 public class PortraitOptionsFragment extends BaseBottomSheetDialogFragment {
 
-    private PortraitOptionsFragmentBinding binding;
+    private AutoClearedValue<PortraitOptionsFragmentBinding> binding;
 
     private final PortraitOptionsCallback callback;
 
@@ -34,12 +35,13 @@ public class PortraitOptionsFragment extends BaseBottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
+        PortraitOptionsFragmentBinding binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.portrait_options_fragment,
                 container,
                 false
         );
+        this.binding = new AutoClearedValue<>(this, binding);
         return binding.getRoot();
     }
 
@@ -51,11 +53,11 @@ public class PortraitOptionsFragment extends BaseBottomSheetDialogFragment {
     }
 
     private void initView() {
-        binding.btTakePhotos.setOnClickListener(v -> {
+        binding.get().btTakePhotos.setOnClickListener(v -> {
             callback.takePicture();
             dismiss();
         });
-        binding.btFromGallery.setOnClickListener(v -> {
+        binding.get().btFromGallery.setOnClickListener(v -> {
             callback.getContent();
             dismiss();
         });

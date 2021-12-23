@@ -12,6 +12,7 @@ import retrofit2.Response;
  */
 @SuppressWarnings("unused") // T is used in extending classes
 public class ApiResponse<T> {
+
     public static <T> ApiErrorResponse<T> create(Throwable error) {
         return new ApiErrorResponse<>(error.getMessage() == null ? "Unknown error." : error.getMessage());
     }
@@ -29,11 +30,14 @@ public class ApiResponse<T> {
                 ResponseBody errorBody = response.errorBody();
                 if (errorBody != null) {
                     String errorMessage = errorBody.string();
-                    return new ApiErrorResponse<>(errorMessage.isEmpty() ?
-                            "Unknown error." : errorMessage);
+                    if (!errorMessage.isEmpty()) {
+                        return new ApiErrorResponse<>(errorMessage);
+                    } else {
+                        return new ApiErrorResponse<>(response.message().isEmpty() ?
+                                "Unknown error." : response.message());
+                    }
                 } else {
-                    return new ApiErrorResponse<>(response.message().isEmpty() ?
-                            "Unknown error." : response.message());
+                    return new ApiErrorResponse<>("Unknown error.");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

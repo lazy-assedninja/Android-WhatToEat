@@ -43,7 +43,9 @@ public class StoreRepositoryTest {
     private final StoreDao storeDao = mock(StoreDao.class);
     private final WhatToEatService service = mock(WhatToEatService.class);
 
+    private final int storeID = 1;
     private final String storeName = "store name";
+    private final String keyword = "keyword";
 
     @Before
     public void init() {
@@ -60,7 +62,7 @@ public class StoreRepositoryTest {
         when(storeDao.getStores(storeDTO.getTagID())).thenReturn(dbData);
 
         List<Store> list = new ArrayList<>();
-        list.add(createStore(1, storeName));
+        list.add(createStore(storeID, storeName));
         LiveData<ApiResponse<List<Store>>> call = successCall(list);
         when(service.getStoreList(storeDTO)).thenReturn(call);
 
@@ -84,32 +86,13 @@ public class StoreRepositoryTest {
     }
 
     @Test
-    public void loadStoresFromDb() {
-        StoreDTO storeDTO = createStoreDTO();
-        storeDTO.setTagID(Tag.HOME.getValue());
-        MutableLiveData<List<Store>> dbData = new MutableLiveData<>();
-        when(storeDao.getStores(storeDTO.getTagID())).thenReturn(dbData);
-
-        Observer<Resource<List<Store>>> observer = mock(Observer.class);
-        repository.loadStores(storeDTO).observeForever(observer);
-        verify(storeDao).getStores(storeDTO.getTagID());
-        verifyNoMoreInteractions(service);
-        verify(observer).onChanged(Resource.loading(null));
-
-        List<Store> list = new ArrayList<>();
-        list.add(createStore(1, storeName));
-        dbData.postValue(list);
-        verify(observer).onChanged(Resource.success(list));
-    }
-
-    @Test
     public void loadAllStoresFromNetwork() {
         MutableLiveData<List<Store>> dbData = new MutableLiveData<>();
         when(storeDao.getStores()).thenReturn(dbData);
 
         StoreDTO storeDTO = createStoreDTO();
         List<Store> list = new ArrayList<>();
-        list.add(createStore(1, storeName));
+        list.add(createStore(storeID, storeName));
         LiveData<ApiResponse<List<Store>>> call = successCall(list);
         when(service.getAllStores(storeDTO)).thenReturn(call);
 
@@ -133,35 +116,14 @@ public class StoreRepositoryTest {
     }
 
     @Test
-    public void loadAllStoresFromDb() {
-        MutableLiveData<List<Store>> dbData = new MutableLiveData<>();
-        when(storeDao.getStores()).thenReturn(dbData);
-
-        StoreDTO storeDTO = createStoreDTO();
-        LiveData<Resource<List<Store>>> data = repository.loadAllStores(storeDTO);
-        verify(storeDao).getStores();
-        verifyNoMoreInteractions(service);
-
-        Observer<Resource<List<Store>>> observer = mock(Observer.class);
-        data.observeForever(observer);
-        verifyNoMoreInteractions(service);
-        verify(observer).onChanged(Resource.loading(null));
-
-        List<Store> list = new ArrayList<>();
-        list.add(createStore(1, storeName));
-        dbData.postValue(list);
-        verify(observer).onChanged(Resource.success(list));
-    }
-
-    @Test
     public void searchFromNetwork() {
         StoreDTO storeDTO = createStoreDTO();
-        storeDTO.setKeyword("keyword");
+        storeDTO.setKeyword(keyword);
         MutableLiveData<List<Store>> dbData = new MutableLiveData<>();
         when(storeDao.search("%" + storeDTO.getKeyword() + "%")).thenReturn(dbData);
 
         List<Store> list = new ArrayList<>();
-        list.add(createStore(1, storeName));
+        list.add(createStore(storeID, storeName));
         LiveData<ApiResponse<List<Store>>> call = successCall(list);
         when(service.search(storeDTO)).thenReturn(call);
 
@@ -185,37 +147,16 @@ public class StoreRepositoryTest {
     }
 
     @Test
-    public void searchFromDb() {
-        StoreDTO storeDTO = createStoreDTO();
-        storeDTO.setKeyword("keyword");
-        MutableLiveData<List<Store>> dbData = new MutableLiveData<>();
-        when(storeDao.search("%" + storeDTO.getKeyword() + "%")).thenReturn(dbData);
-
-        Observer<Resource<List<Store>>> observer = mock(Observer.class);
-        repository.search(storeDTO).observeForever(observer);
-        verify(storeDao).search("%" + storeDTO.getKeyword() + "%");
-        verifyNoMoreInteractions(service);
-        verify(observer).onChanged(Resource.loading(null));
-
-        List<Store> list = new ArrayList<>();
-        list.add(createStore(1, storeName));
-        dbData.postValue(list);
-        verify(observer).onChanged(Resource.success(list));
-    }
-
-    @Test
     public void getStoreFromDbByID() {
-        int id = 1;
-        repository.getStoreFromDb(id);
+        repository.getStoreFromDb(storeID);
 
-        verify(storeDao).get(id);
+        verify(storeDao).get(storeID);
     }
 
     @Test
     public void getStoreFromDbByName() {
-        int name = 1;
-        repository.getStoreFromDb(name);
+        repository.getStoreFromDb(storeName);
 
-        verify(storeDao).get(name);
+        verify(storeDao).get(storeName);
     }
 }

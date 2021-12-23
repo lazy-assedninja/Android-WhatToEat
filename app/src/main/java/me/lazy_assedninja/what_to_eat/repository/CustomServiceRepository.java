@@ -12,6 +12,9 @@ import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.library.util.ExecutorUtil;
 
+/**
+ * Repository that handles CustomService related objects.
+ */
 public class CustomServiceRepository {
 
     private final ExecutorUtil executorUtil;
@@ -24,7 +27,7 @@ public class CustomServiceRepository {
     }
 
     public LiveData<Event<Resource<Result>>> createReport(Report report) {
-        return new NetworkResource<Result>(executorUtil) {
+        return new NetworkResource<Result, Void>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {

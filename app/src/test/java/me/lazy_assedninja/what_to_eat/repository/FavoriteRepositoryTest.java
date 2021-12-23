@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static me.lazy_assedninja.what_to_eat.common.TestUtil.createFavorite;
 import static me.lazy_assedninja.what_to_eat.common.TestUtil.createFavoriteDTO;
-import static me.lazy_assedninja.what_to_eat.common.TestUtil.createRequestResult;
 import static me.lazy_assedninja.what_to_eat.common.TestUtil.createStore;
 import static me.lazy_assedninja.what_to_eat.util.ApiUtil.successCall;
 
@@ -34,7 +33,6 @@ import me.lazy_assedninja.what_to_eat.dto.FavoriteDTO;
 import me.lazy_assedninja.what_to_eat.util.InstantExecutorUtil;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
-import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 
@@ -51,7 +49,7 @@ public class FavoriteRepositoryTest {
     private final FavoriteDao favoriteDao = mock(FavoriteDao.class);
     private final WhatToEatService service = mock(WhatToEatService.class);
 
-    private final String storeName = "store name";
+    private final int storeID = 1;
 
     @Before
     public void init() {
@@ -69,7 +67,7 @@ public class FavoriteRepositoryTest {
 
         FavoriteDTO favoriteDTO = createFavoriteDTO();
         List<Store> list = new ArrayList<>();
-        list.add(createStore(1, storeName));
+        list.add(createStore(storeID, "store name"));
         LiveData<ApiResponse<List<Store>>> call = successCall(list);
         when(service.getFavoriteList(favoriteDTO)).thenReturn(call);
 
@@ -93,92 +91,70 @@ public class FavoriteRepositoryTest {
     }
 
     @Test
-    public void loadFavoriteFromDb() {
-        FavoriteDTO favoriteDTO = createFavoriteDTO();
-        MutableLiveData<List<Store>> dbData = new MutableLiveData<>();
-        when(favoriteDao.getFavorites(true)).thenReturn(dbData);
-
-        Observer<Resource<List<Store>>> observer = mock(Observer.class);
-        repository.loadFavorites(favoriteDTO).observeForever(observer);
-        verify(favoriteDao).getFavorites(true);
-        verifyNoMoreInteractions(service);
-        verify(observer).onChanged(Resource.loading(null));
-
-        List<Store> list = new ArrayList<>();
-        list.add(createStore(1, storeName));
-        dbData.postValue(list);
-        verify(observer).onChanged(Resource.success(list));
-    }
-
-    @Test
     public void addToFavorite() {
         Favorite favorite = createFavorite();
-        favorite.setStoreID(1);
+        favorite.setStoreID(storeID);
         favorite.setStatus(true);
-        RequestResult<Favorite> requestResult = createRequestResult(favorite);
-        LiveData<ApiResponse<RequestResult<Favorite>>> call = successCall(requestResult);
+        LiveData<ApiResponse<Favorite>> call = successCall(favorite);
         when(service.addToFavorite(favorite)).thenReturn(call);
 
-        Observer<Event<Resource<RequestResult<Favorite>>>> observer = mock(Observer.class);
+        Observer<Event<Resource<Favorite>>> observer = mock(Observer.class);
         repository.changeFavoriteStatus(favorite).observeForever(observer);
         verify(service).addToFavorite(favorite);
         verify(favoriteDao).updateFavoriteStatus(favorite.getStoreID(), favorite.getStatus());
 
-        verify(observer).onChanged(new Event<>(Resource.success(requestResult)));
+        verify(observer).onChanged(new Event<>(Resource.success(favorite)));
     }
 
     @Test
     public void addToFavoriteAndUpdateTime() {
         Favorite favorite = createFavorite();
-        favorite.setStoreID(1);
+        favorite.setStoreID(storeID);
         favorite.setStatus(true);
-        favorite.setNeedUpdate(true);
-        RequestResult<Favorite> requestResult = createRequestResult(favorite);
-        LiveData<ApiResponse<RequestResult<Favorite>>> call = successCall(requestResult);
+        favorite.setNeedUpdateTime(true);
+        LiveData<ApiResponse<Favorite>> call = successCall(favorite);
         when(service.addToFavorite(favorite)).thenReturn(call);
 
-        Observer<Event<Resource<RequestResult<Favorite>>>> observer = mock(Observer.class);
+        Observer<Event<Resource<Favorite>>> observer = mock(Observer.class);
         repository.changeFavoriteStatus(favorite).observeForever(observer);
         verify(service).addToFavorite(favorite);
         verify(favoriteDao).updateFavoriteStatusAndTime(favorite.getStoreID(), favorite.getStatus(),
                 timeUtil.now());
 
-        verify(observer).onChanged(new Event<>(Resource.success(requestResult)));
+        verify(observer).onChanged(new Event<>(Resource.success(favorite)));
     }
 
     @Test
     public void cancelFavorite() {
         Favorite favorite = createFavorite();
-        favorite.setStoreID(1);
+        favorite.setStoreID(storeID);
         favorite.setStatus(false);
-        RequestResult<Favorite> requestResult = createRequestResult(favorite);
-        LiveData<ApiResponse<RequestResult<Favorite>>> call = successCall(requestResult);
+        LiveData<ApiResponse<Favorite>> call = successCall(favorite);
         when(service.cancelFavorite(favorite)).thenReturn(call);
 
-        Observer<Event<Resource<RequestResult<Favorite>>>> observer = mock(Observer.class);
+        Observer<Event<Resource<Favorite>>> observer = mock(Observer.class);
         repository.changeFavoriteStatus(favorite).observeForever(observer);
         verify(service).cancelFavorite(favorite);
         verify(favoriteDao).updateFavoriteStatus(favorite.getStoreID(), favorite.getStatus());
 
-        verify(observer).onChanged(new Event<>(Resource.success(requestResult)));
+        verify(observer).onChanged(new Event<>(Resource.success(favorite)));
     }
 
     @Test
     public void cancelFavoriteAndUpdateTime() {
         Favorite favorite = createFavorite();
-        favorite.setStoreID(1);
+        favorite.setStoreID(storeID);
         favorite.setStatus(false);
-        favorite.setNeedUpdate(true);
-        RequestResult<Favorite> requestResult = createRequestResult(favorite);
-        LiveData<ApiResponse<RequestResult<Favorite>>> call = successCall(requestResult);
+        favorite.setNeedUpdateTime(true);
+        LiveData<ApiResponse<Favorite>> call = successCall(favorite);
         when(service.cancelFavorite(favorite)).thenReturn(call);
 
-        Observer<Event<Resource<RequestResult<Favorite>>>> observer = mock(Observer.class);
+        Observer<Event<Resource<Favorite>>> observer = mock(Observer.class);
         repository.changeFavoriteStatus(favorite).observeForever(observer);
         verify(service).cancelFavorite(favorite);
         verify(favoriteDao).updateFavoriteStatusAndTime(favorite.getStoreID(), favorite.getStatus(),
                 timeUtil.now());
 
-        verify(observer).onChanged(new Event<>(Resource.success(requestResult)));
+        verify(observer).onChanged(new Event<>(Resource.success(favorite)));
     }
 }

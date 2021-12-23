@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- TicketView -->
     <declare-styleable name="TicketView">
 
         <attr name="ticketOrientation" format="enum">

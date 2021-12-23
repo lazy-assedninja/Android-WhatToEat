@@ -16,7 +16,8 @@ import me.lazy_assedninja.library.util.ExecutorUtil;
  * @param <T> Type of the items in the list
  * @param <V> The type of the ViewDataBinding
  */
-public abstract class BaseListAdapter<T, V extends ViewDataBinding> extends ListAdapter<T, BaseViewHolder<V>> {
+public abstract class BaseListAdapter<T, V extends ViewDataBinding> extends ListAdapter<T,
+        BaseViewHolder<V>> {
 
     protected BaseListAdapter(ExecutorUtil executorUtil, @NonNull DiffUtil.ItemCallback<T> diffCallback) {
         super(new AsyncDifferConfig.Builder<>(diffCallback)

@@ -17,7 +17,7 @@ import me.lazy_assedninja.what_to_eat.vo.Comment;
 public interface CommentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Comment comment);
+    long insert(Comment comment);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Comment> list);
@@ -27,7 +27,4 @@ public interface CommentDao {
 
     @Query("SELECT id FROM comment ORDER BY id DESC LIMIT 1")
     int getLastCommentID();
-
-    @Query("DELETE FROM comment WHERE storeID == :storeID")
-    void deleteByStoreID(int storeID);
 }

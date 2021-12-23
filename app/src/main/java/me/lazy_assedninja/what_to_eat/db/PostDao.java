@@ -21,7 +21,4 @@ public interface PostDao {
 
     @Query("SELECT * FROM post WHERE storeID == :storeID")
     LiveData<List<Post>> getPosts(int storeID);
-
-    @Query("DELETE FROM post WHERE storeID == :storeID")
-    void deleteByStoreID(int storeID);
 }

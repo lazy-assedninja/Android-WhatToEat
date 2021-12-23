@@ -17,11 +17,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.databinding.MapInformationFragmentBinding;
 import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
 import me.lazy_assedninja.what_to_eat.vo.Store;
-import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 
 @AndroidEntryPoint
 public class MapInformationFragment extends BaseBottomSheetDialogFragment {
@@ -64,21 +64,17 @@ public class MapInformationFragment extends BaseBottomSheetDialogFragment {
     private void initView() {
         binding.get().btNavigation.setOnClickListener(v -> {
             if (getActivity() == null) return;
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(getActivity(), location -> {
-                        Store store = viewModel.getStore();
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Directions url sample
-                            // https://www.google.com/maps/dir/?api=1&origin=25.042115050892985,121.5256179979202
-                            // &destination=25.0412988,121.5268078
-                            Uri uri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" +
-                                    location.getLatitude() + "," + location.getLongitude() +
-                                    "&destination=" + store.getLatitude() + "," + store.getLongitude());
-                            startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                        }
-                    });
-
+            fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), location -> {
+                Store store = viewModel.getStore();
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    // Directions
+                    Uri uri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" +
+                            location.getLatitude() + "," + location.getLongitude() +
+                            "&destination=" + store.getLatitude() + "," + store.getLongitude());
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                }
+            });
         });
         binding.get().btCall.setOnClickListener(v -> {
             Store store = viewModel.getStore();

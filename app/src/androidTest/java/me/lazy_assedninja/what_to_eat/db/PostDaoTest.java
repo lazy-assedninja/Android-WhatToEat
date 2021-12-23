@@ -28,20 +28,22 @@ public class PostDaoTest extends DbTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private PostDao postDao;
+    private final int postID = 1;
     private final String title = "Lazy-assed Ninja";
+    private final int storeID = 1;
 
     @Before
     public void init() {
         postDao = db.postDao();
 
         List<Post> list = new ArrayList<>();
-        list.add(createPost(1, title, 1));
+        list.add(createPost(postID, title, storeID));
         postDao.insertAll(list);
     }
 
     @Test
     public void insertAndGetByStoreID() throws TimeoutException, InterruptedException {
-        List<Post> data = getOrAwaitValue(postDao.getPosts(1));
+        List<Post> data = getOrAwaitValue(postDao.getPosts(storeID));
         assertThat(data.get(0).getTitle(), is(title));
     }
 
@@ -50,17 +52,10 @@ public class PostDaoTest extends DbTest {
             InterruptedException {
         String newTitle = "new Lazy-assed Ninja";
         List<Post> list = new ArrayList<>();
-        list.add(createPost(1, newTitle, 1));
+        list.add(createPost(postID, newTitle, storeID));
         postDao.insertAll(list);
 
-        List<Post> data = getOrAwaitValue(postDao.getPosts(1));
+        List<Post> data = getOrAwaitValue(postDao.getPosts(storeID));
         assertThat(data.get(0).getTitle(), is(newTitle));
-    }
-
-    @Test
-    public void deletePostByStoreIDAndCheck() throws TimeoutException, InterruptedException {
-        postDao.deleteByStoreID(1);
-        List<Post> data = getOrAwaitValue(postDao.getPosts(1));
-        assertThat(data.size(), is(0));
     }
 }

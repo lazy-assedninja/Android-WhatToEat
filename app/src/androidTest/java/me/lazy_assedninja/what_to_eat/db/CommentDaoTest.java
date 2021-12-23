@@ -28,19 +28,21 @@ public class CommentDaoTest extends DbTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private CommentDao commentDao;
+    private final int commentID = 1;
     private final String star = "star";
     private final String newStar = "new star";
+    private final int storeID = 1;
 
     @Before
     public void init() {
         commentDao = db.commentDao();
 
-        commentDao.insert(createComment(1, star, 1));
+        commentDao.insert(createComment(commentID, star, storeID));
     }
 
     @Test
     public void insertAndGetByStoreID() throws TimeoutException, InterruptedException {
-        List<Comment> data = getOrAwaitValue(commentDao.getComments(1));
+        List<Comment> data = getOrAwaitValue(commentDao.getComments(storeID));
         assertThat(data.get(0).getStar(), is(star));
     }
 
@@ -53,9 +55,9 @@ public class CommentDaoTest extends DbTest {
     @Test
     public void replaceWhenInsertOnConflictAndGetByStoreID() throws TimeoutException,
             InterruptedException {
-        commentDao.insert(createComment(1, newStar, 1));
+        commentDao.insert(createComment(commentID, newStar, storeID));
 
-        List<Comment> data = getOrAwaitValue(commentDao.getComments(1));
+        List<Comment> data = getOrAwaitValue(commentDao.getComments(storeID));
         assertThat(data.get(0).getStar(), is(newStar));
     }
 
@@ -63,17 +65,10 @@ public class CommentDaoTest extends DbTest {
     public void replaceWhenInsertCommentsOnConflictAndGetByStoreID() throws TimeoutException,
             InterruptedException {
         List<Comment> list = new ArrayList<>();
-        list.add(createComment(1, newStar, 1));
+        list.add(createComment(commentID, newStar, storeID));
         commentDao.insertAll(list);
 
-        List<Comment> data = getOrAwaitValue(commentDao.getComments(1));
+        List<Comment> data = getOrAwaitValue(commentDao.getComments(storeID));
         assertThat(data.get(0).getStar(), is(newStar));
-    }
-
-    @Test
-    public void deleteCommentByStoreIDAndCheck() throws TimeoutException, InterruptedException {
-        commentDao.deleteByStoreID(1);
-        List<Comment> data = getOrAwaitValue(commentDao.getComments(1));
-        assertThat(data.size(), is(0));
     }
 }

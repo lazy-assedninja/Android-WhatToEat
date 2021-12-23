@@ -9,9 +9,9 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.what_to_eat.dto.UserDTO;
-import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.util.AbsentLiveData;
+import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 
@@ -28,21 +28,23 @@ public class ForgetPasswordViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    public LiveData<Event<Resource<Result>>> sendVerificationResult = Transformations.switchMap(sendVerificationCode, userDTO -> {
-        if (userDTO == null) {
-            return AbsentLiveData.create();
-        } else {
-            return userRepository.sendVerificationCode(userDTO);
-        }
-    });
+    public LiveData<Event<Resource<Result>>> sendVerificationResult =
+            Transformations.switchMap(sendVerificationCode, userDTO -> {
+                if (userDTO == null) {
+                    return AbsentLiveData.create();
+                } else {
+                    return userRepository.sendVerificationCode(userDTO);
+                }
+            });
 
-    public LiveData<Event<Resource<Result>>> forgetPasswordResult = Transformations.switchMap(forgetPassword, userDTO -> {
-        if (userDTO == null) {
-            return AbsentLiveData.create();
-        } else {
-            return userRepository.forgetPassword(userDTO);
-        }
-    });
+    public LiveData<Event<Resource<Result>>> forgetPasswordResult =
+            Transformations.switchMap(forgetPassword, userDTO -> {
+                if (userDTO == null) {
+                    return AbsentLiveData.create();
+                } else {
+                    return userRepository.forgetPassword(userDTO);
+                }
+            });
 
     public void sendVerificationCode(UserDTO userDTO) {
         sendVerificationCode.setValue(userDTO);

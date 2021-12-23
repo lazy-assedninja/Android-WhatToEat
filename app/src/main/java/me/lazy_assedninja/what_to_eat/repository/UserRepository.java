@@ -18,6 +18,9 @@ import me.lazy_assedninja.library.util.EncryptUtil;
 import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.library.util.TimeUtil;
 
+/**
+ * Repository that handles User related objects.
+ */
 public class UserRepository {
 
     private static final String PREFERENCES_USER = "preferences_user";
@@ -105,7 +108,7 @@ public class UserRepository {
     }
 
     public LiveData<Event<Resource<Result>>> register(User user) {
-        return new NetworkResource<Result>(executorUtil) {
+        return new NetworkResource<Result, Void>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
@@ -115,14 +118,15 @@ public class UserRepository {
             }
 
             @Override
-            protected void saveCallResult(Result item) {
+            protected Void saveCallResult(Result item) {
                 setUserEmail(user.getEmail());
+                return null;
             }
         }.asLiveData();
     }
 
     public LiveData<Event<Resource<Result>>> bindGoogleAccount(GoogleAccount googleAccount) {
-        return new NetworkResource<Result>(executorUtil) {
+        return new NetworkResource<Result, Integer>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
@@ -130,14 +134,14 @@ public class UserRepository {
             }
 
             @Override
-            protected void saveCallResult(Result item) {
-                userDao.updateGoogleID(googleAccount.getGoogleID(), timeUtil.now());
+            protected Integer saveCallResult(Result item) {
+                return userDao.updateGoogleID(googleAccount.getGoogleID(), timeUtil.now());
             }
         }.asLiveData();
     }
 
     public LiveData<Event<Resource<Result>>> resetPassword(UserDTO userDTO) {
-        return new NetworkResource<Result>(executorUtil) {
+        return new NetworkResource<Result, Integer>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
@@ -149,14 +153,14 @@ public class UserRepository {
             }
 
             @Override
-            protected void saveCallResult(Result item) {
-                userDao.updatePassword(userDTO.getNewPassword(), timeUtil.now());
+            protected Integer saveCallResult(Result item) {
+                return userDao.updatePassword(userDTO.getNewPassword(), timeUtil.now());
             }
         }.asLiveData();
     }
 
     public LiveData<Event<Resource<Result>>> sendVerificationCode(UserDTO userDTO) {
-        return new NetworkResource<Result>(executorUtil) {
+        return new NetworkResource<Result, Void>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
@@ -166,7 +170,7 @@ public class UserRepository {
     }
 
     public LiveData<Event<Resource<Result>>> forgetPassword(UserDTO userDTO) {
-        return new NetworkResource<Result>(executorUtil) {
+        return new NetworkResource<Result, Integer>(executorUtil) {
 
             @Override
             protected LiveData<ApiResponse<Result>> createCall() {
@@ -176,8 +180,8 @@ public class UserRepository {
             }
 
             @Override
-            protected void saveCallResult(Result item) {
-                userDao.updatePassword(userDTO.getNewPassword(), timeUtil.now());
+            protected Integer saveCallResult(Result item) {
+                return userDao.updatePassword(userDTO.getNewPassword(), timeUtil.now());
             }
         }.asLiveData();
     }

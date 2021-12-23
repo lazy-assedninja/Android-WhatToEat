@@ -26,11 +26,11 @@ import me.lazy_assedninja.library.util.ExecutorUtil;
 @AndroidEntryPoint
 public class PromotionFragment extends BaseFragment {
 
-    private AutoClearedValue<PromotionFragmentBinding> binding;
-    private PromotionViewModel viewModel;
-
     @Inject
     public ExecutorUtil executorUtil;
+
+    private AutoClearedValue<PromotionFragmentBinding> binding;
+    private PromotionViewModel viewModel;
 
     private NavController navController;
     private AutoClearedValue<PromotionAdapter> adapter;

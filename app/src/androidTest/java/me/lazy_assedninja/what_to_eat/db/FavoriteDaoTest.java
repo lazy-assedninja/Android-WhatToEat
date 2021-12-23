@@ -29,6 +29,7 @@ public class FavoriteDaoTest extends DbTest {
 
     private StoreDao storeDao;
     private FavoriteDao favoriteDao;
+    private final int storeID = 1;
     private final String name = "Lazy-assed Ninja";
 
     @Before
@@ -37,7 +38,7 @@ public class FavoriteDaoTest extends DbTest {
         favoriteDao = db.favoriteDao();
 
         List<Store> list = new ArrayList<>();
-        list.add(createStore(1, name, true));
+        list.add(createStore(storeID, name, true));
         storeDao.insertAll(list);
     }
 
@@ -49,18 +50,19 @@ public class FavoriteDaoTest extends DbTest {
 
     @Test
     public void updateFavoriteStatusAndGet() throws TimeoutException, InterruptedException {
-        favoriteDao.updateFavoriteStatus(1, false);
+        favoriteDao.updateFavoriteStatus(storeID, false);
 
-        Store data = getOrAwaitValue(storeDao.get(1));
+        Store data = getOrAwaitValue(storeDao.get(storeID));
         assertThat(data.isFavorite(), is(false));
     }
 
     @Test
     public void updateFavoriteStatusAndTimeAndGet() throws TimeoutException, InterruptedException {
-        favoriteDao.updateFavoriteStatusAndTime(1, false, "update time");
+        String updateTime = "update time";
+        favoriteDao.updateFavoriteStatusAndTime(storeID, false, updateTime);
 
-        Store data = getOrAwaitValue(storeDao.get(1));
+        Store data = getOrAwaitValue(storeDao.get(storeID));
         assertThat(data.isFavorite(), is(false));
-        assertThat(data.getUpdateTime(), is("update time"));
+        assertThat(data.getUpdateTime(), is(updateTime));
     }
 }

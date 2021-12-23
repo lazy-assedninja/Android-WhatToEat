@@ -5,24 +5,26 @@ import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
+import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiEmptyResponse;
 import me.lazy_assedninja.what_to_eat.api.ApiErrorResponse;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.ApiSuccessResponse;
 import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.library.util.ExecutorUtil;
 
 /**
  * A generic class that can provide a resource backed by the network.
  *
- * @param <T>
+ * @param <ResultType>
+ * @param <DbResultType>
  */
-public abstract class NetworkResource<T> {
+@SuppressWarnings("unused")
+public abstract class NetworkResource<ResultType, DbResultType> {
 
     private final ExecutorUtil executorUtil;
 
-    private final MediatorLiveData<Event<Resource<T>>> result = new MediatorLiveData<>();
+    private final MediatorLiveData<Event<Resource<ResultType>>> result = new MediatorLiveData<>();
 
     @MainThread
     public NetworkResource(ExecutorUtil executorUtil) {
@@ -34,52 +36,59 @@ public abstract class NetworkResource<T> {
     private void fetchFromNetwork() {
         setValue(Resource.loading(null));
 
-        LiveData<ApiResponse<T>> apiResponse = createCall();
+        LiveData<ApiResponse<ResultType>> apiResponse = createCall();
         result.addSource(apiResponse, response -> {
             result.removeSource(apiResponse);
 
-            Resource<T> resource;
             if (response instanceof ApiSuccessResponse) {
-                executorUtil.diskIO().execute(() ->
-                        saveCallResult(processResponse((ApiSuccessResponse<T>) response)));
-
-                resource = (Resource.success(((ApiSuccessResponse<T>) response).getBody()));
+                executorUtil.diskIO().execute(() -> {
+                    ResultType result = processResponse((ApiSuccessResponse<ResultType>) response);
+                    DbResultType dbResult = saveCallResult(result);
+                    Resource<ResultType> resource = processResource(Resource.success(result));
+                    executorUtil.mainThread().execute(() -> setValue(resource));
+                });
             } else if (response instanceof ApiEmptyResponse) {
-                resource = Resource.error("No response.", null);
+                Resource<ResultType> resource = processResource(Resource.success(null));
+                executorUtil.mainThread().execute(() -> setValue(resource));
             } else if (response instanceof ApiErrorResponse) {
                 onFetchFailed();
-                resource = Resource.error(
-                        ((ApiErrorResponse<T>) response).getErrorMessage(), null);
-            } else {
-                resource = Resource.error("Unknown error.", null);
+
+                Resource<ResultType> resource = processResource(Resource.error(
+                        ((ApiErrorResponse<ResultType>) response).getErrorMessage(), null));
+                executorUtil.mainThread().execute(() -> setValue(resource));
             }
-            setValue(resource);
         });
     }
 
     @MainThread
-    private void setValue(Resource<T> newValue) {
+    private void setValue(Resource<ResultType> newValue) {
         if (result.getValue() == null || result.getValue().peekContent() != newValue) {
             result.setValue(new Event<>(newValue));
         }
     }
 
     @MainThread
-    protected abstract LiveData<ApiResponse<T>> createCall();
+    protected abstract LiveData<ApiResponse<ResultType>> createCall();
 
     @WorkerThread
-    protected void saveCallResult(T item) {
+    protected DbResultType saveCallResult(ResultType item) {
+        return null;
     }
 
     @WorkerThread
-    protected T processResponse(ApiSuccessResponse<T> response) {
+    protected ResultType processResponse(ApiSuccessResponse<ResultType> response) {
         return response.getBody();
+    }
+
+    @WorkerThread
+    protected Resource<ResultType> processResource(Resource<ResultType> resource) {
+        return resource;
     }
 
     protected void onFetchFailed() {
     }
 
-    public LiveData<Event<Resource<T>>> asLiveData() {
+    public LiveData<Event<Resource<ResultType>>> asLiveData() {
         return result;
     }
 }

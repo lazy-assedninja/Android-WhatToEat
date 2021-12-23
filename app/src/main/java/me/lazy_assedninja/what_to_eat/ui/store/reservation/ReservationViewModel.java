@@ -11,10 +11,10 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.what_to_eat.dto.ReservationDTO;
-import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.repository.ReservationRepository;
 import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.util.AbsentLiveData;
+import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Reservation;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
@@ -34,13 +34,14 @@ public class ReservationViewModel extends ViewModel {
         this.reservationRepository = reservationRepository;
     }
 
-    public final LiveData<Resource<List<Reservation>>> reservations = Transformations.switchMap(reservationRequest, request -> {
-        if (request == null) {
-            return AbsentLiveData.create();
-        } else {
-            return reservationRepository.loadReservations(request);
-        }
-    });
+    public final LiveData<Resource<List<Reservation>>> reservations =
+            Transformations.switchMap(reservationRequest, request -> {
+                if (request == null) {
+                    return AbsentLiveData.create();
+                } else {
+                    return reservationRepository.loadReservations(request);
+                }
+            });
 
     public void requestReservation(ReservationDTO reservationDTO) {
         if (reservationRequest.getValue() == null || reservationRequest.getValue().getId() !=

@@ -24,12 +24,12 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.databinding.LoginFragmentBinding;
 import me.lazy_assedninja.what_to_eat.dto.UserDTO;
 import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
 import me.lazy_assedninja.what_to_eat.vo.Status;
-import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
 public class LoginFragment extends BaseFragment {
@@ -69,8 +69,8 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void initView() {
-        binding.get().btForgetPassword.setOnClickListener(v ->
-                navController.navigate(R.id.action_to_forget_password_fragment));
+        binding.get().btForgetPassword.setOnClickListener(v -> navController.navigate(
+                R.id.action_to_forget_password_fragment));
         binding.get().btLogin.setOnClickListener(v -> {
             dismissKeyboard(v);
             EditText etEmail = binding.get().tilEmail.getEditText();
@@ -92,8 +92,8 @@ public class LoginFragment extends BaseFragment {
                 viewModel.login(new UserDTO(email, password, false));
             }
         });
-        binding.get().btGoogleLogin.setOnClickListener(v ->
-                googleSignIn.launch(googleSignInClient.getSignInIntent()));
+        binding.get().btGoogleLogin.setOnClickListener(v -> googleSignIn.launch(
+                googleSignInClient.getSignInIntent()));
 
         binding.get().setLifecycleOwner(getViewLifecycleOwner());
         binding.get().setUser(viewModel.user);
@@ -123,7 +123,7 @@ public class LoginFragment extends BaseFragment {
 
     private void initData() {
         EditText etEmail = binding.get().tilEmail.getEditText();
-        if (!viewModel.getUserEmail().isEmpty() && etEmail != null)
+        if (etEmail != null && !viewModel.getUserEmail().isEmpty())
             etEmail.setText(viewModel.getUserEmail());
 
         viewModel.user.observe(getViewLifecycleOwner(), userResource -> {

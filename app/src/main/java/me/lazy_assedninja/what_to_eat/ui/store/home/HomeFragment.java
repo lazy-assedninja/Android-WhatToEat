@@ -38,7 +38,6 @@ import me.lazy_assedninja.what_to_eat.ui.store.StoreAdapter;
 import me.lazy_assedninja.what_to_eat.ui.store.StoreCallback;
 import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
-import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Status;
 import me.lazy_assedninja.what_to_eat.vo.Store;
@@ -50,18 +49,17 @@ public class HomeFragment extends BaseFragment {
     private static final String ARGUMENT_POSITION = "position";
     private static final String ARGUMENT_IS_CHANGE = "is_change";
 
-    private AutoClearedValue<HomeFragmentBinding> binding;
-    private HomeViewModel viewModel;
-
     @Inject
     public ExecutorUtil executorUtil;
+
+    private AutoClearedValue<HomeFragmentBinding> binding;
+    private HomeViewModel viewModel;
 
     private NavController navController;
     private AutoClearedValue<StoreAdapter> adapter;
 
     private int position;
     private boolean isChange;
-    private boolean updated;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,12 +110,13 @@ public class HomeFragment extends BaseFragment {
         StoreAdapter adapter = new StoreAdapter(executorUtil, dataBindingComponent,
                 new StoreCallback() {
                     @Override
-                    public void onFavoriteClick(int storeID, int position, boolean isFavorite) {
+                    public void onFavoriteClick(int storeID, boolean isFavorite) {
                         if (viewModel.isLoggedIn()) {
                             showToast(R.string.error_please_login_first);
                             return;
                         }
-                        viewModel.changeFavoriteStatus(new Favorite(storeID, !isFavorite, position,
+
+                        viewModel.changeFavoriteStatus(new Favorite(storeID, !isFavorite,
                                 false));
                     }
 
@@ -151,7 +150,6 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initData() {
-        updated = false;
         viewModel.requestStore(new StoreDTO(Tag.HOME.getValue()));
 
         viewModel.stores.observe(getViewLifecycleOwner(), listResource -> {
@@ -159,29 +157,32 @@ public class HomeFragment extends BaseFragment {
 
             List<Store> list = listResource.getData();
             if (list != null) {
-                if (position != -1 && isChange && !updated) {
+                if (position != -1 && isChange) {
                     Store store = list.get(position);
                     boolean isFavorite = store.isFavorite();
                     store.setFavorite(!isFavorite);
-                    updated = true;
+                    isChange = false;
                 }
+                viewModel.setList(list);
                 adapter.get().submitList(list);
             } else {
                 adapter.get().submitList(emptyList());
             }
         });
         viewModel.result.observe(getViewLifecycleOwner(), event -> {
-            Resource<RequestResult<Favorite>> resultResource = event.getContentIfNotHandled();
+            Resource<Favorite> resultResource = event.getContentIfNotHandled();
             if (resultResource == null || resultResource.getData() == null) return;
 
-            if (!resultResource.getStatus().equals(Status.LOADING)) {
-                Favorite favorite = resultResource.getData().getRequest();
-                adapter.get().notifyItemChanged(favorite.getPosition(), favorite.getStatus());
-            }
+            Favorite favorite = resultResource.getData();
             if (resultResource.getStatus().equals(Status.SUCCESS)) {
-                showToast(resultResource.getData().getResult());
+                showToast(favorite.getResult());
             } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
+            }
+
+            if (!resultResource.getStatus().equals(Status.LOADING)) {
+                int position = viewModel.getStorePosition(favorite.getStoreID());
+                adapter.get().notifyItemChanged(position, favorite.getStatus());
             }
         });
     }

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import me.lazy_assedninja.what_to_eat.vo.Store;
+import me.lazy_assedninja.what_to_eat.vo.Tag;
 
 @RunWith(AndroidJUnit4.class)
 @SmallTest
@@ -28,6 +29,7 @@ public class StoreDaoTest extends DbTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private StoreDao storeDao;
+    private final int storeID = 1;
     private final String name = "Lazy-assed Ninja";
 
     @Before
@@ -35,13 +37,13 @@ public class StoreDaoTest extends DbTest {
         storeDao = db.storeDao();
 
         List<Store> list = new ArrayList<>();
-        list.add(createStore(1, name));
+        list.add(createStore(storeID, name));
         storeDao.insertAll(list);
     }
 
     @Test
     public void insertAndGetByID() throws TimeoutException, InterruptedException {
-        Store data = getOrAwaitValue(storeDao.get(1));
+        Store data = getOrAwaitValue(storeDao.get(storeID));
         assertThat(data.getName(), is(name));
     }
 
@@ -55,16 +57,16 @@ public class StoreDaoTest extends DbTest {
     public void replaceWhenInsertOnConflictAndGet() throws TimeoutException, InterruptedException {
         String newName = "new Lazy-assed Ninja";
         List<Store> list = new ArrayList<>();
-        list.add(createStore(1, newName));
+        list.add(createStore(storeID, newName));
         storeDao.insertAll(list);
 
-        Store newData = getOrAwaitValue(storeDao.get(1));
+        Store newData = getOrAwaitValue(storeDao.get(storeID));
         assertThat(newData.getName(), is(newName));
     }
 
     @Test
     public void insertAndGetStoresByTag() throws TimeoutException, InterruptedException {
-        List<Store> data = getOrAwaitValue(storeDao.getStores(1));
+        List<Store> data = getOrAwaitValue(storeDao.getStores(Tag.HOME.getValue()));
         assertThat(data.get(0).getName(), is(name));
     }
 
@@ -76,7 +78,8 @@ public class StoreDaoTest extends DbTest {
 
     @Test
     public void insertAndSearchByName() throws TimeoutException, InterruptedException {
-        List<Store> data = getOrAwaitValue(storeDao.search("%Ninja%"));
+        String keyword = "Ninja";
+        List<Store> data = getOrAwaitValue(storeDao.search("%" + keyword + "%"));
         assertThat(data.get(0).getName(), is(name));
     }
 }

@@ -7,6 +7,7 @@ package me.lazy_assedninja.what_to_eat.vo;
  * {@code LiveData<Resource<T>>} to pass back the latest data to the UI with its fetch status.
  */
 public enum Status {
+
     SUCCESS,
     ERROR,
     LOADING

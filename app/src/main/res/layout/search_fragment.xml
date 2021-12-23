@@ -17,8 +17,6 @@
 
         <import type="me.lazy_assedninja.what_to_eat.vo.Store" />
 
-        <import type="me.lazy_assedninja.what_to_eat.vo.RequestResult" />
-
         <import type="me.lazy_assedninja.what_to_eat.vo.Favorite" />
 
         <variable
@@ -27,7 +25,7 @@
 
         <variable
             name="result"
-            type="LiveData&lt;Event&lt;Resource&lt;RequestResult&lt;Favorite>>>>" />
+            type="LiveData&lt;Event&lt;Resource&lt;Favorite>>>" />
     </data>
 
     <FrameLayout

@@ -45,13 +45,14 @@ public class CommentViewModel extends ViewModel {
         this.id = id;
     }
 
-    public final LiveData<Resource<List<Comment>>> comments = Transformations.switchMap(commentRequest, request -> {
-        if (request == null) {
-            return AbsentLiveData.create();
-        } else {
-            return commentRepository.loadComments(request);
-        }
-    });
+    public final LiveData<Resource<List<Comment>>> comments =
+            Transformations.switchMap(commentRequest, request -> {
+                if (request == null) {
+                    return AbsentLiveData.create();
+                } else {
+                    return commentRepository.loadComments(request);
+                }
+            });
 
     public void requestComment(CommentDTO commentDTO) {
         if (commentRequest.getValue() == null) {

@@ -24,13 +24,13 @@ public interface UserDao {
     User getUser();
 
     @Query("UPDATE user SET google_googleID = :googleID, updateTime = :updateTime")
-    void updateGoogleID(String googleID, String updateTime);
+    int updateGoogleID(String googleID, String updateTime);
 
     @Query("UPDATE user SET password = :password, updateTime = :updateTime")
-    void updatePassword(String password, String updateTime);
+    int updatePassword(String password, String updateTime);
 
     @Query("UPDATE user SET updateTime = :updateTime")
-    void updateFile(String updateTime);
+    int updateFile(String updateTime);
 
     @Query("DELETE FROM user")
     void delete();

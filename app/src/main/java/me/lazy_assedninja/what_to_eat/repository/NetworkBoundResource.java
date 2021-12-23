@@ -6,12 +6,12 @@ import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
+import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiEmptyResponse;
 import me.lazy_assedninja.what_to_eat.api.ApiErrorResponse;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.ApiSuccessResponse;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.library.util.ExecutorUtil;
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network.
@@ -49,26 +49,27 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
         result.addSource(apiResponse, response -> {
             result.removeSource(apiResponse);
             result.removeSource(dbSource);
+
             if (response instanceof ApiSuccessResponse) {
                 executorUtil.diskIO().execute(() -> {
                     saveCallResult(processResponse((ApiSuccessResponse<RequestType>) response));
+
                     executorUtil.mainThread().execute(() ->
                             // We specially request a new live data,
                             // otherwise we will get immediately last cached value,
                             // which may not be updated with latest results received from network.
-                            result.addSource(loadFromDb(), newData ->
-                                    setValue(Resource.success(newData))));
+                            result.addSource(loadFromDb(), newData -> setValue(Resource.success(
+                                    newData))));
                 });
             } else if (response instanceof ApiEmptyResponse) {
                 executorUtil.mainThread().execute(() ->
                         // Reload from disk whatever we had.
-                        result.addSource(loadFromDb(), newData ->
-                                setValue(Resource.success(newData))));
+                        result.addSource(loadFromDb(), newData -> setValue(Resource.success(newData))));
             } else if (response instanceof ApiErrorResponse) {
                 onFetchFailed();
-                result.addSource(dbSource, newData ->
-                        setValue(Resource.error(((ApiErrorResponse<RequestType>) response)
-                                .getErrorMessage(), newData)));
+
+                result.addSource(dbSource, newData -> setValue(Resource.error(
+                        ((ApiErrorResponse<RequestType>) response).getErrorMessage(), newData)));
             }
         });
     }

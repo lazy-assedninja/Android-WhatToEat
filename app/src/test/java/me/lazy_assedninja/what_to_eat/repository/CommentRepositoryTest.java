@@ -24,6 +24,7 @@ import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
@@ -38,7 +39,6 @@ import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.User;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
 @SuppressWarnings("unchecked")
 @RunWith(JUnit4.class)
@@ -48,7 +48,6 @@ public class CommentRepositoryTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private CommentRepository repository;
-    private final NetworkUtil networkUtil = mock(NetworkUtil.class);
     private final UserDao userDao = mock(UserDao.class);
     private final CommentDao commentDao = mock(CommentDao.class);
     private final WhatToEatService service = mock(WhatToEatService.class);
@@ -58,15 +57,13 @@ public class CommentRepositoryTest {
         WhatToEatDatabase db = mock(WhatToEatDatabase.class);
         when(db.userDao()).thenReturn(userDao);
         when(db.commentDao()).thenReturn(commentDao);
-        doCallRealMethod().when(db).runInTransaction((Runnable) any());
-        repository = new CommentRepository(new InstantExecutorUtil(),
-                networkUtil, db, userDao, commentDao, service);
+        doCallRealMethod().when(db).runInTransaction((Callable<Long>) any());
+        repository = new CommentRepository(new InstantExecutorUtil(), db, userDao, commentDao, service);
     }
 
     @Test
     public void loadCommentsFromNetwork() {
-        CommentDTO commentDTO = createCommentDTO();
-        commentDTO.setStoreID(1);
+        CommentDTO commentDTO = createCommentDTO(1);
         MutableLiveData<List<Comment>> dbData = new MutableLiveData<>();
         when(commentDao.getComments(commentDTO.getStoreID())).thenReturn(dbData);
 
@@ -88,31 +85,10 @@ public class CommentRepositoryTest {
 
         dbData.postValue(null);
         verify(service).getCommentList(commentDTO);
-        verify(commentDao).deleteByStoreID(commentDTO.getStoreID());
         verify(commentDao).insertAll(list);
 
         updateDbData.postValue(list);
         verify(observer).onChanged(Resource.success(list));
-    }
-
-    @Test
-    public void loadCommentsFromDb() {
-        CommentDTO commentDTO = createCommentDTO();
-        commentDTO.setStoreID(1);
-        MutableLiveData<List<Comment>> dbData = new MutableLiveData<>();
-        when(commentDao.getComments(commentDTO.getStoreID())).thenReturn(dbData);
-
-        Observer<Resource<List<Comment>>> observer = mock(Observer.class);
-        repository.loadComments(commentDTO).observeForever(observer);
-        verify(commentDao).getComments(commentDTO.getStoreID());
-        verifyNoMoreInteractions(service);
-        verify(observer).onChanged(Resource.loading(null));
-
-        List<Comment> list = new ArrayList<>();
-        list.add(TestUtil.createComment());
-        dbData.postValue(list);
-        verify(observer).onChanged(Resource.success(list));
-        verifyNoMoreInteractions(service);
     }
 
     @Test

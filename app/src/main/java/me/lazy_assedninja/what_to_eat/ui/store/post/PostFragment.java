@@ -28,11 +28,11 @@ import me.lazy_assedninja.library.util.ExecutorUtil;
 @AndroidEntryPoint
 public class PostFragment extends BaseBottomSheetDialogFragment {
 
-    private AutoClearedValue<PostFragmentBinding> binding;
-    private PostViewModel viewModel;
-
     @Inject
     public ExecutorUtil executorUtil;
+
+    private AutoClearedValue<PostFragmentBinding> binding;
+    private PostViewModel viewModel;
 
     private AutoClearedValue<PostAdapter> adapter;
 

@@ -40,21 +40,22 @@ public class CommentViewModelTest {
 
     private final UserRepository userRepository = mock(UserRepository.class);
     private final CommentRepository commentRepository = mock(CommentRepository.class);
-    private final CommentViewModel viewModel = new CommentViewModel(userRepository,
-            commentRepository);
+    private final CommentViewModel viewModel = new CommentViewModel(userRepository, commentRepository);
+
+    private final int storeID = 1;
 
     @Test
     public void testNull() {
         assertThat(viewModel.comments, notNullValue());
 
         verify(commentRepository, never()).loadComments(any());
-        viewModel.requestComment(createCommentDTO());
+        viewModel.requestComment(createCommentDTO(storeID));
         verify(commentRepository, never()).loadComments(any());
     }
 
     @Test
     public void sendResultToUI() {
-        CommentDTO commentDTO = createCommentDTO();
+        CommentDTO commentDTO = createCommentDTO(storeID);
         MutableLiveData<Resource<List<Comment>>> list = new MutableLiveData<>();
         when(commentRepository.loadComments(commentDTO)).thenReturn(list);
         Observer<Resource<List<Comment>>> observer = mock(Observer.class);
@@ -73,7 +74,7 @@ public class CommentViewModelTest {
         viewModel.comments.observeForever(mock(Observer.class));
         verifyNoMoreInteractions(commentRepository);
 
-        CommentDTO commentDTO = createCommentDTO();
+        CommentDTO commentDTO = createCommentDTO(storeID);
         viewModel.requestComment(commentDTO);
         verify(commentRepository).loadComments(commentDTO);
         verifyNoMoreInteractions(commentRepository);

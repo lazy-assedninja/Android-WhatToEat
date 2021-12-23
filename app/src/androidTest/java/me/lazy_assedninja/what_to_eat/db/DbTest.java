@@ -21,8 +21,8 @@ public abstract class DbTest {
 
     @Before
     public void initDb() {
-        // using an in-memory database because the information stored here disappears when the
-        // process is killed
+        // Using an in-memory database because the information stored here disappears when the
+        // process is killed.
         db = Room.inMemoryDatabaseBuilder(getApplicationContext(), WhatToEatDatabase.class)
                 .build();
     }

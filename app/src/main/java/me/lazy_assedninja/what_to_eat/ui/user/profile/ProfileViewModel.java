@@ -9,10 +9,10 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import me.lazy_assedninja.what_to_eat.dto.PictureDTO;
-import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.repository.FileRepository;
 import me.lazy_assedninja.what_to_eat.repository.UserRepository;
 import me.lazy_assedninja.what_to_eat.util.AbsentLiveData;
+import me.lazy_assedninja.what_to_eat.vo.Event;
 import me.lazy_assedninja.what_to_eat.vo.GoogleAccount;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
@@ -51,26 +51,28 @@ public class ProfileViewModel extends ViewModel {
         userRepository.setUserID(0);
     }
 
-    public LiveData<Event<Resource<Result>>> bindGoogleResult = Transformations.switchMap(bindGoogle, userDTO -> {
-        if (userDTO == null) {
-            return AbsentLiveData.create();
-        } else {
-            return userRepository.bindGoogleAccount(userDTO);
-        }
-    });
+    public LiveData<Event<Resource<Result>>> bindGoogleResult =
+            Transformations.switchMap(bindGoogle, userDTO -> {
+                if (userDTO == null) {
+                    return AbsentLiveData.create();
+                } else {
+                    return userRepository.bindGoogleAccount(userDTO);
+                }
+            });
 
-    public void bindGoogleAccount(GoogleAccount googleAccount){
+    public void bindGoogleAccount(GoogleAccount googleAccount) {
         googleAccount.setUserID(userRepository.getUserID());
         bindGoogle.setValue(googleAccount);
     }
 
-    public LiveData<Event<Resource<Result>>> uploadResult = Transformations.switchMap(uploadFile, pictureDTO -> {
-        if (pictureDTO == null) {
-            return AbsentLiveData.create();
-        } else {
-            return fileRepository.upload(pictureDTO.getFile());
-        }
-    });
+    public LiveData<Event<Resource<Result>>> uploadResult =
+            Transformations.switchMap(uploadFile, pictureDTO -> {
+                if (pictureDTO == null) {
+                    return AbsentLiveData.create();
+                } else {
+                    return fileRepository.upload(pictureDTO.getFile());
+                }
+            });
 
     public void uploadFile(MultipartBody.Part file) {
         uploadFile.setValue(new PictureDTO(file));

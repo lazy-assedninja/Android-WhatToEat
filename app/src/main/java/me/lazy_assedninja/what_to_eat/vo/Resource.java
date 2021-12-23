@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Resource<T> {
 
     private final Status status;
-    private final T data;
+    private T data;
     private final String message;
 
     public Resource(Status status, T data, String message) {
@@ -41,6 +41,10 @@ public class Resource<T> {
 
     public T getData() {
         return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 
     public String getMessage() {

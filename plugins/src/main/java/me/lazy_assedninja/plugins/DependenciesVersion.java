@@ -19,6 +19,7 @@ public class DependenciesVersion {
 
     // Google
     public static final String MATERIAL = "1.4.0";
+    public static final String FIREBASE = "28.3.1";
     public static final String PLAY_SERVICE_AUTH = "19.2.0";
     public static final String PLAY_SERVICE_LOCATION = "18.0.0";
     public static final String PLAY_SERVICE_MAP = "17.0.1";

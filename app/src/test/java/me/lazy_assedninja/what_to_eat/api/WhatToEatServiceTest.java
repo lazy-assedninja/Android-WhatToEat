@@ -36,7 +36,6 @@ import me.lazy_assedninja.what_to_eat.vo.Comment;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
 import me.lazy_assedninja.what_to_eat.vo.Post;
 import me.lazy_assedninja.what_to_eat.vo.Promotion;
-import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Reservation;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Store;
@@ -238,7 +237,7 @@ public class WhatToEatServiceTest {
     @Test
     public void getCommentList() throws IOException, TimeoutException, InterruptedException {
         enqueueResponse("comment.json");
-        LiveData<ApiResponse<List<Comment>>> apiResponse = service.getCommentList(createCommentDTO());
+        LiveData<ApiResponse<List<Comment>>> apiResponse = service.getCommentList(createCommentDTO(1));
         List<Comment> list = ((ApiSuccessResponse<List<Comment>>) getOrAwaitValue(apiResponse))
                 .getBody();
 
@@ -269,10 +268,9 @@ public class WhatToEatServiceTest {
     @Test
     public void addToFavorite() throws IOException, TimeoutException, InterruptedException {
         enqueueResponse("result.json");
-        LiveData<ApiResponse<RequestResult<Favorite>>> apiResponse =
+        LiveData<ApiResponse<Favorite>> apiResponse =
                 service.addToFavorite(createFavorite());
-        RequestResult<Favorite> result =
-                ((ApiSuccessResponse<RequestResult<Favorite>>) getOrAwaitValue(apiResponse)).getBody();
+        Favorite result = ((ApiSuccessResponse<Favorite>) getOrAwaitValue(apiResponse)).getBody();
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getPath(), is("/Favorite/AddToFavorite"));
@@ -285,8 +283,7 @@ public class WhatToEatServiceTest {
     public void getFavoriteList() throws IOException, TimeoutException, InterruptedException {
         enqueueResponse("store.json");
         LiveData<ApiResponse<List<Store>>> apiResponse = service.getFavoriteList(createFavoriteDTO());
-        List<Store> list = ((ApiSuccessResponse<List<Store>>) getOrAwaitValue(apiResponse))
-                .getBody();
+        List<Store> list = ((ApiSuccessResponse<List<Store>>) getOrAwaitValue(apiResponse)).getBody();
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getPath(), is("/Favorite/GetFavoriteList"));
@@ -300,10 +297,9 @@ public class WhatToEatServiceTest {
     @Test
     public void cancelFavorite() throws IOException, TimeoutException, InterruptedException {
         enqueueResponse("result.json");
-        LiveData<ApiResponse<RequestResult<Favorite>>> apiResponse =
+        LiveData<ApiResponse<Favorite>> apiResponse =
                 service.cancelFavorite(createFavorite());
-        RequestResult<Favorite> result =
-                ((ApiSuccessResponse<RequestResult<Favorite>>) getOrAwaitValue(apiResponse)).getBody();
+        Favorite result = ((ApiSuccessResponse<Favorite>) getOrAwaitValue(apiResponse)).getBody();
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getPath(), is("/Favorite/CancelFavorite"));

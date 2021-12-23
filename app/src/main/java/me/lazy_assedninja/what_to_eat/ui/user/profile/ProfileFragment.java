@@ -66,11 +66,11 @@ public class ProfileFragment extends BaseFragment {
             Manifest.permission.CAMERA
     };
 
-    private AutoClearedValue<ProfileFragmentBinding> binding;
-    private ProfileViewModel viewModel;
-
     @Inject
     public LogUtil logUtil;
+
+    private AutoClearedValue<ProfileFragmentBinding> binding;
+    private ProfileViewModel viewModel;
 
     private NavController navController;
     private Context context;
@@ -121,8 +121,8 @@ public class ProfileFragment extends BaseFragment {
                     new PortraitOptionsCallback() {
                         @Override
                         public void takePicture() {
-                            if (ContextCompat.checkSelfPermission(context,
-                                    Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                                    == PackageManager.PERMISSION_GRANTED) {
                                 takePicture.launch(portraitUri);
                             } else {
                                 requestPermissions.launch(PERMISSIONS);
@@ -137,10 +137,10 @@ public class ProfileFragment extends BaseFragment {
             );
             portraitOptionsFragment.show(getParentFragmentManager(), "portrait_options");
         });
-        binding.get().btBindGoogle.setOnClickListener(v ->
-                googleSignIn.launch(googleSignInClient.getSignInIntent()));
-        binding.get().btResetPassword.setOnClickListener(v ->
-                navController.navigate(R.id.action_to_reset_password_fragment));
+        binding.get().btBindGoogle.setOnClickListener(v -> googleSignIn.launch(
+                googleSignInClient.getSignInIntent()));
+        binding.get().btResetPassword.setOnClickListener(v -> navController.navigate(
+                R.id.action_to_reset_password_fragment));
         binding.get().btLogout.setOnClickListener(v -> {
             viewModel.logout();
             navController.navigate(R.id.action_to_home_fragment);
@@ -176,7 +176,7 @@ public class ProfileFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Status.SUCCESS)) {
+            if (resultResource.getData() != null && resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
 
                 googleSignInClient.signOut();
@@ -188,7 +188,7 @@ public class ProfileFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Status.SUCCESS)) {
+            if (resultResource.getData() != null && resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
             } else if (resultResource.getStatus().equals(Status.ERROR)) {
                 showToast(resultResource.getMessage());
@@ -252,8 +252,8 @@ public class ProfileFragment extends BaseFragment {
         );
         googleSignIn = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), activityResult -> {
-                    Task<GoogleSignInAccount> task =
-                            GoogleSignIn.getSignedInAccountFromIntent(activityResult.getData());
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(
+                            activityResult.getData());
                     handleSignInResult(task);
                 }
         );

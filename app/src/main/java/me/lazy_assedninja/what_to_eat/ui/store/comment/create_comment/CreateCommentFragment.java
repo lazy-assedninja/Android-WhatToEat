@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.databinding.CreateCommentFragmentBinding;
 import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
@@ -20,7 +22,6 @@ import me.lazy_assedninja.what_to_eat.vo.Comment;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Status;
-import me.lazy_assedninja.library.ui.BaseBottomSheetDialogFragment;
 
 @AndroidEntryPoint
 public class CreateCommentFragment extends BaseBottomSheetDialogFragment {
@@ -59,13 +60,14 @@ public class CreateCommentFragment extends BaseBottomSheetDialogFragment {
     private void initView() {
         binding.get().btComment.setOnClickListener(v -> {
             dismissKeyboard(v);
-            if (binding.get().tilContent.getEditText() == null) return;
+            EditText etContent = binding.get().tilContent.getEditText();
+            if (etContent == null) return;
 
             // Clear errors
             binding.get().tilContent.setError(null);
 
             String star = String.valueOf(binding.get().ratingBar.getRating());
-            String content = binding.get().tilContent.getEditText().getText().toString();
+            String content = etContent.getText().toString();
             if (content.isEmpty()) {
                 binding.get().tilContent.setError(getString(R.string.error_content_can_not_be_null));
             } else {
@@ -78,7 +80,7 @@ public class CreateCommentFragment extends BaseBottomSheetDialogFragment {
     }
 
     private void initData() {
-        if (getArguments() == null) return;
+        if (getArguments() == null) dismiss();
         int id = getArguments().getInt("store_id");
         viewModel.setId(id);
 
@@ -86,7 +88,7 @@ public class CreateCommentFragment extends BaseBottomSheetDialogFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Status.SUCCESS)) {
+            if (resultResource.getData() != null && resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
                 dismiss();
             } else if (resultResource.getStatus().equals(Status.ERROR)) {

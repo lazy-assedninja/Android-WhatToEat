@@ -26,6 +26,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import me.lazy_assedninja.library.util.EncryptUtil;
+import me.lazy_assedninja.library.util.TimeUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.UserDao;
@@ -37,12 +39,13 @@ import me.lazy_assedninja.what_to_eat.vo.GoogleAccount;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.User;
-import me.lazy_assedninja.library.util.EncryptUtil;
-import me.lazy_assedninja.library.util.TimeUtil;
 
 @SuppressWarnings("unchecked")
 @RunWith(JUnit4.class)
 public class UserRepositoryTest {
+
+    private final String USER_ID = "user_id";
+    private final String USER_EMAIL = "user_email";
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -56,6 +59,10 @@ public class UserRepositoryTest {
 
     private final SharedPreferences sharedPreferences = mock(SharedPreferences.class);
     private final SharedPreferences.Editor sharedPreferencesEditor = mock(SharedPreferences.Editor.class);
+
+    private final String userEmail = "user email";
+    private final String newPassword = "new password";
+    private final String googleID = "google ID";
 
     @Before
     public void init() {
@@ -102,7 +109,7 @@ public class UserRepositoryTest {
         MutableLiveData<User> dbData = new MutableLiveData<>();
         when(userDao.get()).thenReturn(dbData);
 
-        UserDTO userDTO = createUserDTO("google ID");
+        UserDTO userDTO = createUserDTO(googleID);
         User user = createUser();
         LiveData<ApiResponse<User>> call = successCall(user);
         when(service.googleLogin(userDTO)).thenReturn(call);
@@ -147,11 +154,10 @@ public class UserRepositoryTest {
     public void setUserID() {
         when(sharedPreferencesEditor.putInt(anyString(), anyInt()))
                 .thenReturn(sharedPreferencesEditor);
-        String KEY = "user_id";
         int userID = 1;
         repository.setUserID(userID);
 
-        verify(sharedPreferencesEditor).putInt(KEY, userID);
+        verify(sharedPreferencesEditor).putInt(USER_ID, userID);
         verify(sharedPreferencesEditor).apply();
     }
 
@@ -159,20 +165,17 @@ public class UserRepositoryTest {
     public void getUserID() {
         repository.getUserID();
 
-        String KEY = "user_id";
         int defaultValue = 0;
-        verify(sharedPreferences).getInt(KEY, defaultValue);
+        verify(sharedPreferences).getInt(USER_ID, defaultValue);
     }
 
     @Test
     public void setUserEmail() {
         when(sharedPreferencesEditor.putString(anyString(), anyString()))
                 .thenReturn(sharedPreferencesEditor);
-        String KEY = "user_email";
-        String userEmail = "user email";
         repository.setUserEmail(userEmail);
 
-        verify(sharedPreferencesEditor).putString(KEY, userEmail);
+        verify(sharedPreferencesEditor).putString(USER_EMAIL, userEmail);
         verify(sharedPreferencesEditor).apply();
     }
 
@@ -180,9 +183,8 @@ public class UserRepositoryTest {
     public void getUserEmail() {
         repository.getUserEmail();
 
-        String KEY = "user_email";
         String defaultValue = "";
-        verify(sharedPreferences).getString(KEY, defaultValue);
+        verify(sharedPreferences).getString(USER_EMAIL, defaultValue);
     }
 
     @Test
@@ -205,7 +207,7 @@ public class UserRepositoryTest {
                 .thenReturn(sharedPreferencesEditor);
 
         User user = createUser();
-        user.setEmail("user email");
+        user.setEmail(userEmail);
         Result result = createResult();
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.register(user)).thenReturn(call);
@@ -214,8 +216,7 @@ public class UserRepositoryTest {
         repository.register(user).observeForever(observer);
         verify(service).register(user);
 
-        String KEY = "user_email";
-        verify(sharedPreferencesEditor).putString(KEY, user.getEmail());
+        verify(sharedPreferencesEditor).putString(USER_EMAIL, user.getEmail());
         verify(sharedPreferencesEditor).apply();
 
         verify(observer).onChanged(new Event<>(Resource.success(result)));
@@ -224,7 +225,7 @@ public class UserRepositoryTest {
     @Test
     public void bindGoogleAccount() {
         GoogleAccount googleAccount = createGoogleAccount();
-        googleAccount.setGoogleID("google ID");
+        googleAccount.setGoogleID(googleID);
         Result result = createResult();
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.bindGoogleAccount(googleAccount)).thenReturn(call);
@@ -240,7 +241,7 @@ public class UserRepositoryTest {
     @Test
     public void resetPassword() {
         UserDTO userDTO = createUserDTO();
-        userDTO.setNewPassword("new password");
+        userDTO.setNewPassword(newPassword);
         Result result = createResult();
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.resetPassword(userDTO)).thenReturn(call);
@@ -270,7 +271,7 @@ public class UserRepositoryTest {
     @Test
     public void forgetPassword() {
         UserDTO userDTO = createUserDTO();
-        userDTO.setNewPassword("new password");
+        userDTO.setNewPassword(newPassword);
         Result result = createResult();
         LiveData<ApiResponse<Result>> call = successCall(result);
         when(service.forgetPassword(userDTO)).thenReturn(call);

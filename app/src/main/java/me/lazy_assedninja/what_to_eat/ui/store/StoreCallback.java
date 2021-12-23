@@ -7,7 +7,7 @@ import me.lazy_assedninja.what_to_eat.databinding.StoreItemBinding;
  */
 public interface StoreCallback {
 
-    void onFavoriteClick(int storeID, int position, boolean isFavorite);
+    void onFavoriteClick(int storeID, boolean isFavorite);
 
     void onInformationClick(StoreItemBinding binding, int position);
 }

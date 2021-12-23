@@ -28,13 +28,14 @@ public class PromotionViewModel extends ViewModel {
         this.promotionRepository = promotionRepository;
     }
 
-    public final LiveData<Resource<List<Promotion>>> promotions = Transformations.switchMap(promotionRequest, request -> {
-        if (request == null) {
-            return AbsentLiveData.create();
-        } else {
-            return promotionRepository.loadPromotions();
-        }
-    });
+    public final LiveData<Resource<List<Promotion>>> promotions =
+            Transformations.switchMap(promotionRequest, request -> {
+                if (request == null) {
+                    return AbsentLiveData.create();
+                } else {
+                    return promotionRepository.loadPromotions();
+                }
+            });
 
     public void requestPromotion() {
         if (promotionRequest.getValue() == null) {

@@ -25,26 +25,27 @@ public class HistoryDaoTest extends DbTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private HistoryDao historyDao;
+    private final int historyID = 1;
 
     @Before
     public void init() {
         historyDao = db.historyDao();
 
-        historyDao.insert(createHistory(1));
+        historyDao.insert(createHistory(historyID));
     }
 
     @Test
     public void insertAndGetIDs() throws TimeoutException, InterruptedException {
         List<Integer> list = getOrAwaitValue(historyDao.getHistoryIDs());
-        assertThat(list.get(0), is(1));
+        assertThat(list.get(0), is(historyID));
     }
 
     @Test
     public void replaceWhenInsertOnConflictAndGetIDs() throws TimeoutException, InterruptedException {
-        historyDao.insert(createHistory(1));
+        historyDao.insert(createHistory(historyID));
 
         List<Integer> data = getOrAwaitValue(historyDao.getHistoryIDs());
-        assertThat(data.size(), is(1));
+        assertThat(data.size(), is(historyID));
     }
 
     @Test

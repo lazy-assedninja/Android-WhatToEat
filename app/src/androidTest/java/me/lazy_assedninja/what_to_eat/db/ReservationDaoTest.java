@@ -28,9 +28,10 @@ public class ReservationDaoTest extends DbTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private ReservationDao reservationDao;
+    private final int reservationID = 1;
     private final String name = "Lazy-assed Ninja";
     private final String newName = "new Lazy-assed Ninja";
-    private final Reservation reservation = createReservation(1, name);
+    private final Reservation reservation = createReservation(reservationID, name);
 
     @Before
     public void init() {
@@ -47,7 +48,7 @@ public class ReservationDaoTest extends DbTest {
 
     @Test
     public void replaceWhenInsertOnConflictAndGet() throws TimeoutException, InterruptedException {
-        reservationDao.insert(createReservation(1, newName));
+        reservationDao.insert(createReservation(reservationID, newName));
 
         List<Reservation> data = getOrAwaitValue(reservationDao.getReservations());
         assertThat(data.get(0).getName(), is(newName));
@@ -57,7 +58,7 @@ public class ReservationDaoTest extends DbTest {
     public void replaceWhenInsertReservationsOnConflictAndGet() throws TimeoutException,
             InterruptedException {
         List<Reservation> list = new ArrayList<>();
-        list.add(createReservation(1, newName));
+        list.add(createReservation(reservationID, newName));
         reservationDao.insertAll(list);
 
         List<Reservation> data = getOrAwaitValue(reservationDao.getReservations());

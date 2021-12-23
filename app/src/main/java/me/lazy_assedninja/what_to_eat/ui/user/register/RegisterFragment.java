@@ -14,6 +14,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import me.lazy_assedninja.library.ui.BaseFragment;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.databinding.RegisterFragmentBinding;
 import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
@@ -21,7 +22,6 @@ import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Status;
 import me.lazy_assedninja.what_to_eat.vo.User;
-import me.lazy_assedninja.library.ui.BaseFragment;
 
 @AndroidEntryPoint
 public class RegisterFragment extends BaseFragment {
@@ -100,7 +100,7 @@ public class RegisterFragment extends BaseFragment {
             Resource<Result> resultResource = event.getContentIfNotHandled();
             if (resultResource == null) return;
 
-            if (resultResource.getStatus().equals(Status.SUCCESS)) {
+            if (resultResource.getData() != null && resultResource.getStatus().equals(Status.SUCCESS)) {
                 showToast(resultResource.getData().getResult());
                 navController.navigateUp();
             } else if (resultResource.getStatus().equals(Status.ERROR)) {

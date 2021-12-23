@@ -28,6 +28,7 @@ public class UserDaoTest extends DbTest {
 
     private UserDao userDao;
     private final String name = "Lazy-assed Ninja";
+    private final String updateTime = "update time";
 
     @Before
     public void init() {
@@ -60,7 +61,7 @@ public class UserDaoTest extends DbTest {
     @Test
     public void updateGoogleIDAndGet() {
         String googleID = "google ID";
-        userDao.updateGoogleID(googleID, "update time");
+        userDao.updateGoogleID(googleID, updateTime);
 
         User data = userDao.getUser();
         assertThat(data.getGoogleAccount().getGoogleID(), is(googleID));
@@ -69,7 +70,7 @@ public class UserDaoTest extends DbTest {
     @Test
     public void updatePasswordAndGet() {
         String password = "password";
-        userDao.updatePassword(password, "update time");
+        userDao.updatePassword(password, updateTime);
 
         User data = userDao.getUser();
         assertThat(data.getPassword(), is(password));
@@ -77,11 +78,11 @@ public class UserDaoTest extends DbTest {
 
     @Test
     public void updateTimeAndGet() {
-        String time = "new update time";
-        userDao.updateFile(time);
+        String newUpdateTime = "new update time";
+        userDao.updateFile(newUpdateTime);
 
         User data = userDao.getUser();
-        assertThat(data.getUpdateTime(), is(time));
+        assertThat(data.getUpdateTime(), is(newUpdateTime));
     }
 
     @Test

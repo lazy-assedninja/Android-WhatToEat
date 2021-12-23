@@ -5,6 +5,10 @@ public class Google {
 
     public static final String MATERIAL = "com.google.android.material:material:"
             + DependenciesVersion.MATERIAL;
+    public static final String FIREBASE = "com.google.firebase:firebase-bom:"
+            + DependenciesVersion.FIREBASE;
+    public static final String FIREBASE_CRASHLYTICS = "com.google.firebase:firebase-crashlytics";
+    public static final String FIREBASE_ANALYTICS = "com.google.firebase:firebase-analytics";
     public static final String PLAY_SERVICE_AUTH = "com.google.android.gms:play-services-auth:"
             + DependenciesVersion.PLAY_SERVICE_AUTH;
     public static final String PLAY_SERVICE_LOCATION = "com.google.android.gms:play-services-location:"

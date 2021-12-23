@@ -2,6 +2,8 @@ import me.lazy_assedninja.plugins.*
 
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs'
@@ -98,6 +100,11 @@ dependencies {
     implementation AndroidX.CONSTRAINT_LAYOUT
     implementation AndroidX.SWIPE_REFRESH_LAYOUT
     implementation Google.MATERIAL
+
+    // Firebase
+    implementation platform(Google.FIREBASE)
+    implementation Google.FIREBASE_CRASHLYTICS
+    implementation Google.FIREBASE_ANALYTICS
 
     // Hilt
     implementation Google.DAGGER_HILT

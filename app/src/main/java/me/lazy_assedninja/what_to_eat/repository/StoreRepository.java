@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -11,17 +12,24 @@ import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.StoreDao;
 import me.lazy_assedninja.what_to_eat.db.WhatToEatDatabase;
+import me.lazy_assedninja.what_to_eat.dto.ReservationDTO;
 import me.lazy_assedninja.what_to_eat.dto.StoreDTO;
+import me.lazy_assedninja.what_to_eat.util.RateLimiter;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Store;
 import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.library.util.NetworkUtil;
 
+/**
+ * Repository that handles Store objects.
+ */
 public class StoreRepository {
 
     private final ExecutorUtil executorUtil;
     private final StoreDao storeDao;
     private final WhatToEatService whatToEatService;
+
+    private final RateLimiter<StoreDTO> rateLimiter = new RateLimiter<>(10, TimeUnit.MINUTES);
 
     @Inject
     public StoreRepository(ExecutorUtil executorUtil, StoreDao storeDao,
@@ -41,7 +49,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty();
+                return data == null || data.isEmpty() || rateLimiter.shouldFetch(storeDTO);
             }
 
             @Override
@@ -52,6 +60,11 @@ public class StoreRepository {
             @Override
             protected void saveCallResult(List<Store> item) {
                 storeDao.insertAll(item);
+            }
+
+            @Override
+            protected void onFetchFailed() {
+                rateLimiter.reset(storeDTO);
             }
         }.asLiveData();
     }
@@ -66,7 +79,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty();
+                return data == null || data.isEmpty() || rateLimiter.shouldFetch(storeDTO);
             }
 
             @Override
@@ -77,6 +90,11 @@ public class StoreRepository {
             @Override
             protected void saveCallResult(List<Store> item) {
                 storeDao.insertAll(item);
+            }
+
+            @Override
+            protected void onFetchFailed() {
+                rateLimiter.reset(storeDTO);
             }
         }.asLiveData();
     }
@@ -91,7 +109,7 @@ public class StoreRepository {
 
             @Override
             protected Boolean shouldFetch(@Nullable List<Store> data) {
-                return data == null || data.isEmpty();
+                return data == null || data.isEmpty() || rateLimiter.shouldFetch(storeDTO);
             }
 
             @Override
@@ -102,6 +120,11 @@ public class StoreRepository {
             @Override
             protected void saveCallResult(List<Store> item) {
                 storeDao.insertAll(item);
+            }
+
+            @Override
+            protected void onFetchFailed() {
+                rateLimiter.reset(storeDTO);
             }
         }.asLiveData();
     }

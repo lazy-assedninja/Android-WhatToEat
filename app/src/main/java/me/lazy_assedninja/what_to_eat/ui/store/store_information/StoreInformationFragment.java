@@ -35,7 +35,6 @@ import me.lazy_assedninja.what_to_eat.ui.user.create_report.CreateReportFragment
 import me.lazy_assedninja.what_to_eat.util.AutoClearedValue;
 import me.lazy_assedninja.what_to_eat.vo.Favorite;
 import me.lazy_assedninja.what_to_eat.vo.History;
-import me.lazy_assedninja.what_to_eat.vo.RequestResult;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Status;
 import me.lazy_assedninja.library.ui.BaseFragment;
@@ -103,6 +102,7 @@ public class StoreInformationFragment extends BaseFragment {
                 showToast(R.string.error_please_login_first);
                 return;
             }
+
             viewModel.changeFavoriteStatus(new Favorite());
         });
         binding.get().ivComment.setOnClickListener(v -> {
@@ -131,7 +131,7 @@ public class StoreInformationFragment extends BaseFragment {
             reserveFragment.setArguments(bundle);
             reserveFragment.show(getParentFragmentManager(), "reserve");
         });
-        binding.get().btAddReport.setOnClickListener(v -> {
+        binding.get().btCreateReport.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
                 showToast(R.string.error_please_login_first);
                 return;
@@ -161,8 +161,8 @@ public class StoreInformationFragment extends BaseFragment {
         savedStateHandle.set(ARGUMENT_IS_CHANGE, false);
 
         viewModel.result.observe(getViewLifecycleOwner(), event -> {
-            Resource<RequestResult<Favorite>> resultResource = event.getContentIfNotHandled();
-            if (resultResource == null) return;
+            Resource<Favorite> resultResource = event.getContentIfNotHandled();
+            if (resultResource == null || resultResource.getData() == null) return;
 
             if (resultResource.getStatus().equals(Status.SUCCESS)) {
                 changeTime++;

@@ -13,6 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    /**
+     * Dismiss soft keyboard.
+     *
+     * @param view view
+     */
     protected void dismissKeyboard(View view) {
         if (view != null) {
             InputMethodManager imm =

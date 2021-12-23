@@ -26,12 +26,12 @@ import javax.inject.Inject;
 
 import dagger.hilt.EntryPoints;
 import dagger.hilt.android.AndroidEntryPoint;
+import me.lazy_assedninja.library.ui.BaseActivity;
+import me.lazy_assedninja.library.util.DisplayUtil;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.binding.ImageDataBindingComponent;
 import me.lazy_assedninja.what_to_eat.databinding.DrawerHeaderBinding;
 import me.lazy_assedninja.what_to_eat.databinding.MainActivityBinding;
-import me.lazy_assedninja.library.ui.BaseActivity;
-import me.lazy_assedninja.library.util.DisplayUtil;
 
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity {
@@ -41,11 +41,11 @@ public class MainActivity extends BaseActivity {
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
-    private MainActivityBinding binding;
-    private MainViewModel viewModel;
-
     @Inject
     public DisplayUtil displayUtil;
+
+    private MainActivityBinding binding;
+    private MainViewModel viewModel;
 
     private NavController navController;
     private SearchView searchView;
@@ -93,6 +93,7 @@ public class MainActivity extends BaseActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem menuItem = binding.toolbar.getMenu().findItem(R.id.action_to_search_fragment);
         searchView = (SearchView) menuItem.getActionView();
+        // If you want the search field to be always visible, then call false.
         searchView.setIconifiedByDefault(true);
         searchView.setMaxWidth(displayUtil.getScreenWidthPix());
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -115,8 +116,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public boolean onSuggestionClick(int position) {
                 Cursor cursor = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
-                String keyword = cursor.getString(
-                        cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
+                String keyword = cursor.getString(cursor.getColumnIndex(
+                        SearchManager.SUGGEST_COLUMN_TEXT_1));
                 searchView.setQuery(keyword, true);
                 return true;
             }
@@ -124,8 +125,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initNavigationUI() {
-        NavHostFragment navHostFragment =
-                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
             navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -135,8 +136,8 @@ public class MainActivity extends BaseActivity {
                 binding.appBarLayout.setExpanded(true);
                 if (destinationID != R.id.home_fragment && destinationID != R.id.recommend_fragment &&
                         destinationID != R.id.profile_fragment) {
-                    binding.appBarLayout.setBackground(
-                            ContextCompat.getDrawable(this, R.color.white));
+                    binding.appBarLayout.setBackground(ContextCompat
+                            .getDrawable(this, R.color.white));
                     binding.bottomAppBar.setVisibility(View.GONE);
                     binding.floatingActionButton.setVisibility(View.GONE);
                 } else {
@@ -199,12 +200,13 @@ public class MainActivity extends BaseActivity {
             binding.drawer.close();
             return false;
         });
+        // Lock swipe open
         binding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     private void initDrawerHeader() {
-        DataBindingComponent dataBindingComponent =
-                EntryPoints.get(getApplicationContext(), ImageDataBindingComponent.class);
+        DataBindingComponent dataBindingComponent = EntryPoints.get(getApplicationContext(),
+                ImageDataBindingComponent.class);
         DrawerHeaderBinding drawerHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(),
                 R.layout.drawer_header, binding.navigationView, false, dataBindingComponent);
         drawerHeaderBinding.setLifecycleOwner(this);

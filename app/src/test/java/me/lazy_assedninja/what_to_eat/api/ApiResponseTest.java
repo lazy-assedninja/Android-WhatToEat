@@ -16,8 +16,8 @@ public class ApiResponseTest {
 
     @Test
     public void success() {
-        ApiSuccessResponse<String> apiResponse =
-                (ApiSuccessResponse<String>) ApiResponse.create(Response.success("Success."));
+        ApiSuccessResponse<String> apiResponse = (ApiSuccessResponse<String>) ApiResponse
+                .create(Response.success("Success."));
         assertThat(apiResponse.getBody(), is("Success."));
     }
 

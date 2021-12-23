@@ -1,7 +1,5 @@
 package me.lazy_assedninja.what_to_eat.repository;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -32,7 +30,6 @@ import me.lazy_assedninja.what_to_eat.dto.PostDTO;
 import me.lazy_assedninja.what_to_eat.util.InstantExecutorUtil;
 import me.lazy_assedninja.what_to_eat.vo.Post;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
 @SuppressWarnings("unchecked")
 @RunWith(JUnit4.class)
@@ -42,7 +39,6 @@ public class PostRepositoryTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private PostRepository repository;
-    private final NetworkUtil networkUtil = mock(NetworkUtil.class);
     private final PostDao postDao = mock(PostDao.class);
     private final WhatToEatService service = mock(WhatToEatService.class);
 
@@ -50,9 +46,7 @@ public class PostRepositoryTest {
     public void init() {
         WhatToEatDatabase db = mock(WhatToEatDatabase.class);
         when(db.postDao()).thenReturn(postDao);
-        doCallRealMethod().when(db).runInTransaction((Runnable) any());
-        repository = new PostRepository(new InstantExecutorUtil(),
-                networkUtil, db, postDao, service);
+        repository = new PostRepository(new InstantExecutorUtil(), postDao, service);
     }
 
     @Test
@@ -80,29 +74,9 @@ public class PostRepositoryTest {
 
         dbData.postValue(null);
         verify(service).getPostList(postDTO);
-        verify(postDao).deleteByStoreID(postDTO.getStoreID());
         verify(postDao).insertAll(list);
 
         updateDbData.postValue(list);
-        verify(observer).onChanged(Resource.success(list));
-    }
-
-    @Test
-    public void loadPostsFromDb() {
-        PostDTO postDTO = createPostDTO();
-        postDTO.setStoreID(1);
-        MutableLiveData<List<Post>> dbData = new MutableLiveData<>();
-        when(postDao.getPosts(postDTO.getStoreID())).thenReturn(dbData);
-
-        Observer<Resource<List<Post>>> observer = mock(Observer.class);
-        repository.loadPosts(postDTO).observeForever(observer);
-        verify(postDao).getPosts(postDTO.getStoreID());
-        verifyNoMoreInteractions(service);
-        verify(observer).onChanged(Resource.loading(null));
-
-        List<Post> list = new ArrayList<>();
-        list.add(createPost(1, "post title", 1));
-        dbData.postValue(list);
         verify(observer).onChanged(Resource.success(list));
     }
 }
