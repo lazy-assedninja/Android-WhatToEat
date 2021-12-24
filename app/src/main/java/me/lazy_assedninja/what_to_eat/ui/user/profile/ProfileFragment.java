@@ -41,6 +41,8 @@ import javax.inject.Inject;
 
 import dagger.hilt.EntryPoints;
 import dagger.hilt.android.AndroidEntryPoint;
+import me.lazy_assedninja.library.ui.BaseFragment;
+import me.lazy_assedninja.library.util.LogUtil;
 import me.lazy_assedninja.what_to_eat.BuildConfig;
 import me.lazy_assedninja.what_to_eat.R;
 import me.lazy_assedninja.what_to_eat.binding.ImageDataBindingComponent;
@@ -53,8 +55,6 @@ import me.lazy_assedninja.what_to_eat.vo.GoogleAccount;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Result;
 import me.lazy_assedninja.what_to_eat.vo.Status;
-import me.lazy_assedninja.library.ui.BaseFragment;
-import me.lazy_assedninja.library.util.LogUtil;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -143,7 +143,8 @@ public class ProfileFragment extends BaseFragment {
                 R.id.action_to_reset_password_fragment));
         binding.get().btLogout.setOnClickListener(v -> {
             viewModel.logout();
-            navController.navigate(R.id.action_to_home_fragment);
+            if (!navController.popBackStack(R.id.home_fragment, false))
+                navController.navigate(R.id.action_to_home_fragment);
         });
         binding.get().btReport.setOnClickListener(v -> {
             CreateReportFragment createReportFragment = new CreateReportFragment();

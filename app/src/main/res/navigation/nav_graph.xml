@@ -11,14 +11,6 @@
         tools:layout="@layout/home_fragment">
 
         <action
-            android:id="@+id/action_to_home_fragment"
-            app:destination="@id/home_fragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-
-        <action
             android:id="@+id/action_to_recommend_fragment"
             app:destination="@id/recommend_fragment"
             app:enterAnim="@android:anim/fade_in"

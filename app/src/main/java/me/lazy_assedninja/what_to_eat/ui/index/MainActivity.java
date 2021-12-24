@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity {
 
         initView();
         initSearchView();
-        initNavigationUI();
+        initNavigation();
         initDrawer();
         initDrawerHeader();
         initBottomNavigation();
@@ -82,9 +82,9 @@ public class MainActivity extends BaseActivity {
         });
         binding.floatingActionButton.setOnClickListener(v -> {
             if (navController.getCurrentDestination() == null) return;
-            if (navController.getCurrentDestination().getId() != R.id.home_fragment) {
+            if (navController.getCurrentDestination().getId() != R.id.home_fragment &&
+                    !navController.popBackStack(R.id.home_fragment, false))
                 navController.navigate(R.id.action_to_home_fragment);
-            }
         });
         binding.bottomNavigationView.setBackground(null);
     }
@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void initNavigationUI() {
+    private void initNavigation() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
@@ -146,6 +146,12 @@ public class MainActivity extends BaseActivity {
                     binding.bottomAppBar.setVisibility(View.VISIBLE);
                     binding.floatingActionButton.setVisibility(View.VISIBLE);
                 }
+                binding.floatingActionButton.getDrawable().setTint(
+                        ContextCompat.getColor(this, (destinationID == R.id.home_fragment) ?
+                                R.color.white : R.color.black));
+                binding.floatingActionButton.setBackgroundTintList(
+                        ContextCompat.getColorStateList(this, (destinationID == R.id.home_fragment) ?
+                                R.color.primary_color : R.color.white));
 
                 // SearchView
                 if (destinationID != R.id.search_fragment) {
@@ -222,16 +228,17 @@ public class MainActivity extends BaseActivity {
             int itemID = menuItem.getItemId();
             if (itemID == R.id.profile_fragment) {
                 if (viewModel.isLoggedIn()) {
-                    navController.navigate(R.id.action_to_login_fragment);
-                    return true;
+                    if (!navController.popBackStack(R.id.login_fragment, false))
+                        navController.navigate(R.id.action_to_login_fragment);
                 } else {
-                    navController.navigate(R.id.action_to_profile_fragment);
-                    return false;
+                    if (!navController.popBackStack(R.id.profile_fragment, false))
+                        navController.navigate(R.id.action_to_profile_fragment);
                 }
             } else if (itemID == R.id.recommend_fragment) {
-                navController.navigate(R.id.action_to_recommend_fragment);
+                if (!navController.popBackStack(R.id.recommend_fragment, false))
+                    navController.navigate(R.id.action_to_recommend_fragment);
             }
-            return true;
+            return false;
         });
     }
 
