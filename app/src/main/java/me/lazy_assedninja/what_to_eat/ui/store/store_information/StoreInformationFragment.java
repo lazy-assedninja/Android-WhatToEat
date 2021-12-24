@@ -97,6 +97,7 @@ public class StoreInformationFragment extends BaseFragment {
     }
 
     private void initView() {
+        binding.get().floatingActionButton.animate().setStartDelay(100).setDuration(1000).alpha(1);
         binding.get().floatingActionButton.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
                 showToast(R.string.error_please_login_first);
