@@ -34,6 +34,7 @@ public class StoreAdapter extends ListAdapter<Store, BaseViewHolder<StoreItemBin
             @Override
             public boolean areContentsTheSame(@NonNull Store oldItem, @NonNull Store newItem) {
                 return oldItem.getName().equals(newItem.getName()) &&
+                        oldItem.getUserID() == newItem.getUserID() &&
                         (!needCheck || oldItem.getUpdateTime().equals(newItem.getUpdateTime()));
             }
         }).setBackgroundThreadExecutor(executorUtil.diskIO()).build());

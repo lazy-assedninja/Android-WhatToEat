@@ -20,6 +20,7 @@ public class Store {
     private String createTime;
     private String updateTime;
 
+    private int userID;
     private boolean isFavorite;
 
     private int tagID;
@@ -118,6 +119,14 @@ public class Store {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public boolean isFavorite() {

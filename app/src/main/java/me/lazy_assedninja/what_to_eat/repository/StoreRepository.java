@@ -8,17 +8,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.StoreDao;
-import me.lazy_assedninja.what_to_eat.db.WhatToEatDatabase;
-import me.lazy_assedninja.what_to_eat.dto.ReservationDTO;
 import me.lazy_assedninja.what_to_eat.dto.StoreDTO;
 import me.lazy_assedninja.what_to_eat.util.RateLimiter;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
 import me.lazy_assedninja.what_to_eat.vo.Store;
-import me.lazy_assedninja.library.util.ExecutorUtil;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
 /**
  * Repository that handles Store objects.
@@ -59,6 +56,9 @@ public class StoreRepository {
 
             @Override
             protected void saveCallResult(List<Store> item) {
+                for (Store store : item) {
+                    store.setUserID(storeDTO.getUserID());
+                }
                 storeDao.insertAll(item);
             }
 
