@@ -57,7 +57,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:scaleType="centerCrop"
-                        android:transitionName="@{String.valueOf(store.id)}"
+                        android:transitionName="@{String.format(@string/tn_picture, store.id)}"
                         app:error="@{@drawable/ic_loading_store}"
                         app:fallback="@{@drawable/ic_loading_store}"
                         app:imageUrl="@{store.picture}"
@@ -77,13 +77,14 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:contentDescription="@string/bt_favorite"
-            android:alpha="0"
+            android:transitionName="@{String.format(@string/tn_favorite, store.id)}"
             android:src="@{store.isFavorite ? @drawable/ic_heart_checked : @drawable/ic_heart_unchecked}"
             android:clickable="@{result.peekContent().status != Status.LOADING}"
             app:backgroundTint="@color/white"
             app:layout_anchor="@id/app_bar_layout"
             app:layout_anchorGravity="bottom|end"
-            app:tint="@color/red" />
+            app:tint="@color/red"
+            tools:src="@drawable/ic_heart_unchecked"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

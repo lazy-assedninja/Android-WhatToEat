@@ -14,19 +14,20 @@
         android:id="@+id/item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        app:cardCornerRadius="20dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:paddingBottom="12dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_picture"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="centerCrop"
-                android:transitionName="@{String.valueOf(store.id)}"
+                android:transitionName="@{String.format(@string/tn_picture, store.id)}"
                 app:error="@{@drawable/ic_loading_store}"
                 app:fallback="@{@drawable/ic_loading_store}"
                 app:imageUrl="@{store.picture}"
@@ -39,14 +40,17 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@{store.name}"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:ellipsize="end"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_picture"
                 tools:text="Store Name" />
@@ -59,6 +63,7 @@
                 android:background="@drawable/bg_star"
                 android:paddingStart="10dp"
                 android:paddingTop="2dp"
+                android:layout_marginStart="16dp"
                 android:paddingEnd="26dp"
                 android:paddingBottom="2dp"
                 android:text="@{(store.star.isEmpty() || store.star == null) ? @string/default_value_star : store.star.toString()}"
@@ -81,14 +86,19 @@
                 app:layout_constraintTop_toTopOf="@id/tv_star"
                 app:srcCompat="@drawable/ic_star" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_favorite"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:padding="8dp"
+                android:layout_margin="12dp"
+                android:transitionName="@{String.format(@string/tn_favorite, store.id)}"
+                android:background="@color/white"
                 android:src="@{store.isFavorite? @drawable/ic_heart_checked : @drawable/ic_heart_unchecked}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:contentPadding="8dp"
+                app:shapeAppearance="@style/Widget.ShapeableImageView.RoundedCorner"
+                tools:src="@drawable/ic_heart_unchecked"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

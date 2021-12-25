@@ -65,16 +65,19 @@ public class StoreInformationFragment extends BaseFragment {
         );
         this.binding = new AutoClearedValue<>(this, binding);
 
-        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.change_image_transform));
+        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(
+                R.transition.change_image_transform));
         binding.setImageRequestListener(new RequestListener<Drawable>() {
             @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target,
+                                        boolean isFirstResource) {
                 startPostponedEnterTransition();
                 return false;
             }
 
             @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
+                                           DataSource dataSource, boolean isFirstResource) {
                 startPostponedEnterTransition();
                 return false;
             }
@@ -97,7 +100,6 @@ public class StoreInformationFragment extends BaseFragment {
     }
 
     private void initView() {
-        binding.get().floatingActionButton.animate().setStartDelay(100).setDuration(1000).alpha(1);
         binding.get().floatingActionButton.setOnClickListener(v -> {
             if (viewModel.isLoggedIn()) {
                 showToast(R.string.error_please_login_first);

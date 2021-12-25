@@ -124,7 +124,10 @@ public class HomeFragment extends BaseFragment {
                     public void onInformationClick(StoreItemBinding binding, int position) {
                         int storeID = binding.getStore().getId();
                         FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
-                                .addSharedElement(binding.ivPicture, String.valueOf(storeID))
+                                .addSharedElement(binding.ivPicture,
+                                        String.format(getString(R.string.tn_picture), storeID))
+                                .addSharedElement(binding.ivFavorite,
+                                        String.format(getString(R.string.tn_favorite), storeID))
                                 .build();
                         navController.navigate(HomeFragmentDirections.actionToStoreInformationFragment(
                                 storeID, position, false), extras);

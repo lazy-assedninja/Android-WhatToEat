@@ -51,6 +51,10 @@
     <string name="hint_time">Time</string>
     <string name="hint_content">Content</string>
 
+    <!-- Transition Name -->
+    <string name="tn_picture">Picture: %d</string>
+    <string name="tn_favorite">Favorite: %d</string>
+
     <!-- Login -->
     <string name="bg_login">Login Background</string>
     <string name="bt_login">Login</string>
