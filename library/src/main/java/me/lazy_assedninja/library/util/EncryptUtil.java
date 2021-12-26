@@ -2,6 +2,7 @@ package me.lazy_assedninja.library.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -28,7 +29,7 @@ public class EncryptUtil {
             for (byte b : encryption) {
                 hexString.append(String.format("%02x", b));
             }
-            return hexString.toString().toUpperCase();
+            return hexString.toString().toUpperCase(Locale.getDefault());
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;

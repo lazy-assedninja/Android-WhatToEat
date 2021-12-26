@@ -8,17 +8,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import me.lazy_assedninja.library.util.ExecutorUtil;
 import me.lazy_assedninja.what_to_eat.api.ApiResponse;
 import me.lazy_assedninja.what_to_eat.api.WhatToEatService;
 import me.lazy_assedninja.what_to_eat.db.PostDao;
-import me.lazy_assedninja.what_to_eat.db.WhatToEatDatabase;
-import me.lazy_assedninja.what_to_eat.dto.FavoriteDTO;
 import me.lazy_assedninja.what_to_eat.dto.PostDTO;
 import me.lazy_assedninja.what_to_eat.util.RateLimiter;
 import me.lazy_assedninja.what_to_eat.vo.Post;
 import me.lazy_assedninja.what_to_eat.vo.Resource;
-import me.lazy_assedninja.library.util.ExecutorUtil;
-import me.lazy_assedninja.library.util.NetworkUtil;
 
 /**
  * Repository that handles Post objects.

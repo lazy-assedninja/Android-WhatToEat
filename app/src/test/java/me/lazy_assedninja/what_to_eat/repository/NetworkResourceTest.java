@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
@@ -39,32 +40,17 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 @SuppressWarnings("unchecked")
-@RunWith(Parameterized.class)
+@RunWith(JUnit4.class)
 public class NetworkResourceTest {
-
-    @Parameters
-    public static List<Boolean> param() {
-        return Arrays.asList(true);
-    }
 
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
-    private final boolean useRealExecutors;
-    private CountingExecutorUtil countingExecutorUtil;
     private ExecutorUtil executorUtil;
-
-    public NetworkResourceTest(boolean useRealExecutors) {
-        this.useRealExecutors = useRealExecutors;
-        if (useRealExecutors) {
-            countingExecutorUtil = new CountingExecutorUtil();
-        }
-    }
 
     @Before
     public void init() {
-        executorUtil = (useRealExecutors) ? countingExecutorUtil.getExecutorUtil() :
-                new InstantExecutorUtil();
+        executorUtil = new InstantExecutorUtil();
     }
 
     @Test
@@ -90,9 +76,7 @@ public class NetworkResourceTest {
 
         Observer<Event<Resource<Ninja>>> observer = mock(Observer.class);
         networkResource.asLiveData().observeForever(observer);
-        drain();
         assertThat(saved.get(), is(networkResult));
-        if (useRealExecutors) verify(observer).onChanged(new Event<>(Resource.loading(null)));
         verify(observer).onChanged(new Event<>(Resource.success(networkResult)));
         verifyNoMoreInteractions(observer);
     }
@@ -121,19 +105,8 @@ public class NetworkResourceTest {
 
         Observer<Event<Resource<Ninja>>> observer = mock(Observer.class);
         networkResource.asLiveData().observeForever(observer);
-        drain();
         assertThat(saved.get(), is(false));
-        if (useRealExecutors) verify(observer).onChanged(new Event<>(Resource.loading(null)));
         verify(observer).onChanged(new Event<>(Resource.error("Error.", null)));
         verifyNoMoreInteractions(observer);
-    }
-
-    private void drain() {
-        if (!useRealExecutors) return;
-        try {
-            countingExecutorUtil.drainTasks(1, TimeUnit.SECONDS);
-        } catch (Throwable t) {
-            throw new AssertionError(t);
-        }
     }
 }
