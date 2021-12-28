@@ -1,3 +1,3 @@
 # Security Policy
 
-No longer maintenance.
+No longer maintained.
