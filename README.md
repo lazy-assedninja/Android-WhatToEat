@@ -2,6 +2,13 @@
 Refactor the university project.
 
 
+## ScreenShot
+<img src="https://i.imgur.com/W8OIFxd.png" width="144" height="296">&nbsp;
+<img src="https://i.imgur.com/ijRxTZJ.png" width="144" height="296">&nbsp;
+<img src="https://i.imgur.com/vyToHGy.png" width="144" height="296">&nbsp;
+<img src="https://i.imgur.com/n7rDAch.png" width="144" height="296">&nbsp;
+
+
 ## Environment
 * MacOS 11.4
 * Android Studio Arctic Fox | 2020.3.1 Patch 2
@@ -32,4 +39,3 @@ To use Google Services Gradle Plugin, need `google-services.json`, follow the [A
 ## Reports
 * [Build Scan](https://scans.gradle.com/s/m6h5xzgbec2du/console-log?anchor=254)
 * [Lint](https://htmlpreview.github.io/?https://github.com/henryhuang1219/Android-WhatToEat/blob/master/app/reports/lint-results-debug.html)
-* [Analytics](https://analytics.google.com/analytics/web/?authuser=0#/p289131996/reports/dashboard?r=firebase-overview)
