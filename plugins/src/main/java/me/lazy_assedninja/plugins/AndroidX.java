@@ -1,6 +1,6 @@
 package me.lazy_assedninja.plugins;
 
-
+@SuppressWarnings("unused")
 public class AndroidX {
 
     public static final String CORE = "androidx.core:core:" + DependenciesVersion.CORE;
