@@ -1,7 +1,6 @@
 package me.lazy_assedninja.what_to_eat.ui.user.register;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
