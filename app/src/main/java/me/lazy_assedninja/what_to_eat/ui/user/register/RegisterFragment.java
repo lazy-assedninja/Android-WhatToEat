@@ -1,6 +1,8 @@
 package me.lazy_assedninja.what_to_eat.ui.user.register;
 
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +57,8 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void initView() {
+        binding.get().tvTermsAndConditions.setMovementMethod(LinkMovementMethod.getInstance());
+
         binding.get().btRegister.setOnClickListener(v -> {
             dismissKeyboard(v);
             EditText etName = binding.get().tilName.getEditText();

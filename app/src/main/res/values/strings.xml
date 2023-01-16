@@ -66,6 +66,7 @@
 
     <!-- Register -->
     <string name="bt_register">Register</string>
+    <string name="terms_and_conditions">By tapping Register, you agree to our <a href='https://www.termsfeed.com/live/fe1daafb-37fc-4bfb-8489-fe7a67c61b94'>Terms and Conditions</a>.</string>
 
     <!-- User -->
     <string name="user_please_login">Please Login</string>
