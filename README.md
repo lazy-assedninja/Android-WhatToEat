@@ -1,5 +1,5 @@
 # Android-WhatToEat
-Refactor the university project.
+Refactor the university project.  [more...](https://lazy-assedninja.com/docs/what-to-eat-demand-analysis)
 
 
 ## ScreenShot
